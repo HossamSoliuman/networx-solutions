@@ -1,23 +1,25 @@
 <x-layouts.public :site="$site" :navigation-services="$navigationServices" :title="$site['home_title']" :description="$site['home_intro']">
-    <section class="relative isolate overflow-hidden bg-navy-950 text-white">
+    <section class="home-hero relative isolate overflow-hidden bg-navy-950 text-white">
         <img src="{{ $site['home_image_url'] }}" alt="Operational server infrastructure"
-            class="absolute inset-0 -z-30 h-full w-full object-cover opacity-30" fetchpriority="high">
-        <div class="absolute inset-0 -z-20 bg-linear-to-r from-navy-950 via-navy-950/95 to-navy-950/55"></div>
-        <div class="bg-machine-grid absolute inset-0 -z-10 opacity-45"></div>
+            class="hero-network-image absolute inset-0 -z-30 h-full w-full object-cover object-[58%_center] opacity-55"
+            fetchpriority="high">
+        <div class="hero-image-shade absolute inset-0 -z-20"></div>
+        <div class="bg-machine-grid absolute inset-0 -z-10 opacity-35"></div>
         <div class="bg-signal-glow absolute inset-0 -z-10"></div>
+        <div class="hero-scan-beam absolute inset-0 -z-10" aria-hidden="true"></div>
 
         <div
-            class="mx-auto grid min-h-[43rem] max-w-[90rem] items-center gap-12 px-5 py-16 sm:min-h-[47rem] sm:px-8 sm:py-20 lg:grid-cols-[1.13fr_0.87fr] lg:px-12 lg:py-24">
-            <div class="max-w-5xl">
+            class="mx-auto grid max-w-[90rem] items-start gap-10 px-5 py-10 sm:px-8 sm:py-12 lg:min-h-[44rem] lg:grid-cols-[1.13fr_0.87fr] lg:gap-14 lg:px-12 lg:py-14 xl:gap-20">
+            <div class="min-w-0 max-w-5xl">
                 <p class="site-reveal section-kicker text-brand-200">{{ $site['home_eyebrow'] }}</p>
-                <h1 class="site-reveal site-reveal-delay-1 site-hero-title mt-7">
+                <h1 class="site-reveal site-reveal-delay-1 site-hero-title mt-4">
                     {{ $site['home_title'] }}
                 </h1>
-                <p class="site-reveal site-reveal-delay-2 mt-7 max-w-2xl text-pretty text-lg leading-8 text-slate-300 sm:text-xl sm:leading-9">
+                <p class="site-reveal site-reveal-delay-2 mt-5 max-w-2xl text-pretty text-lg leading-8 text-slate-200 sm:text-xl sm:leading-9">
                     {{ $site['home_intro'] }}
                 </p>
 
-                <div class="site-reveal site-reveal-delay-3 mt-9 flex flex-col gap-3 sm:flex-row">
+                <div class="site-reveal site-reveal-delay-3 mt-7 flex flex-col gap-3 sm:flex-row">
                     <a href="{{ route('contact') }}" class="button-primary">
                         Discuss your requirements
                         <x-icon name="arrow-left" class="size-4 rotate-180" />
@@ -27,7 +29,7 @@
                     </a>
                 </div>
 
-                <div class="site-reveal site-reveal-delay-3 mt-10 flex flex-wrap gap-x-6 gap-y-3 border-t border-white/10 pt-6">
+                <div class="site-reveal site-reveal-delay-3 mt-8 flex flex-wrap gap-x-6 gap-y-3 border-t border-white/10 pt-5">
                     @foreach (['Support', 'Networks', 'Cloud', 'Security', 'Surveillance', 'Microsoft 365'] as $capability)
                         <span class="flex items-center gap-2 text-xs font-semibold text-slate-400">
                             <span class="size-1 rounded-full bg-signal-400"></span>
@@ -37,9 +39,9 @@
                 </div>
             </div>
 
-            <div class="site-reveal site-reveal-delay-2 relative lg:justify-self-end">
+            <div class="site-reveal site-reveal-delay-2 relative min-w-0 lg:mt-6 lg:justify-self-end">
                 <div
-                    class="relative w-full overflow-hidden rounded-[2rem] border border-white/15 bg-navy-950/75 p-5 shadow-[0_35px_100px_-35px_rgba(0,0,0,0.8)] backdrop-blur-md sm:p-7 lg:w-[31rem]">
+                    class="hero-operations-card relative min-w-0 w-full overflow-hidden rounded-[2rem] border border-white/15 bg-navy-950/78 p-5 shadow-[0_35px_100px_-35px_rgba(0,0,0,0.8)] backdrop-blur-md sm:p-7 lg:w-[31rem]">
                     <div class="flex items-center justify-between gap-4 border-b border-white/10 pb-5">
                         <div>
                             <p class="technical-label text-slate-500">Infrastructure view</p>
@@ -47,22 +49,22 @@
                         </div>
                         <span
                             class="inline-flex items-center gap-2 rounded-full border border-signal-400/20 bg-signal-400/10 px-3 py-1.5 font-mono text-[0.62rem] font-semibold uppercase tracking-[0.12em] text-signal-200">
-                            <span class="size-1.5 rounded-full bg-signal-400"></span>
+                            <span class="status-pulse size-1.5 rounded-full bg-signal-400"></span>
                             Connected
                         </span>
                     </div>
 
-                    <div class="relative py-7">
+                    <div class="relative py-6">
                         <div class="bg-technical-dots absolute inset-0 opacity-70"></div>
                         <div class="relative grid grid-cols-2 gap-3">
                             @foreach ($services as $service)
                                 <a href="{{ route('services.show', $service) }}"
-                                    class="group/node flex items-center gap-3 rounded-2xl border border-white/10 bg-white/[0.06] p-3.5 transition hover:border-brand-300/35 hover:bg-brand-400/10">
+                                    class="network-node group/node flex min-w-0 items-center gap-3 overflow-hidden rounded-2xl border border-white/10 bg-white/[0.06] p-3.5 transition hover:border-brand-300/35 hover:bg-brand-400/10">
                                     <span
                                         class="flex size-9 shrink-0 items-center justify-center rounded-xl bg-brand-400/10 text-brand-200">
                                         <x-icon :name="$service->icon" class="size-4" />
                                     </span>
-                                    <span class="text-xs font-bold leading-5 text-slate-200">{{ $service->name }}</span>
+                                    <span class="min-w-0 break-words text-xs font-bold leading-5 text-slate-200">{{ $service->name }}</span>
                                 </a>
                             @endforeach
                         </div>
@@ -85,7 +87,7 @@
                 </div>
 
                 <div
-                    class="absolute -bottom-5 -left-5 hidden items-center gap-3 rounded-2xl border border-white/10 bg-white px-4 py-3 text-navy-950 shadow-xl sm:flex">
+                    class="hero-delivery-badge absolute -bottom-5 -left-5 hidden items-center gap-3 rounded-2xl border border-white/10 bg-white px-4 py-3 text-navy-950 shadow-xl sm:flex">
                     <span class="flex size-9 items-center justify-center rounded-full bg-signal-300/20 text-signal-500">
                         <x-icon name="check" class="size-4" />
                     </span>
@@ -119,21 +121,21 @@
         </div>
     </section>
 
-    <section class="relative overflow-hidden py-20 sm:py-28">
+    <section id="capabilities" class="relative overflow-hidden py-14 sm:py-16 lg:py-20">
         <div class="bg-public-grid absolute inset-0 -z-10"></div>
 
         <div class="mx-auto max-w-[90rem] px-5 sm:px-8 lg:px-12">
-            <div class="grid gap-8 border-b border-slate-300 pb-10 lg:grid-cols-[0.72fr_1.28fr] lg:items-end" data-reveal>
+            <div class="grid gap-5 border-b border-slate-300 pb-7 lg:grid-cols-[0.58fr_1.42fr] lg:items-start" data-reveal>
                 <p class="section-kicker">Connected capabilities</p>
                 <div>
                     <h2 class="section-title">{{ $site['services_title'] }}</h2>
-                    <p class="mt-5 max-w-2xl text-base leading-7 text-slate-600 sm:text-lg sm:leading-8">
+                    <p class="mt-3 max-w-2xl text-base leading-7 text-slate-600 sm:text-lg sm:leading-8">
                         {{ $site['services_intro'] }}
                     </p>
                 </div>
             </div>
 
-            <div class="mt-10 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+            <div class="mt-8 grid gap-5 md:grid-cols-2 xl:grid-cols-3" data-reveal-group>
                 @foreach ($services as $service)
                     <div data-reveal>
                         <x-site.service-card :service="$service" :index="$loop->iteration" />
@@ -141,7 +143,7 @@
                 @endforeach
             </div>
 
-            <div class="mt-10 flex justify-end">
+            <div class="mt-8 flex justify-end">
                 <a href="{{ route('services.index') }}" class="text-link">
                     View the complete service catalogue
                     <x-icon name="arrow-left" class="size-4 rotate-180" />
@@ -150,21 +152,21 @@
         </div>
     </section>
 
-    <section class="relative isolate overflow-hidden bg-navy-950 py-20 text-white sm:py-28">
+    <section class="relative isolate overflow-hidden bg-navy-950 py-16 text-white sm:py-20">
         <div class="bg-machine-grid absolute inset-0 -z-10 opacity-45"></div>
         <div class="bg-signal-glow absolute inset-0 -z-10"></div>
 
         <div class="mx-auto max-w-[90rem] px-5 sm:px-8 lg:px-12">
-            <div class="grid gap-12 lg:grid-cols-[0.85fr_1.15fr] lg:gap-20">
+            <div class="grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:gap-16">
                 <div data-reveal>
                     <p class="section-kicker text-brand-200">Integrated by design</p>
-                    <h2 class="mt-6 text-balance font-display text-4xl font-bold leading-[1.03] tracking-[-0.05em] sm:text-5xl lg:text-6xl">
+                    <h2 class="mt-5 text-balance font-display text-4xl font-semibold leading-[1.03] tracking-[-0.035em] sm:text-5xl lg:text-6xl">
                         Better outcomes start with the whole system.
                     </h2>
-                    <p class="mt-6 max-w-xl text-lg leading-8 text-slate-300">
+                    <p class="mt-5 max-w-xl text-lg leading-8 text-slate-300">
                         Point solutions create new gaps when nobody owns the connections between them. Networx treats support, networks, cloud, and security as one operating environment.
                     </p>
-                    <a href="{{ route('about') }}" class="mt-8 inline-flex items-center gap-2 text-sm font-bold text-brand-200">
+                    <a href="{{ route('about') }}" class="mt-7 inline-flex items-center gap-2 text-sm font-bold text-brand-200">
                         See how we work
                         <x-icon name="arrow-left" class="size-4 rotate-180" />
                     </a>
@@ -177,18 +179,18 @@
                         ['cog', 'Make change without chaos', 'Sequence delivery around continuity, testing, and a clear handover.'],
                         ['users', 'Know who owns what', 'Keep responsibility visible from discovery through ongoing support.'],
                     ] as [$icon, $title, $copy])
-                        <article class="bg-navy-900/80 p-7 sm:p-8">
+                        <article class="bg-navy-900/80 p-6 sm:p-7">
                             <x-icon :name="$icon" class="size-5 text-signal-300" />
-                            <h3 class="mt-5 font-display text-xl font-bold text-white">{{ $title }}</h3>
+                            <h3 class="mt-4 font-display text-xl font-semibold text-white">{{ $title }}</h3>
                             <p class="mt-3 text-sm leading-7 text-slate-400">{{ $copy }}</p>
                         </article>
                     @endforeach
                 </div>
             </div>
 
-            <div class="mt-16 border-t border-white/10 pt-10" data-reveal>
+            <div class="mt-12 border-t border-white/10 pt-8" data-reveal>
                 <p class="technical-label text-slate-500">The delivery path</p>
-                <div class="mt-7 grid gap-7 sm:grid-cols-2 lg:grid-cols-4">
+                <div class="mt-6 grid gap-7 sm:grid-cols-2 lg:grid-cols-4">
                     @foreach ([
                         ['01', 'Assess', 'Map the environment, business pressure, risk, and desired outcome.'],
                         ['02', 'Design', 'Define the architecture, scope, controls, and delivery sequence.'],
@@ -197,7 +199,7 @@
                     ] as [$number, $title, $copy])
                         <div class="relative border-l border-white/15 pl-5">
                             <span class="font-mono text-xs font-semibold text-brand-300">{{ $number }}</span>
-                            <h3 class="mt-3 font-display text-lg font-bold text-white">{{ $title }}</h3>
+                            <h3 class="mt-3 font-display text-lg font-semibold text-white">{{ $title }}</h3>
                             <p class="mt-2 text-sm leading-6 text-slate-400">{{ $copy }}</p>
                         </div>
                     @endforeach
@@ -206,9 +208,22 @@
         </div>
     </section>
 
+    <div id="operational-handoff" class="section-handoff border-b border-slate-200 bg-paper">
+        <div class="mx-auto flex min-h-16 max-w-[90rem] items-center gap-5 px-5 sm:px-8 lg:px-12">
+            <span class="technical-label shrink-0 text-brand-700">Design to operations</span>
+            <span class="handoff-track relative h-px flex-1 bg-slate-300" aria-hidden="true">
+                <span class="absolute left-1/4 top-1/2 size-1.5 -translate-y-1/2 rounded-full bg-brand-500"></span>
+                <span class="absolute left-1/2 top-1/2 size-1.5 -translate-y-1/2 rounded-full bg-brand-500"></span>
+                <span class="absolute left-3/4 top-1/2 size-1.5 -translate-y-1/2 rounded-full bg-brand-500"></span>
+                <span class="handoff-signal absolute left-0 top-1/2 size-2 -translate-y-1/2 rounded-full bg-signal-400"></span>
+            </span>
+            <span class="technical-label hidden shrink-0 text-slate-500 sm:inline">One accountable team</span>
+        </div>
+    </div>
+
     <section class="overflow-hidden bg-paper">
         <div class="mx-auto grid max-w-[90rem] lg:grid-cols-2">
-            <div class="relative min-h-[30rem] lg:min-h-[46rem]" data-reveal>
+            <div class="relative min-h-[28rem] lg:min-h-[40rem]" data-reveal>
                 <img src="{{ $site['about_image_url'] }}" alt="Enterprise network switching equipment"
                     class="absolute inset-0 h-full w-full object-cover" loading="lazy">
                 <div class="absolute inset-0 bg-linear-to-t from-navy-950/75 via-transparent to-transparent"></div>
@@ -223,7 +238,7 @@
                 </div>
             </div>
 
-            <div class="flex items-center px-5 py-16 sm:px-8 lg:px-14 lg:py-24 xl:px-20" data-reveal>
+            <div class="flex items-center px-5 py-14 sm:px-8 lg:px-14 lg:py-20 xl:px-20" data-reveal>
                 <div class="max-w-xl">
                     <p class="section-kicker">{{ $site['about_eyebrow'] }}</p>
                     <h2 class="section-title mt-5">{{ $site['about_title'] }}</h2>
@@ -253,6 +268,4 @@
             </div>
         </div>
     </section>
-
-    <x-site.cta :site="$site" />
 </x-layouts.public>

@@ -26,7 +26,7 @@
     <title>{{ $pageTitle }}</title>
 
     <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=archivo:500,600,700,800|ibm-plex-mono:500,600|ibm-plex-sans:400,500,600,700"
+    <link href="https://fonts.bunny.net/css?family=barlow:400,500,600,700|barlow-semi-condensed:500,600,700|ibm-plex-mono:500,600"
         rel="stylesheet">
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])

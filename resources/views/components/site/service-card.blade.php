@@ -8,7 +8,7 @@
     class="group relative flex h-full flex-col overflow-hidden rounded-[1.75rem] bg-white ring-1 ring-slate-200 transition duration-300 hover:-translate-y-1 hover:ring-brand-200 hover:shadow-[0_26px_70px_-38px_rgba(5,26,53,0.5)]">
     <div class="relative overflow-hidden bg-navy-950">
         <img src="{{ $service->imageUrl() }}" alt="{{ $service->name }}"
-            class="h-52 w-full object-cover transition duration-700 group-hover:scale-[1.045] group-hover:opacity-85 sm:h-56"
+            class="h-48 w-full object-cover transition duration-700 group-hover:scale-[1.045] group-hover:opacity-85 sm:h-52"
             loading="lazy">
         <div class="absolute inset-0 bg-linear-to-t from-navy-950/65 via-transparent to-transparent"></div>
 
@@ -25,8 +25,8 @@
         </span>
     </div>
 
-    <div class="flex flex-1 flex-col p-6 sm:p-7">
-        <h3 class="font-display text-2xl font-bold tracking-[-0.035em] text-navy-950">
+    <div class="flex flex-1 flex-col p-5 sm:p-6">
+        <h3 class="font-display text-2xl font-semibold tracking-[-0.025em] text-navy-950">
             <a href="{{ route('services.show', $service) }}"
                 class="after:absolute after:inset-0"
                 aria-describedby="service-summary-{{ $service->getKey() }}">
