@@ -87,7 +87,7 @@
                 </div>
 
                 <div
-                    class="hero-delivery-badge absolute -bottom-5 -left-5 hidden items-center gap-3 rounded-2xl border border-white/10 bg-white px-4 py-3 text-navy-950 shadow-xl sm:flex">
+                    class="hero-delivery-badge absolute -bottom-10 -left-5 hidden items-center gap-3 rounded-2xl border border-white/10 bg-white px-4 py-3 text-navy-950 shadow-xl sm:flex">
                     <span class="flex size-9 items-center justify-center rounded-full bg-signal-300/20 text-signal-500">
                         <x-icon name="check" class="size-4" />
                     </span>

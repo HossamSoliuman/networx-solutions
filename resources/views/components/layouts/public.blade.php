@@ -62,7 +62,7 @@
 
     <header data-site-header
         class="site-header sticky top-0 z-50 border-b border-slate-200/80 bg-paper/95 backdrop-blur-xl transition-shadow">
-        <div class="mx-auto flex h-[4.5rem] max-w-[90rem] items-center justify-between gap-6 px-5 sm:h-20 sm:px-8 lg:px-12">
+        <div class="mx-auto flex h-16 max-w-[90rem] items-center justify-between gap-6 px-5 sm:px-8 lg:px-12">
             <a href="{{ route('home') }}" aria-label="{{ $site['site_name'] }} home">
                 <x-logo />
             </a>
@@ -112,7 +112,7 @@
                 </a>
             </nav>
 
-            <a href="{{ route('contact') }}" class="button-dark hidden lg:inline-flex">
+            <a href="{{ route('contact') }}" class="button-dark hidden min-h-10 px-5 py-2 lg:inline-flex">
                 Get a quote
                 <x-icon name="arrow-left" class="size-4 rotate-180" />
             </a>
@@ -130,7 +130,7 @@
         </div>
 
         <nav id="site-menu" data-site-menu
-            class="absolute inset-x-0 top-full hidden max-h-[calc(100vh-4.5rem)] overflow-y-auto border-t border-slate-200 bg-paper px-5 pb-8 shadow-2xl lg:hidden"
+            class="absolute inset-x-0 top-full hidden max-h-[calc(100vh-4rem)] overflow-y-auto border-t border-slate-200 bg-paper px-5 pb-8 shadow-2xl lg:hidden"
             aria-label="Mobile navigation">
             <div class="mx-auto max-w-[90rem]">
                 <a href="{{ route('home') }}" class="site-mobile-link"
