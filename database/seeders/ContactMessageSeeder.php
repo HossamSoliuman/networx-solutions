@@ -6,7 +6,6 @@ use App\Enums\ContactActivityType;
 use App\Enums\ContactMessagePriority;
 use App\Enums\ContactMessageStatus;
 use App\Models\ContactMessage;
-use App\Models\ContactNote;
 use App\Models\ContactReply;
 use App\Models\Service;
 use App\Models\User;
@@ -88,10 +87,6 @@ class ContactMessageSeeder extends Seeder
             $this->changeStatus($message, ContactMessageStatus::InProgress, $admin, $readAt->copy()->addMinutes(30));
             $message->forceFill(['assigned_to_id' => $admin->id])->saveQuietly();
 
-            if (fake()->boolean(60)) {
-                $this->addNote($message, $admin, $readAt->copy()->addHours(2));
-            }
-
             return;
         }
 
@@ -117,10 +112,6 @@ class ContactMessageSeeder extends Seeder
             'created_at' => $repliedAt,
             'updated_at' => $repliedAt,
         ]);
-
-        if (fake()->boolean(30)) {
-            $this->addNote($message, $admin, $repliedAt->copy()->addHours(1));
-        }
 
         if ($state === 'replied') {
             return;
@@ -151,23 +142,6 @@ class ContactMessageSeeder extends Seeder
             'user_id' => $admin->id,
             'type' => ContactActivityType::StatusChanged,
             'meta' => ['from' => $previous->value, 'to' => $status->value],
-            'created_at' => $at,
-            'updated_at' => $at,
-        ]);
-    }
-
-    private function addNote(ContactMessage $message, User $admin, Carbon $at): void
-    {
-        ContactNote::factory()->create([
-            'contact_message_id' => $message->id,
-            'user_id' => $admin->id,
-            'created_at' => $at,
-            'updated_at' => $at,
-        ]);
-
-        $message->activities()->forceCreate([
-            'user_id' => $admin->id,
-            'type' => ContactActivityType::NoteAdded,
             'created_at' => $at,
             'updated_at' => $at,
         ]);

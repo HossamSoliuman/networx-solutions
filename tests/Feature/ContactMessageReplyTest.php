@@ -36,18 +36,26 @@ it('sends a reply email and tracks the full state change', function () {
         ->and($message->activities()->where('type', ContactActivityType::StatusChanged)->count())->toBe(1);
 });
 
-it('keeps the original replied_at timestamp on subsequent replies', function () {
+it('allows only a single reply per message', function () {
     Mail::fake();
 
-    $firstRepliedAt = now()->subDays(2)->startOfSecond();
-    $message = ContactMessage::factory()->replied()->create(['replied_at' => $firstRepliedAt]);
+    $message = ContactMessage::factory()->read()->create();
 
     $this->actingAs($this->user)->post(route('admin.messages.reply', $message), [
-        'subject' => 'Re: follow-up',
-        'body' => 'Following up with the quote you asked for.',
+        'subject' => "Re: {$message->subject}",
+        'body' => 'The first and only reply.',
     ]);
 
-    expect($message->refresh()->replied_at->equalTo($firstRepliedAt))->toBeTrue();
+    $this->actingAs($this->user)
+        ->post(route('admin.messages.reply', $message), [
+            'subject' => 'Re: a second attempt',
+            'body' => 'Trying to reply a second time.',
+        ])
+        ->assertRedirect()
+        ->assertSessionHas('error');
+
+    expect($message->refresh()->replies)->toHaveCount(1);
+    Mail::assertQueued(ContactReplyMail::class, 1);
 });
 
 it('validates the reply form', function (array $payload, string $field) {
@@ -64,21 +72,3 @@ it('validates the reply form', function (array $payload, string $field) {
     'missing subject' => [['body' => 'A body without a subject.'], 'subject'],
     'missing body' => [['subject' => 'A subject without a body'], 'body'],
 ]);
-
-it('adds an internal note without emailing the sender', function () {
-    Mail::fake();
-
-    $message = ContactMessage::factory()->create();
-
-    $this->actingAs($this->user)
-        ->post(route('admin.messages.notes.store', $message), [
-            'body' => 'Client is a returning customer — check the old ticket first.',
-        ])
-        ->assertRedirect()
-        ->assertSessionHas('success');
-
-    Mail::assertNothingQueued();
-
-    expect($message->notes)->toHaveCount(1)
-        ->and($message->activities()->where('type', ContactActivityType::NoteAdded)->count())->toBe(1);
-});

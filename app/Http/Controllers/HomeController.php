@@ -9,9 +9,6 @@ use Illuminate\View\View;
 
 class HomeController extends Controller
 {
-    /**
-     * Placeholder landing page until the public site phase.
-     */
     public function __invoke(Request $request): View
     {
         return view('home', [
@@ -19,6 +16,7 @@ class HomeController extends Controller
             'contactEmail' => Setting::get('contact_email'),
             'contactPhone' => Setting::get('contact_phone'),
             'website' => Setting::get('website'),
+            'address' => Setting::get('address'),
         ]);
     }
 }

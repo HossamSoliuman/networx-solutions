@@ -1,6 +1,37 @@
 import './bootstrap';
 
 // ---------------------------------------------------------------------------
+// Public site navigation.
+// ---------------------------------------------------------------------------
+const siteHeader = document.querySelector('[data-site-header]');
+const siteMenu = document.querySelector('[data-site-menu]');
+const siteMenuToggle = document.querySelector('[data-site-menu-toggle]');
+
+const closeSiteMenu = () => {
+    siteMenu?.classList.add('hidden');
+    siteMenuToggle?.setAttribute('aria-expanded', 'false');
+};
+
+siteMenuToggle?.addEventListener('click', () => {
+    const isOpening = siteMenu?.classList.contains('hidden');
+
+    siteMenu?.classList.toggle('hidden');
+    siteMenuToggle.setAttribute('aria-expanded', String(isOpening));
+});
+
+siteMenu?.querySelectorAll('a').forEach((link) => {
+    link.addEventListener('click', closeSiteMenu);
+});
+
+window.addEventListener(
+    'scroll',
+    () => {
+        siteHeader?.classList.toggle('shadow-sm', window.scrollY > 12);
+    },
+    { passive: true },
+);
+
+// ---------------------------------------------------------------------------
 // Dropdown menus: [data-dropdown] wraps a [data-dropdown-trigger] button and a
 // [data-dropdown-menu] panel. Click toggles; clicking elsewhere or Escape closes.
 // ---------------------------------------------------------------------------
@@ -21,6 +52,7 @@ document.addEventListener('click', (event) => {
 document.addEventListener('keydown', (event) => {
     if (event.key === 'Escape') {
         document.querySelectorAll('[data-dropdown-menu]').forEach((menu) => menu.classList.add('hidden'));
+        closeSiteMenu();
     }
 });
 

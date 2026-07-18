@@ -6,7 +6,6 @@ use App\Http\Controllers\Admin\ContactMessageAssignController;
 use App\Http\Controllers\Admin\ContactMessageBulkController;
 use App\Http\Controllers\Admin\ContactMessageController;
 use App\Http\Controllers\Admin\ContactMessageExportController;
-use App\Http\Controllers\Admin\ContactMessageNoteController;
 use App\Http\Controllers\Admin\ContactMessagePriorityController;
 use App\Http\Controllers\Admin\ContactMessageReplyController;
 use App\Http\Controllers\Admin\ContactMessageStarController;
@@ -35,7 +34,6 @@ Route::middleware('auth')->group(function () {
     Route::get('messages/{message}', [ContactMessageController::class, 'show'])->name('messages.show');
     Route::delete('messages/{message}', [ContactMessageController::class, 'destroy'])->name('messages.destroy');
     Route::post('messages/{message}/reply', [ContactMessageReplyController::class, 'store'])->name('messages.reply');
-    Route::post('messages/{message}/notes', [ContactMessageNoteController::class, 'store'])->name('messages.notes.store');
     Route::patch('messages/{message}/status', [ContactMessageStatusController::class, 'update'])->name('messages.status');
     Route::patch('messages/{message}/priority', [ContactMessagePriorityController::class, 'update'])->name('messages.priority');
     Route::patch('messages/{message}/star', [ContactMessageStarController::class, 'update'])->name('messages.star');

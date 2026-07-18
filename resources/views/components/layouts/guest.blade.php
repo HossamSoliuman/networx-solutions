@@ -6,15 +6,17 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Networx Solutions provides reliable IT support, networking, cloud, cybersecurity, CCTV, and Microsoft 365 services for growing businesses.">
+    <meta name="theme-color" content="#ffffff">
     <title>{{ $title }} · Networx Solutions</title>
 
     <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=inter:400,500,600,700|space-grotesk:500,700" rel="stylesheet">
+    <link href="https://fonts.bunny.net/css?family=dm-sans:400,500,600,700|manrope:500,600,700,800" rel="stylesheet">
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body class="bg-network min-h-full bg-navy-950 font-sans text-slate-900 antialiased">
+<body class="min-h-full bg-white font-sans text-slate-900 antialiased">
     {{ $slot }}
 
     <x-flash />

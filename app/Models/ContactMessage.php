@@ -87,14 +87,6 @@ class ContactMessage extends Model
     }
 
     /**
-     * @return HasMany<ContactNote, $this>
-     */
-    public function notes(): HasMany
-    {
-        return $this->hasMany(ContactNote::class);
-    }
-
-    /**
      * @return HasMany<ContactActivity, $this>
      */
     public function activities(): HasMany

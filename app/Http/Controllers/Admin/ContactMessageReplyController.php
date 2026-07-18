@@ -14,10 +14,14 @@ use Illuminate\Support\Facades\Mail;
 class ContactMessageReplyController extends Controller
 {
     /**
-     * Send an email reply to the message sender.
+     * Send the single email reply to the message sender.
      */
     public function store(StoreReplyRequest $request, ContactMessage $message): RedirectResponse
     {
+        if ($message->replies()->exists()) {
+            return back()->with('error', 'This message has already been replied to.');
+        }
+
         $reply = $message->replies()->create([
             'user_id' => $request->user()->id,
             ...$request->validated(),
@@ -25,10 +29,7 @@ class ContactMessageReplyController extends Controller
 
         Mail::to($message->email, $message->name)->send(new ContactReplyMail($reply));
 
-        if ($message->replied_at === null) {
-            $message->update(['replied_at' => now()]);
-        }
-
+        $message->update(['replied_at' => now()]);
         $message->recordActivity(ContactActivityType::Replied, $request->user());
         $message->transitionTo(ContactMessageStatus::Replied, $request->user());
 

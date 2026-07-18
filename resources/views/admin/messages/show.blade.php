@@ -79,165 +79,153 @@
                 </div>
 
                 <div class="whitespace-pre-line p-5 text-sm leading-relaxed text-slate-700">{{ $message->message }}</div>
-
-                @if ($message->ip_address || $message->user_agent)
-                    <div class="border-t border-slate-100 px-5 py-2.5 text-[0.7rem] text-slate-400">
-                        Submitted from {{ $message->ip_address ?? 'unknown IP' }}
-                        @if ($message->user_agent) · {{ str($message->user_agent)->limit(90) }} @endif
-                    </div>
-                @endif
             </x-card>
 
-            {{-- Conversation thread --}}
-            @if ($thread->isNotEmpty())
-                <div class="space-y-4">
-                    @foreach ($thread as $entry)
-                        @php $item = $entry['item']; @endphp
-                        @if ($entry['type'] === 'reply')
-                            <div class="ml-0 rounded-xl bg-white shadow-sm ring-1 ring-brand-600/20 sm:ml-10">
-                                <div class="flex flex-wrap items-center justify-between gap-2 border-b border-brand-100 bg-brand-50/50 px-5 py-2.5 rounded-t-xl">
-                                    <p class="flex items-center gap-2 text-xs font-medium text-brand-800">
-                                        <x-icon name="send" class="size-3.5" />
-                                        Reply sent by {{ $item->user?->name ?? 'a removed user' }} to {{ $message->email }}
-                                    </p>
-                                    <span class="text-xs text-slate-400" title="{{ $item->created_at->format('M j, Y g:i A') }}">
-                                        {{ $item->created_at->diffForHumans() }}
-                                    </span>
-                                </div>
-                                <div class="p-5">
-                                    <p class="text-xs font-medium text-slate-400">{{ $item->subject }}</p>
-                                    <div class="mt-2 whitespace-pre-line text-sm leading-relaxed text-slate-700">{{ $item->body }}</div>
-                                </div>
-                            </div>
-                        @else
-                            <div class="ml-0 rounded-xl bg-violet-50/70 shadow-sm ring-1 ring-violet-600/20 sm:ml-10">
-                                <div class="flex flex-wrap items-center justify-between gap-2 px-5 py-2.5">
-                                    <p class="flex items-center gap-2 text-xs font-medium text-violet-800">
-                                        <x-icon name="note" class="size-3.5" />
-                                        Internal note by {{ $item->user?->name ?? 'a removed user' }} — not visible to the sender
-                                    </p>
-                                    <span class="text-xs text-slate-400" title="{{ $item->created_at->format('M j, Y g:i A') }}">
-                                        {{ $item->created_at->diffForHumans() }}
-                                    </span>
-                                </div>
-                                <div class="whitespace-pre-line px-5 pb-4 text-sm leading-relaxed text-slate-700">{{ $item->body }}</div>
-                            </div>
-                        @endif
-                    @endforeach
+            {{-- Admin reply --}}
+            @if ($reply)
+                <div class="ml-0 rounded-xl bg-white shadow-sm ring-1 ring-brand-600/20 sm:ml-10">
+                    <div class="flex flex-wrap items-center justify-between gap-2 rounded-t-xl border-b border-brand-100 bg-brand-50/50 px-5 py-2.5">
+                        <p class="flex items-center gap-2 text-xs font-medium text-brand-800">
+                            <x-icon name="send" class="size-3.5" />
+                            Reply sent by {{ $reply->user?->name ?? 'a removed user' }} to {{ $message->email }}
+                        </p>
+                        <span class="text-xs text-slate-400" title="{{ $reply->created_at->format('M j, Y g:i A') }}">
+                            {{ $reply->created_at->diffForHumans() }}
+                        </span>
+                    </div>
+                    <div class="p-5">
+                        <p class="text-xs font-medium text-slate-400">{{ $reply->subject }}</p>
+                        <div class="mt-2 whitespace-pre-line text-sm leading-relaxed text-slate-700">{{ $reply->body }}</div>
+                    </div>
                 </div>
             @endif
 
-            {{-- Reply composer --}}
-            <x-card title="Reply by email">
-                <form method="POST" action="{{ route('admin.messages.reply', $message) }}" class="space-y-4">
-                    @csrf
+            {{-- Reply composer — a message can be replied to once --}}
+            @if (! $reply)
+                <x-card title="Reply by email">
+                    <form method="POST" action="{{ route('admin.messages.reply', $message) }}" class="space-y-4">
+                        @csrf
 
-                    <div>
-                        <x-form.label for="reply-subject">Subject</x-form.label>
-                        <x-form.input id="reply-subject" name="subject"
-                            :value="old('subject', str($message->subject)->startsWith('Re:') ? $message->subject : 'Re: '.$message->subject)"
-                            required class="mt-1.5" />
-                        <x-form.error field="subject" />
-                    </div>
+                        <div>
+                            <x-form.label for="reply-subject">Subject</x-form.label>
+                            <x-form.input id="reply-subject" name="subject"
+                                :value="old('subject', str($message->subject)->startsWith('Re:') ? $message->subject : 'Re: '.$message->subject)"
+                                required class="mt-1.5" />
+                            <x-form.error field="subject" />
+                        </div>
 
-                    <div>
-                        <x-form.label for="reply-body">Message</x-form.label>
-                        <x-form.textarea id="reply-body" name="body" rows="6" required class="mt-1.5"
-                            placeholder="Write your reply to {{ $message->name }}…">{{ old('body') }}</x-form.textarea>
-                        <x-form.error field="body" />
-                        <p class="mt-1.5 text-xs text-slate-400">
-                            Sent from the site's email with your configured signature. The message is logged in this thread.
-                        </p>
-                    </div>
+                        <div>
+                            <x-form.label for="reply-body">Message</x-form.label>
+                            <x-form.textarea id="reply-body" name="body" rows="6" required class="mt-1.5"
+                                placeholder="Write your reply to {{ $message->name }}…">{{ old('body') }}</x-form.textarea>
+                            <x-form.error field="body" />
+                            <p class="mt-1.5 text-xs text-slate-400">
+                                Sent from the site's email with your configured signature. The reply is logged on this message.
+                            </p>
+                        </div>
 
-                    <div class="flex justify-end">
-                        <x-button type="submit" variant="primary" icon="send">Send reply</x-button>
-                    </div>
-                </form>
-            </x-card>
-
-            {{-- Internal note composer --}}
-            <x-card title="Add internal note">
-                <form method="POST" action="{{ route('admin.messages.notes.store', $message) }}" class="space-y-3">
-                    @csrf
-                    <x-form.textarea name="body" rows="3" required
-                        placeholder="Visible to your team only — e.g. call notes, follow-up reminders…">{{ old('body') }}</x-form.textarea>
-                    <x-form.error field="body" />
-                    <div class="flex justify-end">
-                        <x-button type="submit" variant="secondary" icon="note">Save note</x-button>
-                    </div>
-                </form>
-            </x-card>
+                        <div class="flex justify-end">
+                            <x-button type="submit" variant="primary" icon="send">Send reply</x-button>
+                        </div>
+                    </form>
+                </x-card>
+            @endif
         </div>
 
         {{-- Sidebar --}}
         <div class="space-y-6">
             {{-- Triage controls --}}
             <x-card title="Tracking">
-                <div class="space-y-4">
-                    <form method="POST" action="{{ route('admin.messages.status', $message) }}">
-                        @csrf @method('PATCH')
-                        <x-form.label for="status">Status</x-form.label>
-                        <x-form.select id="status" name="status" data-autosubmit class="mt-1.5">
-                            @foreach ($statuses as $status)
-                                <option value="{{ $status->value }}" @selected($message->status === $status)>
-                                    {{ $status->label() }}
-                                </option>
-                            @endforeach
-                        </x-form.select>
-                    </form>
+                <div class="space-y-3">
+                    <div class="flex items-center gap-3">
+                        <x-form.label for="status" class="w-24 shrink-0">Status</x-form.label>
+                        <form method="POST" action="{{ route('admin.messages.status', $message) }}" class="flex-1">
+                            @csrf @method('PATCH')
+                            <x-form.select id="status" name="status" data-autosubmit>
+                                @foreach ($statuses as $status)
+                                    <option value="{{ $status->value }}" @selected($message->status === $status)>
+                                        {{ $status->label() }}
+                                    </option>
+                                @endforeach
+                            </x-form.select>
+                        </form>
+                    </div>
 
-                    <form method="POST" action="{{ route('admin.messages.priority', $message) }}">
-                        @csrf @method('PATCH')
-                        <x-form.label for="priority">Priority</x-form.label>
-                        <x-form.select id="priority" name="priority" data-autosubmit class="mt-1.5">
-                            @foreach ($priorities as $priority)
-                                <option value="{{ $priority->value }}" @selected($message->priority === $priority)>
-                                    {{ $priority->label() }}
-                                </option>
-                            @endforeach
-                        </x-form.select>
-                    </form>
+                    <div class="flex items-center gap-3">
+                        <x-form.label for="priority" class="w-24 shrink-0">Priority</x-form.label>
+                        <form method="POST" action="{{ route('admin.messages.priority', $message) }}" class="flex-1">
+                            @csrf @method('PATCH')
+                            <x-form.select id="priority" name="priority" data-autosubmit>
+                                @foreach ($priorities as $priority)
+                                    <option value="{{ $priority->value }}" @selected($message->priority === $priority)>
+                                        {{ $priority->label() }}
+                                    </option>
+                                @endforeach
+                            </x-form.select>
+                        </form>
+                    </div>
 
-                    <form method="POST" action="{{ route('admin.messages.assign', $message) }}">
-                        @csrf @method('PATCH')
-                        <x-form.label for="assigned_to_id">Assigned to</x-form.label>
-                        <x-form.select id="assigned_to_id" name="assigned_to_id" data-autosubmit class="mt-1.5">
-                            <option value="">Unassigned</option>
-                            @foreach ($users as $user)
-                                <option value="{{ $user->id }}" @selected($message->assigned_to_id === $user->id)>
-                                    {{ $user->name }}
-                                </option>
-                            @endforeach
-                        </x-form.select>
-                    </form>
+                    <div class="flex items-center gap-3">
+                        <x-form.label for="assigned_to_id" class="w-24 shrink-0">Assigned to</x-form.label>
+                        <form method="POST" action="{{ route('admin.messages.assign', $message) }}" class="flex-1">
+                            @csrf @method('PATCH')
+                            <x-form.select id="assigned_to_id" name="assigned_to_id" data-autosubmit>
+                                <option value="">Unassigned</option>
+                                @foreach ($users as $user)
+                                    <option value="{{ $user->id }}" @selected($message->assigned_to_id === $user->id)>
+                                        {{ $user->name }}
+                                    </option>
+                                @endforeach
+                            </x-form.select>
+                        </form>
+                    </div>
                 </div>
 
-                <dl class="mt-5 space-y-2.5 border-t border-slate-100 pt-4 text-xs">
-                    <div class="flex justify-between gap-3">
+                <dl class="mt-5 space-y-3 border-t border-slate-100 pt-4 text-xs">
+                    <div class="flex items-start justify-between gap-3">
                         <dt class="text-slate-400">Received</dt>
-                        <dd class="font-medium text-slate-600">{{ $message->created_at->format('M j, Y g:i A') }}</dd>
+                        <dd class="text-right font-medium text-slate-600">
+                            {{ $message->created_at->format('M j, Y') }}
+                            <span class="text-slate-400">{{ $message->created_at->format('g:i A') }}</span>
+                        </dd>
                     </div>
-                    <div class="flex justify-between gap-3">
+                    <div class="flex items-start justify-between gap-3">
                         <dt class="text-slate-400">First opened</dt>
-                        <dd class="font-medium text-slate-600">{{ $message->read_at?->format('M j, Y g:i A') ?? '—' }}</dd>
+                        <dd class="text-right font-medium text-slate-600">
+                            @if ($message->read_at)
+                                {{ $message->read_at->format('M j, Y') }}
+                                <span class="text-slate-400">{{ $message->read_at->format('g:i A') }}</span>
+                            @else
+                                —
+                            @endif
+                        </dd>
                     </div>
-                    <div class="flex justify-between gap-3">
-                        <dt class="text-slate-400">First reply</dt>
-                        <dd class="font-medium text-slate-600">{{ $message->replied_at?->format('M j, Y g:i A') ?? 'Not yet' }}</dd>
+                    <div class="flex items-start justify-between gap-3">
+                        <dt class="text-slate-400">Replied</dt>
+                        <dd class="text-right font-medium text-slate-600">
+                            @if ($message->replied_at)
+                                {{ $message->replied_at->format('M j, Y') }}
+                                <span class="text-slate-400">{{ $message->replied_at->format('g:i A') }}</span>
+                            @else
+                                Not yet
+                            @endif
+                        </dd>
                     </div>
                     @if ($message->replied_at)
-                        <div class="flex justify-between gap-3">
+                        <div class="flex items-start justify-between gap-3">
                             <dt class="text-slate-400">Response time</dt>
-                            <dd class="font-medium text-emerald-600">
+                            <dd class="text-right font-medium text-emerald-600">
                                 {{ $message->created_at->diffForHumans($message->replied_at, ['syntax' => \Carbon\CarbonInterface::DIFF_ABSOLUTE]) }}
                             </dd>
                         </div>
                     @endif
                     @if ($message->closed_at)
-                        <div class="flex justify-between gap-3">
+                        <div class="flex items-start justify-between gap-3">
                             <dt class="text-slate-400">Closed</dt>
-                            <dd class="font-medium text-slate-600">{{ $message->closed_at->format('M j, Y g:i A') }}</dd>
+                            <dd class="text-right font-medium text-slate-600">
+                                {{ $message->closed_at->format('M j, Y') }}
+                                <span class="text-slate-400">{{ $message->closed_at->format('g:i A') }}</span>
+                            </dd>
                         </div>
                     @endif
                 </dl>

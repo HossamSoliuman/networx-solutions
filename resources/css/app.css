@@ -6,30 +6,43 @@
 @source '../**/*.js';
 
 @theme {
-    --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+    --font-sans: 'DM Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
-    --font-display: 'Space Grotesk', 'Inter', ui-sans-serif, system-ui, sans-serif;
+    --font-display: 'Manrope', 'DM Sans', ui-sans-serif, system-ui, sans-serif;
 
-    /* Networx brand blues, tuned to the logo gradient. */
-    --color-brand-50: #eef4ff;
-    --color-brand-100: #dce9ff;
-    --color-brand-200: #b9d3ff;
-    --color-brand-300: #8ab4ff;
-    --color-brand-400: #5a8ffa;
-    --color-brand-500: #3b72f6;
-    --color-brand-600: #2563eb;
-    --color-brand-700: #1d4fd7;
-    --color-brand-800: #1e40af;
-    --color-brand-900: #1e3a8a;
+    --color-brand-50: #f1f7ff;
+    --color-brand-100: #dfedff;
+    --color-brand-200: #bddcff;
+    --color-brand-300: #8fc4ff;
+    --color-brand-400: #58a5fb;
+    --color-brand-500: #2783f2;
+    --color-brand-600: #0866e5;
+    --color-brand-700: #0754c7;
+    --color-brand-800: #0b47a1;
+    --color-brand-900: #0d3d7e;
 
-    /* Deep navy from the wordmark — sidebar, login, footers. */
-    --color-navy-800: #122b52;
-    --color-navy-900: #0a1e3f;
-    --color-navy-950: #071429;
+    --color-navy-800: #123463;
+    --color-navy-900: #092750;
+    --color-navy-950: #061b39;
+}
+
+@layer base {
+    html {
+        scroll-behavior: smooth;
+        scroll-padding-top: 5.5rem;
+    }
+
+    body {
+        text-rendering: optimizeLegibility;
+    }
+
+    ::selection {
+        background: var(--color-brand-200);
+        color: var(--color-navy-950);
+    }
 }
 
 @layer utilities {
-    /* Subtle connection-node motif used on navy surfaces. */
     .bg-network {
         background-image:
             radial-gradient(circle at 20% 30%, rgb(90 143 250 / 0.14) 1.5px, transparent 1.5px),
@@ -38,5 +51,58 @@
             radial-gradient(circle at 85% 60%, rgb(90 143 250 / 0.09) 1px, transparent 1px),
             radial-gradient(circle at 10% 85%, rgb(90 143 250 / 0.1) 1px, transparent 1px);
         background-size: 220px 220px;
+    }
+
+    .bg-public-grid {
+        background-image:
+            linear-gradient(rgb(8 102 229 / 0.055) 1px, transparent 1px),
+            linear-gradient(90deg, rgb(8 102 229 / 0.055) 1px, transparent 1px);
+        background-size: 34px 34px;
+        mask-image: linear-gradient(to bottom, black, transparent 88%);
+    }
+
+    .text-balance {
+        text-wrap: balance;
+    }
+
+    .site-reveal {
+        animation: site-reveal 650ms cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+
+    .site-reveal-delay-1 {
+        animation-delay: 90ms;
+    }
+
+    .site-reveal-delay-2 {
+        animation-delay: 180ms;
+    }
+
+    .site-reveal-delay-3 {
+        animation-delay: 270ms;
+    }
+}
+
+@keyframes site-reveal {
+    from {
+        opacity: 0;
+        transform: translateY(16px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+
+    .site-reveal,
+    .site-reveal-delay-1,
+    .site-reveal-delay-2,
+    .site-reveal-delay-3 {
+        animation: none;
     }
 }

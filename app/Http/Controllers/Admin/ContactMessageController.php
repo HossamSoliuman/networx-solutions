@@ -52,20 +52,12 @@ class ContactMessageController extends Controller
             'service',
             'assignedTo',
             'replies.user',
-            'notes.user',
             'activities' => fn ($query) => $query->latest()->with('user'),
         ]);
 
-        // Outbound replies and internal notes interleaved chronologically.
-        $thread = $message->replies
-            ->map(fn ($reply) => ['type' => 'reply', 'item' => $reply])
-            ->concat($message->notes->map(fn ($note) => ['type' => 'note', 'item' => $note]))
-            ->sortBy(fn (array $entry) => $entry['item']->created_at)
-            ->values();
-
         return view('admin.messages.show', [
             'message' => $message,
-            'thread' => $thread,
+            'reply' => $message->replies->first(),
             'previousMessages' => ContactMessage::query()
                 ->where('email', $message->email)
                 ->whereKeyNot($message->id)
