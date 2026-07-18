@@ -1,7 +1,7 @@
 <x-layouts.public :site="$site" :navigation-services="$navigationServices" :title="$site['home_title']" :description="$site['home_intro']">
     <section class="home-hero relative isolate overflow-hidden bg-navy-950 text-white">
         <img src="{{ $site['home_image_url'] }}" alt="Operational server infrastructure"
-            class="hero-network-image absolute inset-0 -z-30 h-full w-full object-cover object-[58%_center] opacity-55"
+            class="hero-network-image absolute inset-0 -z-30 h-full w-full object-cover object-[58%_center] opacity-70 sm:opacity-80"
             fetchpriority="high">
         <div class="hero-image-shade absolute inset-0 -z-20"></div>
         <div class="bg-machine-grid absolute inset-0 -z-10 opacity-35"></div>

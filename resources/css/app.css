@@ -206,8 +206,14 @@
 @layer utilities {
     .hero-image-shade {
         background:
-            linear-gradient(90deg, rgb(5 26 53 / 0.98) 0%, rgb(5 26 53 / 0.92) 42%, rgb(5 26 53 / 0.58) 72%, rgb(5 26 53 / 0.42) 100%),
-            linear-gradient(0deg, rgb(5 26 53 / 0.4), transparent 45%);
+            linear-gradient(90deg, rgb(5 26 53 / 0.96) 0%, rgb(5 26 53 / 0.82) 42%, rgb(5 26 53 / 0.36) 72%, rgb(5 26 53 / 0.18) 100%),
+            linear-gradient(0deg, rgb(5 26 53 / 0.3), transparent 45%);
+    }
+
+    .page-hero-image-shade {
+        background:
+            linear-gradient(90deg, rgb(5 26 53 / 0.94) 0%, rgb(5 26 53 / 0.78) 48%, rgb(5 26 53 / 0.24) 100%),
+            linear-gradient(0deg, rgb(5 26 53 / 0.28), transparent 48%);
     }
 
     .hero-network-image {
@@ -392,8 +398,14 @@
 @media (max-width: 63.999rem) {
     .hero-image-shade {
         background:
-            linear-gradient(90deg, rgb(5 26 53 / 0.97), rgb(5 26 53 / 0.78)),
-            linear-gradient(0deg, rgb(5 26 53 / 0.55), transparent 55%);
+            linear-gradient(90deg, rgb(5 26 53 / 0.94), rgb(5 26 53 / 0.66)),
+            linear-gradient(0deg, rgb(5 26 53 / 0.45), transparent 55%);
+    }
+
+    .page-hero-image-shade {
+        background:
+            linear-gradient(90deg, rgb(5 26 53 / 0.94), rgb(5 26 53 / 0.68)),
+            linear-gradient(0deg, rgb(5 26 53 / 0.42), transparent 55%);
     }
 }
 

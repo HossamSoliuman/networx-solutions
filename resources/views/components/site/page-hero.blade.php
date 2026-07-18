@@ -9,8 +9,8 @@
 <section {{ $attributes->class(['relative isolate overflow-hidden bg-navy-950 text-white']) }}>
     @if ($image)
         <img src="{{ $image }}" alt="{{ $imageAlt }}"
-            class="absolute inset-0 -z-30 h-full w-full object-cover opacity-40">
-        <div class="absolute inset-0 -z-20 bg-linear-to-r from-navy-950 via-navy-950/95 to-navy-950/55"></div>
+            class="absolute inset-0 -z-30 h-full w-full object-cover opacity-60 sm:opacity-70">
+        <div class="page-hero-image-shade absolute inset-0 -z-20"></div>
     @endif
 
     <div class="bg-machine-grid absolute inset-0 -z-10 opacity-45"></div>
@@ -20,7 +20,7 @@
         NX / OPERATIONS
     </div>
 
-    <div class="mx-auto grid min-h-[32rem] max-w-[90rem] items-end gap-12 px-5 py-14 sm:min-h-[36rem] sm:px-8 sm:py-20 lg:grid-cols-[1.25fr_0.75fr] lg:px-12 lg:py-24">
+    <div class="mx-auto grid min-h-[28rem] max-w-[90rem] items-center gap-12 px-5 py-12 sm:min-h-[31rem] sm:px-8 sm:py-16 lg:min-h-[32rem] lg:grid-cols-[1.25fr_0.75fr] lg:px-12 lg:py-18">
         <div class="max-w-5xl">
             @isset($breadcrumb)
                 <div class="mb-8">
