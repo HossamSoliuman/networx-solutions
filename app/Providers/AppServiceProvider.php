@@ -3,6 +3,8 @@
 namespace App\Providers;
 
 use App\Models\ContactMessage;
+use App\Models\Service;
+use App\Models\Setting;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
@@ -37,6 +39,18 @@ class AppServiceProvider extends ServiceProvider
 
         View::composer('components.layouts.admin', function (\Illuminate\View\View $view): void {
             $view->with('unreadCount', ContactMessage::query()->inbox()->unread()->count());
+        });
+
+        View::composer([
+            'home',
+            'about',
+            'services.index',
+            'services.show',
+            'contact',
+        ], function (\Illuminate\View\View $view): void {
+            $view
+                ->with('site', Setting::siteValues())
+                ->with('navigationServices', Service::query()->active()->ordered()->get(['id', 'name', 'slug']));
         });
     }
 }

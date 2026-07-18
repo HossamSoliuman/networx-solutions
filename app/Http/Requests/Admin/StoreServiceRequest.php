@@ -29,6 +29,8 @@ class StoreServiceRequest extends FormRequest
             'icon' => ['required', 'string', 'max:50'],
             'excerpt' => ['required', 'string', 'max:255'],
             'description' => ['nullable', 'string', 'max:5000'],
+            'image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:5120'],
+            'benefits' => ['nullable', 'string', 'max:5000'],
             'sort_order' => ['required', 'integer', 'min:0', 'max:1000'],
             'is_active' => ['boolean'],
         ];

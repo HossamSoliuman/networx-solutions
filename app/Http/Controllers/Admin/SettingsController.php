@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\UpdateSettingsRequest;
 use App\Models\Setting;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Illuminate\View\View;
 
 class SettingsController extends Controller
@@ -15,15 +17,12 @@ class SettingsController extends Controller
      */
     public function edit(): View
     {
-        $keys = [
-            'site_name', 'tagline', 'contact_email', 'contact_phone', 'address', 'website',
-            'facebook_url', 'linkedin_url', 'instagram_url', 'notification_email', 'mail_signature',
-        ];
-
         return view('admin.settings.edit', [
-            'settings' => collect($keys)->mapWithKeys(
-                fn (string $key) => [$key => Setting::get($key)]
-            ),
+            'settings' => [
+                ...Setting::siteValues(),
+                'notification_email' => Setting::get('notification_email'),
+                'mail_signature' => Setting::get('mail_signature'),
+            ],
         ]);
     }
 
@@ -32,8 +31,21 @@ class SettingsController extends Controller
      */
     public function update(UpdateSettingsRequest $request): RedirectResponse
     {
-        foreach ($request->validated() as $key => $value) {
+        foreach ($request->safe()->except(['home_image', 'about_image', 'contact_image']) as $key => $value) {
             Setting::set($key, $value);
+        }
+
+        foreach (['home_image', 'about_image', 'contact_image'] as $imageKey) {
+            if (! $request->hasFile($imageKey)) {
+                continue;
+            }
+
+            $oldPath = Setting::get($imageKey);
+            Setting::set($imageKey, $request->file($imageKey)->store('site', 'public'));
+
+            if ($oldPath && ! Str::startsWith($oldPath, 'images/')) {
+                Storage::disk('public')->delete($oldPath);
+            }
         }
 
         return back()->with('success', 'Settings saved.');

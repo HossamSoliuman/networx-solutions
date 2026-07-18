@@ -6,9 +6,9 @@
 @source '../**/*.js';
 
 @theme {
-    --font-sans: 'DM Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+    --font-sans: 'IBM Plex Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
-    --font-display: 'Manrope', 'DM Sans', ui-sans-serif, system-ui, sans-serif;
+    --font-display: 'Archivo', 'IBM Plex Sans', ui-sans-serif, system-ui, sans-serif;
 
     --color-brand-50: #f1f7ff;
     --color-brand-100: #dfedff;
@@ -42,6 +42,38 @@
     }
 }
 
+@layer components {
+    .site-nav-link {
+        @apply relative py-2 text-sm font-bold text-slate-600 transition-colors hover:text-navy-950;
+    }
+
+    .site-nav-link::after {
+        content: '';
+        @apply absolute inset-x-0 -bottom-0.5 h-0.5 origin-left scale-x-0 bg-brand-600 transition-transform;
+    }
+
+    .site-nav-link:hover::after,
+    .site-nav-link.text-navy-950::after {
+        @apply scale-x-100;
+    }
+
+    .site-mobile-link {
+        @apply rounded-xl px-4 py-3 text-sm font-bold text-navy-950 transition-colors hover:bg-brand-50 hover:text-brand-700;
+    }
+
+    .footer-link {
+        @apply text-slate-400 transition-colors hover:text-white;
+    }
+
+    .section-kicker {
+        @apply text-xs font-bold uppercase tracking-[0.2em] text-brand-700;
+    }
+
+    .section-title {
+        @apply text-balance font-display text-3xl font-bold leading-[1.08] tracking-[-0.04em] text-navy-950 sm:text-4xl lg:text-5xl;
+    }
+}
+
 @layer utilities {
     .bg-network {
         background-image:
@@ -59,6 +91,14 @@
             linear-gradient(90deg, rgb(8 102 229 / 0.055) 1px, transparent 1px);
         background-size: 34px 34px;
         mask-image: linear-gradient(to bottom, black, transparent 88%);
+    }
+
+    .bg-machine-grid {
+        background-image:
+            linear-gradient(rgb(255 255 255 / 0.08) 1px, transparent 1px),
+            linear-gradient(90deg, rgb(255 255 255 / 0.08) 1px, transparent 1px);
+        background-size: 52px 52px;
+        mask-image: linear-gradient(to right, transparent, black 35%, black);
     }
 
     .text-balance {

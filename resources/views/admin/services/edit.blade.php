@@ -2,7 +2,7 @@
     <x-admin.page-header :title="'Edit '.$service->name" subtitle="Changes appear on the website immediately." />
 
     <x-card class="max-w-3xl">
-        <form method="POST" action="{{ route('admin.services.update', $service) }}" class="space-y-5">
+        <form method="POST" action="{{ route('admin.services.update', $service) }}" enctype="multipart/form-data" class="space-y-5">
             @csrf @method('PUT')
 
             @include('admin.services.form')

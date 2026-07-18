@@ -27,9 +27,7 @@
                             <tr class="transition-colors hover:bg-slate-50">
                                 <td class="px-5 py-3.5">
                                     <div class="flex items-center gap-3">
-                                        <span class="flex size-9 items-center justify-center rounded-lg bg-brand-50 text-brand-600">
-                                            <x-icon :name="$service->icon" class="size-5" />
-                                        </span>
+                                        <img src="{{ $service->imageUrl() }}" alt="" class="size-11 rounded-lg object-cover ring-1 ring-slate-200">
                                         <div>
                                             <p class="font-medium text-slate-900">{{ $service->name }}</p>
                                             <p class="text-xs text-slate-400">/{{ $service->slug }}</p>

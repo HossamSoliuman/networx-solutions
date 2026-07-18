@@ -3,6 +3,8 @@
 use App\Models\ContactMessage;
 use App\Models\Service;
 use App\Models\User;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 
 beforeEach(function () {
     $this->user = User::factory()->create();
@@ -36,6 +38,29 @@ it('creates a service and generates the slug from the name when blank', function
         'slug' => 'managed-backups',
         'is_active' => true,
     ]);
+});
+
+it('stores a managed service image', function () {
+    Storage::fake('public');
+
+    $this->actingAs($this->user)
+        ->post(route('admin.services.store'), [
+            'name' => 'Hardware Monitoring',
+            'slug' => '',
+            'icon' => 'network',
+            'excerpt' => 'Monitoring for business-critical infrastructure.',
+            'description' => 'Continuous visibility across network and server equipment.',
+            'benefits' => "Equipment health checks\nProactive alerting",
+            'image' => UploadedFile::fake()->image('hardware.jpg', 1400, 900),
+            'sort_order' => 8,
+            'is_active' => '1',
+        ])
+        ->assertRedirect(route('admin.services.index'));
+
+    $service = Service::query()->where('slug', 'hardware-monitoring')->sole();
+
+    expect($service->benefitList())->toBe(['Equipment health checks', 'Proactive alerting']);
+    Storage::disk('public')->assertExists($service->image_path);
 });
 
 it('rejects a duplicate slug', function () {

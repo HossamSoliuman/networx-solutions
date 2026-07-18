@@ -24,15 +24,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         $defaults = [
-            'site_name' => 'Networx Solutions',
-            'tagline' => 'Connect • Secure • Empower',
-            'contact_email' => 'info@networx-solutions.com',
-            'contact_phone' => '+20 106 640 5570',
-            'address' => 'Riyadh, Saudi Arabia',
-            'website' => 'www.networx-solutions.com',
-            'facebook_url' => '',
-            'linkedin_url' => '',
-            'instagram_url' => '',
+            ...Setting::SITE_DEFAULTS,
             'notification_email' => 'info@networx-solutions.com',
             'mail_signature' => "Networx Solutions Support Team\nConnect • Secure • Empower",
         ];

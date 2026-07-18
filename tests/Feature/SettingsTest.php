@@ -2,6 +2,8 @@
 
 use App\Models\Setting;
 use App\Models\User;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 
 beforeEach(function () {
     $this->user = User::factory()->create();
@@ -45,4 +47,22 @@ it('validates settings input', function () {
             'facebook_url' => 'not-a-url',
         ])
         ->assertSessionHasErrors(['contact_email', 'facebook_url']);
+});
+
+it('stores admin managed public page photography', function () {
+    Storage::fake('public');
+
+    $this->actingAs($this->user)
+        ->put(route('admin.settings.update'), [
+            'site_name' => 'Networx Solutions',
+            'contact_email' => 'info@networx-solutions.com',
+            'home_image' => UploadedFile::fake()->image('server-room.jpg', 1600, 1000),
+        ])
+        ->assertRedirect()
+        ->assertSessionHas('success');
+
+    $imagePath = Setting::get('home_image');
+
+    expect($imagePath)->toStartWith('site/');
+    Storage::disk('public')->assertExists($imagePath);
 });

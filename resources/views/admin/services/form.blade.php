@@ -40,6 +40,30 @@
     <x-form.error field="description" />
 </div>
 
+<div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
+    <div>
+        <x-form.label for="image">Service image</x-form.label>
+        <input id="image" name="image" type="file" accept=".jpg,.jpeg,.png,.webp"
+            class="mt-1.5 block w-full rounded-lg bg-white text-sm text-slate-600 file:mr-4 file:rounded-l-lg file:border-0 file:bg-brand-50 file:px-4 file:py-2.5 file:text-sm file:font-semibold file:text-brand-700 hover:file:bg-brand-100">
+        <p class="mt-1.5 text-xs text-slate-400">Real equipment photography works best. JPG, PNG, or WebP up to 5 MB.</p>
+        <x-form.error field="image" />
+    </div>
+
+    @if ($service->exists && $service->image_path)
+        <div>
+            <x-form.label>Current image</x-form.label>
+            <img src="{{ $service->imageUrl() }}" alt="" class="mt-1.5 h-32 w-full rounded-xl object-cover ring-1 ring-slate-200">
+        </div>
+    @endif
+</div>
+
+<div>
+    <x-form.label for="benefits">Service inclusions <span class="font-normal text-slate-400">(one per line)</span></x-form.label>
+    <x-form.textarea id="benefits" name="benefits" rows="5" class="mt-1.5">{{ old('benefits', $service->benefits) }}</x-form.textarea>
+    <p class="mt-1.5 text-xs text-slate-400">These appear as a checklist on the service detail page.</p>
+    <x-form.error field="benefits" />
+</div>
+
 <div class="flex flex-wrap items-end gap-5">
     <div class="w-32">
         <x-form.label for="sort_order">Sort order</x-form.label>

@@ -46,7 +46,7 @@
                 </x-admin.sidebar-link>
 
                 <x-admin.sidebar-link :href="route('admin.settings.edit')" icon="cog" :active="request()->routeIs('admin.settings.*')">
-                    Settings
+                    Website content
                 </x-admin.sidebar-link>
 
                 <div class="mt-auto mb-4 border-t border-white/10 pt-4">

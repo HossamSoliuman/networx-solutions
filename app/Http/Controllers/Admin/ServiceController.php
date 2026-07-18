@@ -7,6 +7,8 @@ use App\Http\Requests\Admin\StoreServiceRequest;
 use App\Http\Requests\Admin\UpdateServiceRequest;
 use App\Models\Service;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Illuminate\View\View;
 
 class ServiceController extends Controller
@@ -37,7 +39,13 @@ class ServiceController extends Controller
      */
     public function store(StoreServiceRequest $request): RedirectResponse
     {
-        $service = Service::query()->create($request->validated());
+        $serviceData = $request->safe()->except('image');
+
+        if ($request->hasFile('image')) {
+            $serviceData['image_path'] = $request->file('image')->store('services', 'public');
+        }
+
+        $service = Service::query()->create($serviceData);
 
         return redirect()
             ->route('admin.services.index')
@@ -57,7 +65,15 @@ class ServiceController extends Controller
      */
     public function update(UpdateServiceRequest $request, Service $service): RedirectResponse
     {
-        $service->update($request->validated());
+        $serviceData = $request->safe()->except('image');
+
+        if ($request->hasFile('image')) {
+            $newImagePath = $request->file('image')->store('services', 'public');
+            $this->deleteManagedImage($service->image_path);
+            $serviceData['image_path'] = $newImagePath;
+        }
+
+        $service->update($serviceData);
 
         return redirect()
             ->route('admin.services.index')
@@ -69,10 +85,18 @@ class ServiceController extends Controller
      */
     public function destroy(Service $service): RedirectResponse
     {
+        $this->deleteManagedImage($service->image_path);
         $service->delete();
 
         return redirect()
             ->route('admin.services.index')
             ->with('success', "Service “{$service->name}” deleted.");
+    }
+
+    private function deleteManagedImage(?string $path): void
+    {
+        if ($path && ! Str::startsWith($path, 'images/')) {
+            Storage::disk('public')->delete($path);
+        }
     }
 }

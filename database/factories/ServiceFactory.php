@@ -26,6 +26,8 @@ class ServiceFactory extends Factory
             'icon' => fake()->randomElement(['headset', 'network', 'cloud', 'shield', 'camera', 'grid']),
             'excerpt' => fake()->sentence(),
             'description' => fake()->paragraph(),
+            'image_path' => 'images/site/networking.jpg',
+            'benefits' => "Clear project scope\nProactive maintenance\nResponsive expert support",
             'sort_order' => fake()->numberBetween(0, 10),
             'is_active' => true,
         ];
