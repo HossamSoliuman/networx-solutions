@@ -1,40 +1,90 @@
 import './bootstrap';
 
-// ---------------------------------------------------------------------------
-// Public site navigation.
-// ---------------------------------------------------------------------------
 const siteHeader = document.querySelector('[data-site-header]');
 const siteMenu = document.querySelector('[data-site-menu]');
 const siteMenuToggle = document.querySelector('[data-site-menu-toggle]');
+const siteMenuOpenIcon = document.querySelector('[data-site-menu-open-icon]');
+const siteMenuCloseIcon = document.querySelector('[data-site-menu-close-icon]');
 
-const closeSiteMenu = () => {
-    siteMenu?.classList.add('hidden');
-    siteMenuToggle?.setAttribute('aria-expanded', 'false');
+const setSiteMenuState = (isOpen) => {
+    if (!siteMenu || !siteMenuToggle) {
+        return;
+    }
+
+    siteMenu?.classList.toggle('hidden', !isOpen);
+    siteMenuToggle?.setAttribute('aria-expanded', String(isOpen));
+    siteMenuToggle?.setAttribute('aria-label', isOpen ? 'Close navigation' : 'Open navigation');
+    siteMenuOpenIcon?.classList.toggle('hidden', isOpen);
+    siteMenuCloseIcon?.classList.toggle('hidden', !isOpen);
+    document.body.classList.toggle('overflow-hidden', isOpen);
 };
 
 siteMenuToggle?.addEventListener('click', () => {
-    const isOpening = siteMenu?.classList.contains('hidden');
-
-    siteMenu?.classList.toggle('hidden');
-    siteMenuToggle.setAttribute('aria-expanded', String(isOpening));
+    setSiteMenuState(siteMenu?.classList.contains('hidden') ?? false);
 });
 
 siteMenu?.querySelectorAll('a').forEach((link) => {
-    link.addEventListener('click', closeSiteMenu);
+    link.addEventListener('click', () => setSiteMenuState(false));
 });
 
 window.addEventListener(
     'scroll',
     () => {
-        siteHeader?.classList.toggle('shadow-sm', window.scrollY > 12);
+        siteHeader?.classList.toggle('is-scrolled', window.scrollY > 12);
     },
     { passive: true },
 );
 
-// ---------------------------------------------------------------------------
-// Dropdown menus: [data-dropdown] wraps a [data-dropdown-trigger] button and a
-// [data-dropdown-menu] panel. Click toggles; clicking elsewhere or Escape closes.
-// ---------------------------------------------------------------------------
+window.matchMedia('(min-width: 1024px)').addEventListener('change', (event) => {
+    if (event.matches) {
+        setSiteMenuState(false);
+    }
+});
+
+document.addEventListener('click', (event) => {
+    if (siteHeader && siteMenu && !siteHeader.contains(event.target) && !siteMenu.classList.contains('hidden')) {
+        setSiteMenuState(false);
+    }
+});
+
+const revealElements = document.querySelectorAll('[data-reveal]');
+
+if (revealElements.length > 0 && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const revealObserver = new IntersectionObserver(
+        (entries, observer) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        },
+        { rootMargin: '0px 0px -8% 0px', threshold: 0.08 },
+    );
+
+    revealElements.forEach((element) => {
+        element.classList.add('is-reveal-ready');
+        revealObserver.observe(element);
+    });
+}
+
+document.querySelectorAll('[data-contact-form]').forEach((form) => {
+    form.addEventListener('submit', () => {
+        const submitButton = form.querySelector('[data-contact-submit]');
+        const submitLabel = submitButton?.querySelector('[data-contact-submit-label]');
+
+        if (submitButton) {
+            submitButton.disabled = true;
+            submitButton.setAttribute('aria-busy', 'true');
+            submitButton.classList.add('cursor-wait', 'opacity-75');
+        }
+
+        if (submitLabel) {
+            submitLabel.textContent = 'Sending enquiry…';
+        }
+    });
+});
+
 document.addEventListener('click', (event) => {
     const trigger = event.target.closest('[data-dropdown-trigger]');
 
@@ -52,7 +102,7 @@ document.addEventListener('click', (event) => {
 document.addEventListener('keydown', (event) => {
     if (event.key === 'Escape') {
         document.querySelectorAll('[data-dropdown-menu]').forEach((menu) => menu.classList.add('hidden'));
-        closeSiteMenu();
+        setSiteMenuState(false);
     }
 });
 
