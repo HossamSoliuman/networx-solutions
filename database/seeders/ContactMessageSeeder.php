@@ -71,7 +71,7 @@ class ContactMessageSeeder extends Seeder
         }
 
         $readAt = $createdAt->copy()->addMinutes(fake()->numberBetween(20, 600));
-        $message->forceFill(['read_at' => $readAt])->saveQuietly();
+        $message->forceFill(['status' => ContactMessageStatus::Read, 'read_at' => $readAt])->saveQuietly();
         $message->activities()->forceCreate([
             'user_id' => $admin->id,
             'type' => ContactActivityType::Viewed,

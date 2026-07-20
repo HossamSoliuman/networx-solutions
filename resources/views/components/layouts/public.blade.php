@@ -1,9 +1,37 @@
 @props(['site', 'navigationServices', 'title' => null, 'description' => null])
 
 @php
-    $pageTitle = $title ? $title.' · '.$site['site_name'] : $site['site_name'];
-    $metaDescription = $description ?: $site['home_intro'];
+    $pageTitle = $title ? $title.' · '.$site['site_name'] : ($site['seo_meta_title'] ?: $site['site_name']);
+    $metaDescription = $description ?: ($site['seo_meta_description'] ?: $site['home_intro']);
     $phoneHref = $site['contact_phone'] ? preg_replace('/[^+\d]/', '', $site['contact_phone']) : null;
+
+    // Structured data read by search engines and AI assistants alike.
+    $structuredData = [
+        '@context' => 'https://schema.org',
+        '@graph' => [
+            array_filter([
+                '@type' => 'Organization',
+                'name' => $site['site_name'],
+                'url' => url('/'),
+                'description' => $site['ai_summary'] ?: $site['seo_meta_description'],
+                'slogan' => $site['tagline'] ?: null,
+                'email' => $site['contact_email'] ?: null,
+                'telephone' => $site['contact_phone'] ?: null,
+                'address' => $site['address'] ?: null,
+                'sameAs' => array_values(array_filter([
+                    $site['linkedin_url'],
+                    $site['facebook_url'],
+                    $site['instagram_url'],
+                ])) ?: null,
+                'knowsAbout' => $navigationServices->pluck('name')->all() ?: null,
+            ]),
+            [
+                '@type' => 'WebSite',
+                'name' => $site['site_name'],
+                'url' => url('/'),
+            ],
+        ],
+    ];
 @endphp
 
 <!DOCTYPE html>
@@ -13,6 +41,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="{{ $metaDescription }}">
+    @if ($site['seo_keywords'])
+        <meta name="keywords" content="{{ $site['seo_keywords'] }}">
+    @endif
     <meta name="theme-color" content="#051a35">
 
     <meta property="og:type" content="website">
@@ -24,6 +55,8 @@
 
     <link rel="canonical" href="{{ url()->current() }}">
     <title>{{ $pageTitle }}</title>
+
+    <script type="application/ld+json">{!! json_encode($structuredData, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) !!}</script>
 
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=barlow:400,500,600,700|barlow-semi-condensed:500,600,700|ibm-plex-mono:500,600"

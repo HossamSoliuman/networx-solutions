@@ -45,44 +45,55 @@
 
     {{-- Filters --}}
     <x-card :padding="false">
-        <form method="GET" action="{{ route('admin.messages.index') }}" class="flex flex-wrap items-end gap-3 p-4">
+        {{-- Selects sit in fixed-width wrappers: the select component is w-full,
+             so a width utility on the select itself loses the CSS conflict and
+             every control stretched onto its own line. --}}
+        <form method="GET" action="{{ route('admin.messages.index') }}" class="flex flex-wrap items-center gap-3 p-4">
             <input type="hidden" name="view" value="{{ $view }}">
             @if ($activeStatus)<input type="hidden" name="status" value="{{ $activeStatus }}">@endif
 
-            <div class="relative min-w-56 flex-1">
+            <div class="relative min-w-52 flex-1 basis-60">
                 <x-icon name="search" class="pointer-events-none absolute left-3 top-2.5 size-4 text-slate-400" />
                 <x-form.input name="q" :value="$filters['q'] ?? ''" placeholder="Search name, email, subject, reference…" class="pl-9" />
             </div>
 
-            <x-form.select name="priority" data-autosubmit class="w-36" aria-label="Filter by priority">
-                <option value="">All priorities</option>
-                @foreach ($priorities as $priority)
-                    <option value="{{ $priority->value }}" @selected(($filters['priority'] ?? '') === $priority->value)>
-                        {{ $priority->label() }}
-                    </option>
-                @endforeach
-            </x-form.select>
+            <div class="w-36 shrink-0">
+                <x-form.select name="priority" data-autosubmit aria-label="Filter by priority">
+                    <option value="">All priorities</option>
+                    @foreach ($priorities as $priority)
+                        <option value="{{ $priority->value }}" @selected(($filters['priority'] ?? '') === $priority->value)>
+                            {{ $priority->label() }}
+                        </option>
+                    @endforeach
+                </x-form.select>
+            </div>
 
-            <x-form.select name="service_id" data-autosubmit class="w-44" aria-label="Filter by service">
-                <option value="">All services</option>
-                @foreach ($services as $service)
-                    <option value="{{ $service->id }}" @selected(($filters['service_id'] ?? '') == $service->id)>
-                        {{ $service->name }}
-                    </option>
-                @endforeach
-            </x-form.select>
+            <div class="w-40 shrink-0">
+                <x-form.select name="service_id" data-autosubmit aria-label="Filter by service">
+                    <option value="">All services</option>
+                    @foreach ($services as $service)
+                        <option value="{{ $service->id }}" @selected(($filters['service_id'] ?? '') == $service->id)>
+                            {{ $service->name }}
+                        </option>
+                    @endforeach
+                </x-form.select>
+            </div>
 
-            <x-form.select name="assigned" data-autosubmit class="w-40" aria-label="Filter by assignee">
-                <option value="">Anyone</option>
-                <option value="me" @selected(($filters['assigned'] ?? '') === 'me')>Assigned to me</option>
-                <option value="unassigned" @selected(($filters['assigned'] ?? '') === 'unassigned')>Unassigned</option>
-            </x-form.select>
+            <div class="w-36 shrink-0">
+                <x-form.select name="assigned" data-autosubmit aria-label="Filter by assignee">
+                    <option value="">Anyone</option>
+                    <option value="me" @selected(($filters['assigned'] ?? '') === 'me')>Assigned to me</option>
+                    <option value="unassigned" @selected(($filters['assigned'] ?? '') === 'unassigned')>Unassigned</option>
+                </x-form.select>
+            </div>
 
-            <x-form.select name="sort" data-autosubmit class="w-36" aria-label="Sort order">
-                <option value="newest" @selected(($filters['sort'] ?? 'newest') === 'newest')>Newest first</option>
-                <option value="oldest" @selected(($filters['sort'] ?? '') === 'oldest')>Oldest first</option>
-                <option value="priority" @selected(($filters['sort'] ?? '') === 'priority')>By priority</option>
-            </x-form.select>
+            <div class="w-36 shrink-0">
+                <x-form.select name="sort" data-autosubmit aria-label="Sort order">
+                    <option value="newest" @selected(($filters['sort'] ?? 'newest') === 'newest')>Newest first</option>
+                    <option value="oldest" @selected(($filters['sort'] ?? '') === 'oldest')>Oldest first</option>
+                    <option value="priority" @selected(($filters['sort'] ?? '') === 'priority')>By priority</option>
+                </x-form.select>
+            </div>
 
             <x-button type="submit" variant="secondary" icon="funnel">Filter</x-button>
 

@@ -120,6 +120,24 @@
         @apply text-balance font-display font-semibold leading-[0.9] tracking-[-0.035em] text-white;
     }
 
+    .hero-steps {
+        @apply flex flex-col gap-y-1;
+    }
+
+    .hero-step {
+        @apply flex items-baseline gap-x-3 sm:gap-x-5;
+        padding-left: calc(var(--step, 0) * clamp(0.65rem, 3vw, 3.25rem));
+    }
+
+    .hero-step-dot {
+        @apply shrink-0 self-center rounded-full bg-signal-400;
+        width: clamp(0.5rem, 0.85vw, 0.85rem);
+        height: clamp(0.5rem, 0.85vw, 0.85rem);
+        box-shadow: 0 0 0 0.35rem color-mix(in srgb, var(--color-signal-400) 14%, transparent);
+        animation: server-light calc(2.6s + var(--step, 0) * 0.55s) ease-in-out infinite;
+        animation-delay: calc(var(--step, 0) * -0.9s);
+    }
+
     .site-page-title {
         font-size: clamp(2.75rem, 5.25vw, 5.75rem);
         overflow-wrap: anywhere;
@@ -127,7 +145,7 @@
     }
 
     .button-primary {
-        @apply inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-brand-500 px-6 py-3 text-sm font-bold text-white shadow-[0_15px_35px_-18px_rgba(29,120,242,0.85)] transition duration-200 hover:-translate-y-0.5 hover:bg-brand-400;
+        @apply inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-brand-600 px-6 py-3 text-sm font-bold text-white shadow-[0_15px_35px_-18px_rgba(8,99,220,0.85)] transition duration-200 hover:-translate-y-0.5 hover:bg-brand-500;
     }
 
     .button-dark {
@@ -367,6 +385,44 @@
     65%,
     100% {
         box-shadow: 0 0 0 7px rgb(53 212 170 / 0);
+    }
+}
+
+@keyframes server-light {
+    0%,
+    100% {
+        opacity: 0.4;
+        box-shadow:
+            0 0 0 0.25rem color-mix(in srgb, var(--color-signal-400) 6%, transparent),
+            0 0 0.35rem 0 color-mix(in srgb, var(--color-signal-400) 25%, transparent);
+    }
+
+    12% {
+        opacity: 1;
+        box-shadow:
+            0 0 0 0.5rem color-mix(in srgb, var(--color-signal-400) 20%, transparent),
+            0 0 1.1rem 0.15rem color-mix(in srgb, var(--color-signal-400) 60%, transparent);
+    }
+
+    26% {
+        opacity: 0.55;
+        box-shadow:
+            0 0 0 0.3rem color-mix(in srgb, var(--color-signal-400) 8%, transparent),
+            0 0 0.45rem 0 color-mix(in srgb, var(--color-signal-400) 28%, transparent);
+    }
+
+    54% {
+        opacity: 0.95;
+        box-shadow:
+            0 0 0 0.45rem color-mix(in srgb, var(--color-signal-400) 18%, transparent),
+            0 0 0.9rem 0.1rem color-mix(in srgb, var(--color-signal-400) 50%, transparent);
+    }
+
+    72% {
+        opacity: 0.45;
+        box-shadow:
+            0 0 0 0.25rem color-mix(in srgb, var(--color-signal-400) 6%, transparent),
+            0 0 0.35rem 0 color-mix(in srgb, var(--color-signal-400) 22%, transparent);
     }
 }
 

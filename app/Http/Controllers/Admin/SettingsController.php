@@ -13,11 +13,22 @@ use Illuminate\View\View;
 class SettingsController extends Controller
 {
     /**
-     * Show the site settings form.
+     * The website-content sections, each rendered as its own admin tab.
+     *
+     * @var list<string>
      */
-    public function edit(): View
+    public const SECTIONS = ['pages', 'company', 'seo', 'messaging'];
+
+    private const IMAGE_KEYS = ['home_image', 'about_image', 'contact_image'];
+
+    /**
+     * Show the settings form for one section.
+     */
+    public function edit(string $section = 'pages'): View
     {
-        return view('admin.settings.edit', [
+        abort_unless(in_array($section, self::SECTIONS, true), 404);
+
+        return view("admin.settings.{$section}", [
             'settings' => [
                 ...Setting::siteValues(),
                 'notification_email' => Setting::get('notification_email'),
@@ -27,15 +38,15 @@ class SettingsController extends Controller
     }
 
     /**
-     * Persist the settings.
+     * Persist the section's settings.
      */
-    public function update(UpdateSettingsRequest $request): RedirectResponse
+    public function update(UpdateSettingsRequest $request, string $section): RedirectResponse
     {
-        foreach ($request->safe()->except(['home_image', 'about_image', 'contact_image']) as $key => $value) {
+        foreach ($request->safe()->except(self::IMAGE_KEYS) as $key => $value) {
             Setting::set($key, $value);
         }
 
-        foreach (['home_image', 'about_image', 'contact_image'] as $imageKey) {
+        foreach (self::IMAGE_KEYS as $imageKey) {
             if (! $request->hasFile($imageKey)) {
                 continue;
             }

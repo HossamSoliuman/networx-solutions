@@ -23,7 +23,7 @@ class Setting extends Model
         'linkedin_url' => '',
         'instagram_url' => '',
         'home_eyebrow' => 'Infrastructure that works',
-        'home_title' => 'Business technology, engineered to stay ready.',
+        'home_title' => 'Connect. Secure. Empower.',
         'home_intro' => 'Networx brings support, networks, cloud, security, and surveillance together under one accountable technology partner.',
         'home_image' => 'images/site/hero.jpg',
         'services_title' => 'One partner across your technology stack.',
@@ -39,6 +39,11 @@ class Setting extends Model
         'contact_image' => 'images/site/contact.jpg',
         'cta_title' => 'Ready for technology that keeps its promises?',
         'cta_intro' => 'Tell us where you are today. We will help map the clearest route forward.',
+        'seo_meta_title' => 'Networx Solutions · IT Support, Networks, Cloud, Security & Surveillance',
+        'seo_meta_description' => 'Networx Solutions delivers managed IT support, networking, cloud, cybersecurity, and surveillance for growing businesses — one accountable technology partner.',
+        'seo_keywords' => 'IT support, networking, cloud services, cybersecurity, CCTV surveillance, managed IT services',
+        'ai_summary' => 'Networx Solutions is a business technology company providing managed IT support, network design and installation, cloud services, cybersecurity, and CCTV surveillance. It acts as a single accountable technology partner for growing businesses, planning, delivering, and supporting their infrastructure.',
+        'ai_allow_crawlers' => '1',
     ];
 
     protected $fillable = [

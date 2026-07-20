@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Enums\ContactMessageStatus;
 use App\Http\Controllers\Controller;
 use App\Models\ContactMessage;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
@@ -25,8 +26,8 @@ class ContactMessageBulkController extends Controller
         $count = count($validated['ids']);
 
         match ($validated['action']) {
-            'mark_read' => $query->whereNull('read_at')->update(['read_at' => now()]),
-            'mark_unread' => $query->update(['read_at' => null]),
+            'mark_read' => $this->markRead($query),
+            'mark_unread' => $this->markUnread($query),
             'archive' => $query->update(['archived_at' => now()]),
             'restore' => $query->update(['archived_at' => null]),
             'close' => $query->update(['status' => ContactMessageStatus::Closed, 'closed_at' => now()]),
@@ -43,5 +44,28 @@ class ContactMessageBulkController extends Controller
         };
 
         return back()->with('success', "{$count} ".str('message')->plural($count)." {$label}.");
+    }
+
+    /**
+     * Stamp read_at and move still-New messages forward to Read.
+     *
+     * @param  Builder<ContactMessage>  $query
+     */
+    private function markRead(Builder $query): void
+    {
+        $query->clone()->whereNull('read_at')->update(['read_at' => now()]);
+        $query->clone()->where('status', ContactMessageStatus::New)->update(['status' => ContactMessageStatus::Read]);
+    }
+
+    /**
+     * Clear read_at and move Read messages back to New, leaving richer
+     * statuses (In Progress, Replied, Closed) untouched.
+     *
+     * @param  Builder<ContactMessage>  $query
+     */
+    private function markUnread(Builder $query): void
+    {
+        $query->clone()->update(['read_at' => null]);
+        $query->clone()->where('status', ContactMessageStatus::Read)->update(['status' => ContactMessageStatus::New]);
     }
 }

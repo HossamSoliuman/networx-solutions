@@ -25,7 +25,27 @@ it('changes the status and stamps closed_at when closing', function () {
 
     $activity = $message->activities()->where('type', ContactActivityType::StatusChanged)->first();
 
-    expect($activity->meta)->toBe(['from' => 'new', 'to' => 'closed']);
+    expect($activity->meta)->toBe(['from' => 'read', 'to' => 'closed']);
+});
+
+it('moves a new message to read when first opened, like an email client', function () {
+    $message = ContactMessage::factory()->create();
+
+    $this->actingAs($this->user)->get(route('admin.messages.show', $message));
+
+    expect($message->refresh()->status)->toBe(ContactMessageStatus::Read)
+        ->and($message->read_at)->not->toBeNull();
+});
+
+it('marks a message unread again when its status is set back to new', function () {
+    $message = ContactMessage::factory()->read()->create();
+
+    $this->actingAs($this->user)
+        ->patch(route('admin.messages.status', $message), ['status' => 'new'])
+        ->assertRedirect();
+
+    expect($message->refresh()->status)->toBe(ContactMessageStatus::New)
+        ->and($message->read_at)->toBeNull();
 });
 
 it('rejects an unknown status', function () {

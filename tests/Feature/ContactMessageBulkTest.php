@@ -21,7 +21,25 @@ it('bulk marks messages as read without touching already-read timestamps', funct
         ->assertSessionHas('success');
 
     expect(ContactMessage::query()->unread()->count())->toBe(0)
-        ->and($alreadyRead->refresh()->read_at->lessThan(now()->subDay()))->toBeTrue();
+        ->and($alreadyRead->refresh()->read_at->lessThan(now()->subDay()))->toBeTrue()
+        ->and(ContactMessage::query()->where('status', ContactMessageStatus::New)->count())->toBe(0);
+});
+
+it('bulk mark unread moves read messages back to new but keeps richer statuses', function () {
+    $read = ContactMessage::factory()->read()->create();
+    $replied = ContactMessage::factory()->replied()->create();
+
+    $this->actingAs($this->user)
+        ->post(route('admin.messages.bulk'), [
+            'action' => 'mark_unread',
+            'ids' => [$read->id, $replied->id],
+        ])
+        ->assertRedirect();
+
+    expect($read->refresh()->status)->toBe(ContactMessageStatus::New)
+        ->and($read->read_at)->toBeNull()
+        ->and($replied->refresh()->status)->toBe(ContactMessageStatus::Replied)
+        ->and($replied->read_at)->toBeNull();
 });
 
 it('bulk archives and bulk closes messages', function () {

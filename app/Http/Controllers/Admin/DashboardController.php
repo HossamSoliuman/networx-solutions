@@ -25,7 +25,7 @@ class DashboardController extends Controller
 
         $awaitingReply = ContactMessage::query()
             ->inbox()
-            ->whereIn('status', [ContactMessageStatus::New, ContactMessageStatus::InProgress])
+            ->whereIn('status', [ContactMessageStatus::New, ContactMessageStatus::Read, ContactMessageStatus::InProgress])
             ->count();
 
         $repliedThisMonth = ContactMessage::query()
@@ -57,7 +57,7 @@ class DashboardController extends Controller
                 ->get(),
             'urgentMessages' => ContactMessage::query()
                 ->inbox()
-                ->whereIn('status', [ContactMessageStatus::New, ContactMessageStatus::InProgress])
+                ->whereIn('status', [ContactMessageStatus::New, ContactMessageStatus::Read, ContactMessageStatus::InProgress])
                 ->whereIn('priority', ['high', 'urgent'])
                 ->with('service')
                 ->latest()

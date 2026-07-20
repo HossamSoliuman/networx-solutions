@@ -4,6 +4,7 @@ use App\Http\Controllers\AboutController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ContactFormController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\SeoController;
 use App\Http\Controllers\ServiceController;
 use Illuminate\Support\Facades\Route;
 
@@ -16,3 +17,7 @@ Route::get('/contact', ContactController::class)->name('contact');
 Route::post('/contact', [ContactFormController::class, 'store'])
     ->middleware('throttle:contact-form')
     ->name('contact.store');
+
+Route::get('/robots.txt', [SeoController::class, 'robots'])->name('seo.robots');
+Route::get('/sitemap.xml', [SeoController::class, 'sitemap'])->name('seo.sitemap');
+Route::get('/llms.txt', [SeoController::class, 'llms'])->name('seo.llms');

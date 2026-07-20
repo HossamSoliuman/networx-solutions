@@ -119,7 +119,8 @@ class ContactMessage extends Model
     }
 
     /**
-     * Mark the message as read the first time it is opened.
+     * Mark the message as read the first time it is opened. Like an email
+     * client, a "New" message becomes "Read" the moment it is viewed.
      */
     public function markAsRead(User $user): void
     {
@@ -127,12 +128,18 @@ class ContactMessage extends Model
             return;
         }
 
-        $this->update(['read_at' => now()]);
+        $this->update([
+            'read_at' => now(),
+            ...($this->status === ContactMessageStatus::New ? ['status' => ContactMessageStatus::Read] : []),
+        ]);
+
         $this->recordActivity(ContactActivityType::Viewed, $user);
     }
 
     /**
      * Transition to a new status, stamping the related timestamp and activity.
+     * "New" always means unread, so moving back to New clears read_at and
+     * moving to Read stamps it.
      */
     public function transitionTo(ContactMessageStatus $status, ?User $user = null): void
     {
@@ -145,6 +152,8 @@ class ContactMessage extends Model
         $this->update([
             'status' => $status,
             'closed_at' => $status === ContactMessageStatus::Closed ? now() : null,
+            ...($status === ContactMessageStatus::New ? ['read_at' => null] : []),
+            ...($status !== ContactMessageStatus::New && $this->read_at === null ? ['read_at' => now()] : []),
         ]);
 
         $this->recordActivity(ContactActivityType::StatusChanged, $user, [

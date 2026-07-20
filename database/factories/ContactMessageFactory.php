@@ -36,6 +36,7 @@ class ContactMessageFactory extends Factory
     public function read(): static
     {
         return $this->state(fn (array $attributes): array => [
+            'status' => ContactMessageStatus::Read,
             'read_at' => now(),
         ]);
     }

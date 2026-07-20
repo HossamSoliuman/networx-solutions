@@ -134,49 +134,64 @@
 
         {{-- Sidebar --}}
         <div class="space-y-6">
-            {{-- Triage controls --}}
+            {{-- Triage controls: one-click pill selectors, no dropdowns --}}
             <x-card title="Tracking">
-                <div class="space-y-3">
-                    <div class="flex items-center gap-3">
-                        <x-form.label for="status" class="w-24 shrink-0">Status</x-form.label>
-                        <form method="POST" action="{{ route('admin.messages.status', $message) }}" class="flex-1">
+                <div class="space-y-4">
+                    <div>
+                        <p class="text-xs font-semibold uppercase tracking-wide text-slate-400">Status</p>
+                        <form method="POST" action="{{ route('admin.messages.status', $message) }}"
+                            class="mt-2 flex flex-wrap gap-1.5">
                             @csrf @method('PATCH')
-                            <x-form.select id="status" name="status" data-autosubmit>
-                                @foreach ($statuses as $status)
-                                    <option value="{{ $status->value }}" @selected($message->status === $status)>
-                                        {{ $status->label() }}
-                                    </option>
-                                @endforeach
-                            </x-form.select>
+                            @foreach ($statuses as $status)
+                                <button type="submit" name="status" value="{{ $status->value }}"
+                                    aria-pressed="{{ $message->status === $status ? 'true' : 'false' }}"
+                                    @disabled($message->status === $status) @class([
+                                    'rounded-full px-2.5 py-1 text-xs font-medium ring-1 ring-inset transition-colors',
+                                    $status->badgeClasses() => $message->status === $status,
+                                    'bg-white text-slate-500 ring-slate-200 hover:text-slate-700 hover:ring-slate-300' => $message->status !== $status,
+                                ])>{{ $status->label() }}</button>
+                            @endforeach
                         </form>
                     </div>
 
-                    <div class="flex items-center gap-3">
-                        <x-form.label for="priority" class="w-24 shrink-0">Priority</x-form.label>
-                        <form method="POST" action="{{ route('admin.messages.priority', $message) }}" class="flex-1">
+                    <div>
+                        <p class="text-xs font-semibold uppercase tracking-wide text-slate-400">Priority</p>
+                        <form method="POST" action="{{ route('admin.messages.priority', $message) }}"
+                            class="mt-2 flex flex-wrap gap-1.5">
                             @csrf @method('PATCH')
-                            <x-form.select id="priority" name="priority" data-autosubmit>
-                                @foreach ($priorities as $priority)
-                                    <option value="{{ $priority->value }}" @selected($message->priority === $priority)>
-                                        {{ $priority->label() }}
-                                    </option>
-                                @endforeach
-                            </x-form.select>
+                            @foreach ($priorities as $priority)
+                                <button type="submit" name="priority" value="{{ $priority->value }}"
+                                    aria-pressed="{{ $message->priority === $priority ? 'true' : 'false' }}"
+                                    @disabled($message->priority === $priority) @class([
+                                    'rounded-full px-2.5 py-1 text-xs font-medium ring-1 ring-inset transition-colors',
+                                    $priority->badgeClasses() => $message->priority === $priority,
+                                    'bg-white text-slate-500 ring-slate-200 hover:text-slate-700 hover:ring-slate-300' => $message->priority !== $priority,
+                                ])>{{ $priority->label() }}</button>
+                            @endforeach
                         </form>
                     </div>
 
-                    <div class="flex items-center gap-3">
-                        <x-form.label for="assigned_to_id" class="w-24 shrink-0">Assigned to</x-form.label>
-                        <form method="POST" action="{{ route('admin.messages.assign', $message) }}" class="flex-1">
+                    <div>
+                        <p class="text-xs font-semibold uppercase tracking-wide text-slate-400">Assigned to</p>
+                        <form method="POST" action="{{ route('admin.messages.assign', $message) }}"
+                            class="mt-2 flex flex-wrap gap-1.5">
                             @csrf @method('PATCH')
-                            <x-form.select id="assigned_to_id" name="assigned_to_id" data-autosubmit>
-                                <option value="">Unassigned</option>
-                                @foreach ($users as $user)
-                                    <option value="{{ $user->id }}" @selected($message->assigned_to_id === $user->id)>
-                                        {{ $user->name }}
-                                    </option>
-                                @endforeach
-                            </x-form.select>
+                            <button type="submit" name="assigned_to_id" value=""
+                                aria-pressed="{{ $message->assigned_to_id === null ? 'true' : 'false' }}"
+                                @disabled($message->assigned_to_id === null) @class([
+                                'rounded-full px-2.5 py-1 text-xs font-medium ring-1 ring-inset transition-colors',
+                                'bg-slate-100 text-slate-600 ring-slate-500/20' => $message->assigned_to_id === null,
+                                'bg-white text-slate-500 ring-slate-200 hover:text-slate-700 hover:ring-slate-300' => $message->assigned_to_id !== null,
+                            ])>Unassigned</button>
+                            @foreach ($users as $user)
+                                <button type="submit" name="assigned_to_id" value="{{ $user->id }}"
+                                    aria-pressed="{{ $message->assigned_to_id === $user->id ? 'true' : 'false' }}"
+                                    @disabled($message->assigned_to_id === $user->id) @class([
+                                    'rounded-full px-2.5 py-1 text-xs font-medium ring-1 ring-inset transition-colors',
+                                    'bg-brand-50 text-brand-700 ring-brand-600/20' => $message->assigned_to_id === $user->id,
+                                    'bg-white text-slate-500 ring-slate-200 hover:text-slate-700 hover:ring-slate-300' => $message->assigned_to_id !== $user->id,
+                                ])>{{ $user->name }}</button>
+                            @endforeach
                         </form>
                     </div>
                 </div>

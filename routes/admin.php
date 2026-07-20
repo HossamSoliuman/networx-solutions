@@ -42,8 +42,12 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('services', ServiceController::class)->except(['show']);
 
-    Route::get('settings', [SettingsController::class, 'edit'])->name('settings.edit');
-    Route::put('settings', [SettingsController::class, 'update'])->name('settings.update');
+    Route::get('settings/{section?}', [SettingsController::class, 'edit'])
+        ->whereIn('section', SettingsController::SECTIONS)
+        ->name('settings.edit');
+    Route::put('settings/{section}', [SettingsController::class, 'update'])
+        ->whereIn('section', SettingsController::SECTIONS)
+        ->name('settings.update');
 
     Route::get('profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::put('profile', [ProfileController::class, 'update'])->name('profile.update');

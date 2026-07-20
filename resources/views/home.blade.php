@@ -1,4 +1,5 @@
-<x-layouts.public :site="$site" :navigation-services="$navigationServices" :title="$site['home_title']" :description="$site['home_intro']">
+{{-- No title/description props: the home page head is controlled from the SEO settings tab. --}}
+<x-layouts.public :site="$site" :navigation-services="$navigationServices">
     <section class="home-hero relative isolate overflow-hidden bg-navy-950 text-white">
         <img src="{{ $site['home_image_url'] }}" alt="Operational server infrastructure"
             class="hero-network-image absolute inset-0 -z-30 h-full w-full object-cover object-[58%_center] opacity-70 sm:opacity-80"
@@ -12,8 +13,25 @@
             class="mx-auto grid max-w-[90rem] items-start gap-10 px-5 py-10 sm:px-8 sm:py-12 lg:min-h-[44rem] lg:grid-cols-[1.13fr_0.87fr] lg:gap-14 lg:px-12 lg:py-14 xl:gap-20">
             <div class="min-w-0 max-w-5xl">
                 <p class="site-reveal section-kicker text-brand-200">{{ $site['home_eyebrow'] }}</p>
-                <h1 class="site-reveal site-reveal-delay-1 site-hero-title mt-4">
-                    {{ $site['home_title'] }}
+                @php
+                    $heroSteps = collect(explode('.', (string) $site['home_title']))
+                        ->map(fn (string $term): string => trim($term))
+                        ->filter()
+                        ->values();
+                @endphp
+                <h1 class="site-hero-title mt-4">
+                    @if ($heroSteps->count() > 1)
+                        <span class="hero-steps">
+                            @foreach ($heroSteps as $index => $term)
+                                <span class="hero-step site-reveal" style="--step: {{ $index }}; animation-delay: {{ 120 + $index * 130 }}ms">
+                                    <span class="hero-step-dot" aria-hidden="true"></span>
+                                    <span class="hero-step-term">{{ $term }}.</span>
+                                </span>
+                            @endforeach
+                        </span>
+                    @else
+                        <span class="site-reveal site-reveal-delay-1">{{ $site['home_title'] }}</span>
+                    @endif
                 </h1>
                 <p class="site-reveal site-reveal-delay-2 mt-5 max-w-2xl text-pretty text-lg leading-8 text-slate-200 sm:text-xl sm:leading-9">
                     {{ $site['home_intro'] }}

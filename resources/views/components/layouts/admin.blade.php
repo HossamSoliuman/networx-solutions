@@ -31,6 +31,10 @@
                 </button>
             </div>
 
+            @php
+                $settingsSection = request()->routeIs('admin.settings.*') ? (request()->route('section') ?? 'pages') : null;
+            @endphp
+
             <nav class="mt-4 flex flex-1 flex-col gap-1 overflow-y-auto px-3">
                 <x-admin.sidebar-link :href="route('admin.dashboard')" icon="home" :active="request()->routeIs('admin.dashboard')">
                     Dashboard
@@ -45,8 +49,24 @@
                     Services
                 </x-admin.sidebar-link>
 
-                <x-admin.sidebar-link :href="route('admin.settings.edit')" icon="cog" :active="request()->routeIs('admin.settings.*')">
+                <p class="px-3 pb-1 pt-4 font-mono text-[0.65rem] font-semibold uppercase tracking-[0.14em] text-slate-500">
                     Website content
+                </p>
+
+                <x-admin.sidebar-link :href="route('admin.settings.edit', 'pages')" icon="note" :active="$settingsSection === 'pages'">
+                    Page content
+                </x-admin.sidebar-link>
+
+                <x-admin.sidebar-link :href="route('admin.settings.edit', 'company')" icon="building" :active="$settingsSection === 'company'">
+                    Company info
+                </x-admin.sidebar-link>
+
+                <x-admin.sidebar-link :href="route('admin.settings.edit', 'seo')" icon="globe" :active="$settingsSection === 'seo'">
+                    SEO &amp; AI search
+                </x-admin.sidebar-link>
+
+                <x-admin.sidebar-link :href="route('admin.settings.edit', 'messaging')" icon="envelope" :active="$settingsSection === 'messaging'">
+                    Messaging
                 </x-admin.sidebar-link>
 
                 <div class="mt-auto mb-4 border-t border-white/10 pt-4">
