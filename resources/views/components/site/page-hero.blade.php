@@ -4,6 +4,7 @@
     'intro',
     'image' => null,
     'imageAlt' => '',
+    'compact' => false,
 ])
 
 <section {{ $attributes->class(['relative isolate overflow-hidden bg-navy-950 text-white']) }}>
@@ -20,7 +21,11 @@
         NX / OPERATIONS
     </div>
 
-    <div class="mx-auto grid min-h-[28rem] max-w-[90rem] items-center gap-12 px-5 py-12 sm:min-h-[31rem] sm:px-8 sm:py-16 lg:min-h-[32rem] lg:grid-cols-[1.25fr_0.75fr] lg:px-12 lg:py-18">
+    <div @class([
+        'mx-auto grid max-w-[90rem] items-center gap-10 px-5 sm:px-8 lg:grid-cols-[1.25fr_0.75fr] lg:px-12',
+        'min-h-[24rem] py-10 sm:min-h-[26rem] sm:py-12 lg:min-h-[27rem]' => $compact,
+        'min-h-[28rem] py-12 sm:min-h-[31rem] sm:py-16 lg:min-h-[32rem] lg:py-18' => ! $compact,
+    ])>
         <div class="max-w-5xl">
             @isset($breadcrumb)
                 <div class="mb-8">

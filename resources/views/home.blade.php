@@ -177,25 +177,25 @@
         <div class="mx-auto max-w-[90rem] px-5 sm:px-8 lg:px-12">
             <div class="grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:gap-16">
                 <div data-reveal>
-                    <p class="section-kicker text-brand-200">Integrated by design</p>
+                    <p class="section-kicker text-brand-200">Why choose us</p>
                     <h2 class="mt-5 text-balance font-display text-4xl font-semibold leading-[1.03] tracking-[-0.035em] sm:text-5xl lg:text-6xl">
-                        Better outcomes start with the whole system.
+                        Why choose Networx Solutions?
                     </h2>
                     <p class="mt-5 max-w-xl text-lg leading-8 text-slate-300">
-                        Point solutions create new gaps when nobody owns the connections between them. Networx treats support, networks, cloud, and security as one operating environment.
+                        Choosing the right IT support partner is crucial for your business’s success. Our dedicated team is committed to handling your IT support needs so you can focus on growing your business.
                     </p>
                     <a href="{{ route('about') }}" class="mt-7 inline-flex items-center gap-2 text-sm font-bold text-brand-200">
-                        See how we work
+                        More about Networx Solutions
                         <x-icon name="arrow-left" class="size-4 rotate-180" />
                     </a>
                 </div>
 
                 <div class="grid gap-px overflow-hidden rounded-[2rem] bg-white/10 sm:grid-cols-2" data-reveal>
                     @foreach ([
-                        ['eye', 'See the whole environment', 'Understand dependencies before choosing products or changing systems.'],
-                        ['shield', 'Protect the weak points', 'Build security into identity, devices, networks, cloud, and operations.'],
-                        ['cog', 'Make change without chaos', 'Sequence delivery around continuity, testing, and a clear handover.'],
-                        ['users', 'Know who owns what', 'Keep responsibility visible from discovery through ongoing support.'],
+                        ['users', 'Expertise and experience', 'Highly skilled professionals bring extensive IT support experience to every project.'],
+                        ['eye', 'Customer-centric approach', 'We work closely with you to understand your challenges and align solutions with your business objectives.'],
+                        ['cog', 'Proactive support', 'Monitoring and maintenance identify potential problems early, minimizing downtime.'],
+                        ['shield', 'Security focused', 'Robust cybersecurity measures and proactive threat management protect your digital assets.'],
                     ] as [$icon, $title, $copy])
                         <article class="bg-navy-900/80 p-6 sm:p-7">
                             <x-icon :name="$icon" class="size-5 text-signal-300" />
@@ -207,13 +207,13 @@
             </div>
 
             <div class="mt-12 border-t border-white/10 pt-8" data-reveal>
-                <p class="technical-label text-slate-500">The delivery path</p>
+                <p class="technical-label text-slate-500">IT support that grows with you</p>
                 <div class="mt-6 grid gap-7 sm:grid-cols-2 lg:grid-cols-4">
                     @foreach ([
-                        ['01', 'Assess', 'Map the environment, business pressure, risk, and desired outcome.'],
-                        ['02', 'Design', 'Define the architecture, scope, controls, and delivery sequence.'],
-                        ['03', 'Deliver', 'Implement, test, document, and hand over without loose ends.'],
-                        ['04', 'Support', 'Maintain, improve, and respond as the operation changes.'],
+                        ['01', 'Comprehensive services', 'Troubleshooting, system maintenance, network management, and cybersecurity under one roof.'],
+                        ['02', 'Reliability and trust', 'Consistent, dependable support and long-term relationships built on trust.'],
+                        ['03', 'Scalable support', 'Solutions designed to grow with your business and expanding operations.'],
+                        ['04', '24/7 availability', 'Round-the-clock assistance whenever an IT issue arises.'],
                     ] as [$number, $title, $copy])
                         <div class="relative border-l border-white/15 pl-5">
                             <span class="font-mono text-xs font-semibold text-brand-300">{{ $number }}</span>
@@ -247,8 +247,8 @@
                 <div class="absolute inset-0 bg-linear-to-t from-navy-950/75 via-transparent to-transparent"></div>
                 <div class="absolute inset-x-5 bottom-5 flex items-end justify-between gap-6 rounded-2xl border border-white/15 bg-navy-950/75 p-5 text-white backdrop-blur-md sm:inset-x-8 sm:bottom-8">
                     <div>
-                        <p class="technical-label text-brand-200">Our standard</p>
-                        <p class="mt-2 max-w-sm font-display text-xl font-bold">Real infrastructure. Clear accountability.</p>
+                        <p class="technical-label text-brand-200">What we deliver</p>
+                        <p class="mt-2 max-w-sm font-display text-xl font-bold">Efficiency, security, and growth.</p>
                     </div>
                     <span class="hidden size-11 items-center justify-center rounded-full bg-signal-300/15 text-signal-300 sm:flex">
                         <x-icon name="check" class="size-5" />
@@ -264,9 +264,9 @@
 
                     <div class="mt-9 grid gap-5">
                         @foreach ([
-                            ['Clarity before complexity', 'Straight answers, visible scope, and no mystery around the next step.'],
-                            ['Operations before products', 'Technology choices begin with how your people and business need to work.'],
-                            ['Accountability after launch', 'Documentation and support stay part of the delivery conversation.'],
+                            ['Software development', 'High-quality software development shaped around client needs.'],
+                            ['Cybersecurity', 'Robust cybersecurity measures that protect digital assets.'],
+                            ['IT consulting', 'Expert advice and customized solutions that support long-term growth.'],
                         ] as [$title, $copy])
                             <div class="flex gap-4 border-t border-slate-200 pt-5">
                                 <span class="mt-1 size-2 shrink-0 rounded-full bg-brand-500"></span>

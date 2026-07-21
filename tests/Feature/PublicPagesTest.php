@@ -15,11 +15,14 @@ it('renders the public site as separate pages', function () {
         ->assertSee('id="contact-modal"', escape: false)
         ->assertSee('data-modal-open="contact-modal"', escape: false)
         ->assertSee('href="'.route('contact').'" class="site-nav-link"', escape: false)
-        ->assertSee('href="'.route('contact').'" class="site-mobile-link"', escape: false);
+        ->assertSee('href="'.route('contact').'" class="site-mobile-link"', escape: false)
+        ->assertSee('Why choose Networx Solutions?');
 
     $this->get(route('about'))
         ->assertSuccessful()
-        ->assertSee('Our point of view');
+        ->assertSee('About us')
+        ->assertSee('Our mission')
+        ->assertSee('Why choose us');
 
     $this->get(route('services.index'))
         ->assertSuccessful()
