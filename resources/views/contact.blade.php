@@ -5,7 +5,7 @@
         <div class="absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgba(7,52,111,0.18)_0%,rgba(7,52,111,0.72)_42%,rgba(7,52,111,0.94)_100%)]"></div>
 
         <div class="mx-auto grid min-h-full w-full max-w-[90rem] items-center gap-8 px-5 py-8 sm:px-8 lg:grid-cols-[0.8fr_1.2fr] lg:px-12 lg:py-5 xl:grid-cols-[0.72fr_1.28fr] xl:gap-12">
-            <div class="min-w-0 max-w-md" data-reveal>
+            <div class="min-w-0 max-w-md rounded-[1.5rem] border border-white/15 bg-navy-950/35 p-5 shadow-[0_24px_70px_-42px_rgba(2,15,35,0.75)] backdrop-blur-md sm:p-6" data-reveal>
                 <h1 class="sr-only">Contact {{ $site['site_name'] }}</h1>
                 <p class="technical-label text-brand-200">Contact information</p>
                 <div class="mt-5 min-w-0 divide-y divide-white/15 border-y border-white/15">
@@ -15,7 +15,7 @@
                                     <x-icon name="envelope" class="size-4.5" />
                                 </span>
                                 <span class="min-w-0">
-                                    <span class="technical-label block text-slate-400">Email</span>
+                                    <span class="technical-label block text-brand-100/85">Email</span>
                                     <span class="mt-1 block truncate text-base font-semibold text-white">{{ $site['contact_email'] }}</span>
                                 </span>
                             </a>
@@ -27,7 +27,7 @@
                                     <x-icon name="phone" class="size-4.5" />
                                 </span>
                                 <span>
-                                    <span class="technical-label block text-slate-400">Phone</span>
+                                    <span class="technical-label block text-brand-100/85">Phone</span>
                                     <span class="mt-1 block text-base font-semibold text-white">{{ $site['contact_phone'] }}</span>
                                 </span>
                             </a>
@@ -39,7 +39,7 @@
                                     <x-icon name="building" class="size-4.5" />
                                 </span>
                                 <span>
-                                    <span class="technical-label block text-slate-400">Location</span>
+                                    <span class="technical-label block text-brand-100/85">Location</span>
                                     <span class="mt-1 block text-base font-semibold text-white">{{ $site['address'] }}</span>
                                 </span>
                             </div>
@@ -58,8 +58,13 @@
 
                 @if ($errors->any())
                     <div class="mb-4 rounded-xl bg-red-50 p-3 text-red-800 ring-1 ring-red-200" role="alert">
-                        <p class="font-display text-sm font-bold">Please review the highlighted fields.</p>
-                        <p class="mt-0.5 text-xs leading-5">Your information is still here; correct the details below and send again.</p>
+                        @if ($errors->has('company_fax') && $errors->count() === 1)
+                            <p class="font-display text-sm font-bold">We couldn&#039;t send that enquiry.</p>
+                            <p class="mt-0.5 text-xs leading-5">Please wait a moment and try again.</p>
+                        @else
+                            <p class="font-display text-sm font-bold">Check the fields outlined in red.</p>
+                            <p class="mt-0.5 text-xs leading-5">Each highlighted field includes a note explaining what needs to change.</p>
+                        @endif
                     </div>
                 @endif
 
@@ -91,14 +96,6 @@
                         <x-form.error field="email" />
                     </div>
                     <div class="min-w-0 xl:col-span-2">
-                        <x-form.label for="phone">Phone <span class="text-brand-700" aria-hidden="true">*</span></x-form.label>
-                        <x-form.input id="phone" name="phone" type="tel" :value="old('phone')" required autocomplete="tel"
-                            placeholder="+20 ..." class="mt-1 h-10 bg-white"
-                            aria-invalid="{{ $errors->has('phone') ? 'true' : 'false' }}"
-                            aria-describedby="phone-error" />
-                        <x-form.error field="phone" />
-                    </div>
-                    <div class="min-w-0 xl:col-span-3">
                         <x-form.label for="company">Company</x-form.label>
                         <x-form.input id="company" name="company" :value="old('company')" autocomplete="organization"
                             placeholder="Company name" class="mt-1 h-10 bg-white"
@@ -106,7 +103,17 @@
                             aria-describedby="company-error" />
                         <x-form.error field="company" />
                     </div>
-                    <div class="min-w-0 xl:col-span-3">
+                    <div class="min-w-0 xl:col-span-2">
+                        <x-form.label for="phone_local">Phone <span class="text-brand-700" aria-hidden="true">*</span></x-form.label>
+                        <input type="hidden" name="phone_country" value="{{ old('phone_country', '+20') }}">
+                        <x-form.input id="phone_local" name="phone_local" type="tel" :value="old('phone_local')" required autocomplete="tel-national" inputmode="numeric"
+                            placeholder="10 664 055 70" class="mt-1 h-10 bg-white"
+                            aria-invalid="{{ $errors->has('phone_local') ? 'true' : 'false' }}"
+                            aria-describedby="phone_local-error" />
+                        <x-form.error field="phone_country" />
+                        <x-form.error field="phone_local" />
+                    </div>
+                    <div class="min-w-0 xl:col-span-2">
                         <x-form.label for="service_id">Service</x-form.label>
                         <x-form.select id="service_id" name="service_id" class="mt-1 h-10 bg-white py-1.5"
                             aria-invalid="{{ $errors->has('service_id') ? 'true' : 'false' }}"
@@ -120,7 +127,7 @@
                         </x-form.select>
                         <x-form.error field="service_id" />
                     </div>
-                    <div class="min-w-0 sm:col-span-2 xl:col-span-6">
+                    <div class="min-w-0 xl:col-span-2">
                         <x-form.label for="subject">Subject <span class="text-brand-700" aria-hidden="true">*</span></x-form.label>
                         <x-form.input id="subject" name="subject" :value="old('subject')" required
                             placeholder="What needs attention?" class="mt-1 h-10 bg-white"
@@ -130,17 +137,17 @@
                     </div>
                     <div class="min-w-0 sm:col-span-2 xl:col-span-6">
                         <x-form.label for="message">What do you need? <span class="text-brand-700" aria-hidden="true">*</span></x-form.label>
-                        <x-form.textarea id="message" name="message" rows="3" required
+                        <x-form.textarea id="message" name="message" rows="6" required
                             placeholder="Share the current situation, impact, timing, or outcome you have in mind."
-                            class="mt-1 resize-none bg-white"
+                            class="mt-1 min-h-40 resize-none bg-white"
                             aria-invalid="{{ $errors->has('message') ? 'true' : 'false' }}"
                             aria-describedby="message-error">{{ old('message') }}</x-form.textarea>
                         <x-form.error field="message" />
                     </div>
 
                     <div class="absolute -left-[9999px]" aria-hidden="true">
-                        <label for="website">Website</label>
-                        <input id="website" name="website" type="text" tabindex="-1" autocomplete="off">
+                        <label for="company_fax">Fax</label>
+                        <input id="company_fax" name="company_fax" type="text" tabindex="-1" autocomplete="off">
                     </div>
 
                     <div class="flex flex-col gap-3 border-t border-slate-200 pt-4 sm:col-span-2 sm:flex-row sm:items-center sm:justify-between xl:col-span-6">

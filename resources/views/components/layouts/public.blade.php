@@ -45,6 +45,8 @@
         <meta name="keywords" content="{{ $site['seo_keywords'] }}">
     @endif
     <meta name="theme-color" content="#0080fc">
+    <link rel="icon" href="{{ asset('favicon.png') }}" type="image/png">
+    <link rel="shortcut icon" href="{{ asset('favicon.png') }}" type="image/png">
 
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="{{ $site['site_name'] }}">

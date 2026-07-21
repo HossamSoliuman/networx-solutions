@@ -14,7 +14,8 @@ function validContactPayload(array $overrides = []): array
     return [
         'name' => 'Ahmed Mostafa',
         'email' => 'ahmed@company.com',
-        'phone' => '+201066405570',
+        'phone_country' => '+20',
+        'phone_local' => '1066405570',
         'company' => 'Acme Trading',
         'subject' => 'Office network installation quote',
         'message' => 'We are opening a new branch and need structured cabling for 40 desks.',
@@ -36,6 +37,7 @@ it('stores a contact form submission and flashes the reference', function () {
 
     expect($message->reference)->toMatch('/^NX-\d{2}-\d{5}$/')
         ->and($message->service_id)->toBe($service->id)
+        ->and($message->phone)->toBe('+20 1066405570')
         ->and($message->ip_address)->not->toBeNull();
 });
 
@@ -61,8 +63,8 @@ it('sends no notification when the setting is empty', function () {
 });
 
 it('rejects submissions that fill the honeypot field', function () {
-    $this->post(route('contact.store'), validContactPayload(['website' => 'https://spam.example']))
-        ->assertSessionHasErrors('website');
+    $this->post(route('contact.store'), validContactPayload(['company_fax' => '123456']))
+        ->assertSessionHasErrors('company_fax');
 
     expect(ContactMessage::query()->count())->toBe(0);
 });
@@ -70,7 +72,20 @@ it('rejects submissions that fill the honeypot field', function () {
 it('validates required fields', function (string $field) {
     $this->post(route('contact.store'), validContactPayload([$field => null]))
         ->assertSessionHasErrors($field);
-})->with(['name', 'email', 'phone', 'subject', 'message']);
+})->with(['name', 'email', 'phone_country', 'phone_local', 'subject', 'message']);
+
+it('rejects unsupported country calling codes', function () {
+    $this->post(route('contact.store'), validContactPayload(['phone_country' => '+999']))
+        ->assertSessionHasErrors('phone_country');
+});
+
+it('explains honeypot rejections without claiming visible fields are invalid', function () {
+    $this->followingRedirects()
+        ->from(route('contact'))
+        ->post(route('contact.store'), validContactPayload(['company_fax' => '123456']))
+        ->assertSee("We couldn't send that enquiry.")
+        ->assertDontSee('Check the fields outlined in red.');
+});
 
 it('rejects a service that does not exist', function () {
     $this->post(route('contact.store'), validContactPayload(['service_id' => 999]))

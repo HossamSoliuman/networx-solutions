@@ -1,4 +1,10 @@
 @props(['type' => 'text'])
 
+@php
+    $inputClasses = $attributes->get('aria-invalid') === 'true'
+        ? 'block w-full rounded-lg border-0 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm ring-1 ring-inset ring-red-400 placeholder:text-slate-400 focus:ring-2 focus:ring-inset focus:ring-red-600'
+        : 'block w-full rounded-lg border-0 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm ring-1 ring-inset ring-slate-300 placeholder:text-slate-400 focus:ring-2 focus:ring-inset focus:ring-brand-600';
+@endphp
+
 <input type="{{ $type }}"
-    {{ $attributes->merge(['class' => 'block w-full rounded-lg border-0 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm ring-1 ring-inset ring-slate-300 placeholder:text-slate-400 focus:ring-2 focus:ring-inset focus:ring-brand-600']) }}>
+    {{ $attributes->merge(['class' => $inputClasses]) }}>

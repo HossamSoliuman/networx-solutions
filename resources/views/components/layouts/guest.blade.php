@@ -8,6 +8,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="Networx Solutions provides reliable IT support, networking, cloud, cybersecurity, CCTV, and Microsoft 365 services for growing businesses.">
     <meta name="theme-color" content="#ffffff">
+    <link rel="icon" href="{{ asset('favicon.png') }}" type="image/png">
+    <link rel="shortcut icon" href="{{ asset('favicon.png') }}" type="image/png">
     <title>{{ $title }} · Networx Solutions</title>
 
     <link rel="preconnect" href="https://fonts.bunny.net">

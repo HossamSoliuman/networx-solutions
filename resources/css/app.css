@@ -48,11 +48,14 @@
 
     a,
     button,
-    input,
-    select,
-    textarea,
     summary {
         @apply focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-500;
+    }
+
+    input,
+    select,
+    textarea {
+        @apply focus-visible:outline-none;
     }
 
     button,

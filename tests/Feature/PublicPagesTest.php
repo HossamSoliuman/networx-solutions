@@ -37,7 +37,9 @@ it('renders the public site as separate pages', function () {
 
     $this->get(route('contact'))
         ->assertSuccessful()
-        ->assertSee('Project enquiry');
+        ->assertSee('Project enquiry')
+        ->assertSee('type="hidden" name="phone_country" value="+20"', escape: false)
+        ->assertSee('name="phone_local"', escape: false);
 });
 
 it('uses page content managed through settings', function () {

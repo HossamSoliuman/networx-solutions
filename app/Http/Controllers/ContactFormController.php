@@ -8,6 +8,7 @@ use App\Models\ContactMessage;
 use App\Models\Setting;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
 
 class ContactFormController extends Controller
 {
@@ -16,8 +17,16 @@ class ContactFormController extends Controller
      */
     public function store(StoreContactMessageRequest $request): RedirectResponse
     {
+        $validated = $request->validated();
+
         $message = ContactMessage::query()->create([
-            ...$request->safe()->except('website'),
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+            'phone' => $validated['phone_country'].' '.Str::squish($validated['phone_local']),
+            'company' => $validated['company'] ?? null,
+            'subject' => $validated['subject'],
+            'message' => $validated['message'],
+            'service_id' => $validated['service_id'] ?? null,
             'ip_address' => $request->ip(),
             'user_agent' => (string) str($request->userAgent() ?? '')->limit(255, ''),
         ]);
