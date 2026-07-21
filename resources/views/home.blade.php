@@ -59,7 +59,7 @@
 
             <div class="site-reveal site-reveal-delay-2 relative min-w-0 lg:mt-6 lg:justify-self-end">
                 <div
-                    class="hero-operations-card relative min-w-0 w-full overflow-hidden rounded-[2rem] border border-white/15 bg-navy-950/78 p-5 shadow-[0_35px_100px_-35px_rgba(0,0,0,0.8)] backdrop-blur-md sm:p-7 lg:w-[31rem]">
+                    class="hero-operations-card relative min-w-0 w-full overflow-hidden rounded-[2rem] border border-white/15 bg-navy-950/90 p-5 shadow-[0_35px_100px_-35px_rgba(0,0,0,0.8)] backdrop-blur-md sm:p-7 lg:w-[31rem]">
                     <div class="flex items-center justify-between gap-4 border-b border-white/10 pb-5">
                         <div>
                             <p class="technical-label text-slate-500">Infrastructure view</p>

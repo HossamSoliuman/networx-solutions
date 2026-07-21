@@ -44,7 +44,7 @@
     @if ($site['seo_keywords'])
         <meta name="keywords" content="{{ $site['seo_keywords'] }}">
     @endif
-    <meta name="theme-color" content="#02163c">
+    <meta name="theme-color" content="#0080fc">
 
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="{{ $site['site_name'] }}">
