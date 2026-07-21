@@ -71,7 +71,7 @@
         <div class="min-w-0">
             <x-form.label for="modal_phone_local">Phone <span class="text-brand-700" aria-hidden="true">*</span></x-form.label>
             <input type="hidden" name="phone_country" value="{{ old('phone_country', '+20') }}">
-            <x-form.input id="modal_phone_local" name="phone_local" type="tel" :value="old('phone_local')" required autocomplete="tel-national" inputmode="numeric"
+            <x-form.input id="modal_phone_local" name="phone_local" type="tel" :value="old('phone_local')" required autocomplete="tel-national" inputmode="tel"
                 placeholder="10 664 055 70" class="mt-1 h-10 bg-white"
                 aria-invalid="{{ $errors->has('phone_local') ? 'true' : 'false' }}"
                 aria-describedby="phone_local-error" />

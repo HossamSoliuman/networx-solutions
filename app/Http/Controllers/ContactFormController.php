@@ -19,10 +19,15 @@ class ContactFormController extends Controller
     {
         $validated = $request->validated();
 
+        $phoneLocal = Str::squish($validated['phone_local']);
+        $phone = str_starts_with($phoneLocal, '+')
+            ? $phoneLocal
+            : $validated['phone_country'].' '.$phoneLocal;
+
         $message = ContactMessage::query()->create([
             'name' => $validated['name'],
             'email' => $validated['email'],
-            'phone' => $validated['phone_country'].' '.Str::squish($validated['phone_local']),
+            'phone' => $phone,
             'company' => $validated['company'] ?? null,
             'subject' => $validated['subject'],
             'message' => $validated['message'],

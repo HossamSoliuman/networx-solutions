@@ -51,6 +51,18 @@ it('stores a contact form submission and flashes the reference', function () {
         ->and($message->ip_address)->not->toBeNull();
 });
 
+it('accepts formatted international phone numbers', function () {
+    Mail::fake();
+
+    $this->post(route('contact.store'), validContactPayload([
+        'phone_local' => '+1(888)105-3639',
+    ]))
+        ->assertSessionHasNoErrors()
+        ->assertSessionHas('contact_success');
+
+    expect(ContactMessage::query()->sole()->phone)->toBe('+1(888)105-3639');
+});
+
 it('emails the notification address when one is configured', function () {
     Mail::fake();
 

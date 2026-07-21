@@ -32,7 +32,7 @@ class StoreContactMessageRequest extends FormRequest
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'email', 'max:255'],
             'phone_country' => ['required', 'string', Rule::in($phoneCountryCodes)],
-            'phone_local' => ['required', 'string', 'min:6', 'max:30', 'regex:/^[0-9][0-9 .()-]*$/'],
+            'phone_local' => ['required', 'string', 'min:6', 'max:30', 'regex:/^\+?[0-9][0-9 .()-]*$/'],
             'company' => ['nullable', 'string', 'max:255'],
             'subject' => ['required', 'string', 'max:255'],
             'message' => ['required', 'string', 'max:5000'],
