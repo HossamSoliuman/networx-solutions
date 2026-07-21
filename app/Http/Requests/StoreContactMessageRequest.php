@@ -91,11 +91,6 @@ class StoreContactMessageRequest extends FormRequest
         return (bool) config('services.recaptcha.enabled');
     }
 
-    private function recaptchaVersion(): string
-    {
-        return (string) config('services.recaptcha.version', 'v2');
-    }
-
     private function recaptchaPasses(): bool
     {
         try {
@@ -117,24 +112,11 @@ class StoreContactMessageRequest extends FormRequest
 
         $verification = $response->json();
 
-        if (! (bool) data_get($verification, 'success')) {
-            return false;
-        }
-
-        if ($this->recaptchaVersion() !== 'v3') {
-            return true;
-        }
-
-        return data_get($verification, 'action') === config('services.recaptcha.action')
-            && (float) data_get($verification, 'score', 0) >= (float) config('services.recaptcha.threshold', 0.5);
+        return (bool) data_get($verification, 'success');
     }
 
     private function recaptchaFailedMessage(): string
     {
-        if ($this->recaptchaVersion() === 'v2') {
-            return 'Please confirm you are not a robot.';
-        }
-
-        return 'Your submission could not be processed.';
+        return 'Please confirm you are not a robot.';
     }
 }

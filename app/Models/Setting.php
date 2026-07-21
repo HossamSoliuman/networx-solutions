@@ -53,9 +53,7 @@ class Setting extends Model
 
     public static function get(string $key, ?string $default = null): ?string
     {
-        $settings = Cache::rememberForever('settings.all', function (): array {
-            return self::query()->pluck('value', 'key')->all();
-        });
+        $settings = self::cachedValues();
 
         return $settings[$key] ?? $default;
     }
@@ -72,9 +70,11 @@ class Setting extends Model
      */
     public static function siteValues(): array
     {
+        $settings = self::cachedValues();
+
         $values = collect(self::SITE_DEFAULTS)
             ->mapWithKeys(fn (string $default, string $key): array => [
-                $key => self::get($key, $default) ?? $default,
+                $key => $settings[$key] ?? $default,
             ])
             ->all();
 
@@ -83,6 +83,16 @@ class Setting extends Model
         }
 
         return $values;
+    }
+
+    /**
+     * @return array<string, string|null>
+     */
+    private static function cachedValues(): array
+    {
+        return Cache::rememberForever('settings.all', function (): array {
+            return self::query()->pluck('value', 'key')->all();
+        });
     }
 
     public static function publicImageUrl(string $path): string

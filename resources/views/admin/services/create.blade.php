@@ -1,4 +1,8 @@
-<x-layouts.admin title="Add service">
+@extends('layouts.admin')
+
+@section('title', 'Add service')
+
+@section('content')
     <x-admin.page-header title="Add service" subtitle="Create a new entry in the service catalogue." />
 
     <x-card class="max-w-3xl">
@@ -13,4 +17,4 @@
             </div>
         </form>
     </x-card>
-</x-layouts.admin>
+@endsection

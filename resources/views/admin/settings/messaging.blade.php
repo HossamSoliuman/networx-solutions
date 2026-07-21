@@ -1,4 +1,8 @@
-<x-layouts.admin title="Messaging">
+@extends('layouts.admin')
+
+@section('title', 'Messaging')
+
+@section('content')
     <x-admin.page-header title="Messaging"
         subtitle="Where enquiry alerts are sent and how your email replies are signed." />
 
@@ -25,4 +29,4 @@
             <x-button type="submit" variant="primary" icon="check">Save messaging</x-button>
         </div>
     </form>
-</x-layouts.admin>
+@endsection

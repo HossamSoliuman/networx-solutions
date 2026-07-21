@@ -1,4 +1,9 @@
-<x-layouts.public :site="$site" :navigation-services="$navigationServices" title="About" :description="$site['about_intro']">
+@extends('layouts.public')
+
+@section('title', 'About')
+@section('description', $site['about_intro'])
+
+@section('content')
     <x-site.page-hero :eyebrow="$site['about_eyebrow']" :title="$site['about_title']" :intro="$site['about_intro']" compact
         :image="$site['about_image_url']" image-alt="Enterprise network switches and structured cabling">
         <x-slot:aside>
@@ -126,4 +131,4 @@
             </div>
         </div>
     </section>
-</x-layouts.public>
+@endsection

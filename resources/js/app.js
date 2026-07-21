@@ -84,36 +84,47 @@ const setContactFormSubmitting = (form, isSubmitting) => {
     }
 };
 
-document.querySelectorAll('[data-contact-form]').forEach((form) => {
-    form.addEventListener('submit', (event) => {
-        const siteKey = form.dataset.recaptchaSiteKey;
-        const action = form.dataset.recaptchaAction ?? 'contact';
-        const recaptcha = window.grecaptcha;
+const renderRecaptchaWidgets = (root = document) => {
+    const recaptcha = window.grecaptcha;
 
-        if (siteKey && recaptcha) {
-            event.preventDefault();
-            setContactFormSubmitting(form, true);
+    if (typeof recaptcha?.render !== 'function') {
+        return;
+    }
 
-            recaptcha.ready(() => {
-                recaptcha
-                    .execute(siteKey, { action })
-                    .then((token) => {
-                        const responseInput = form.querySelector('[data-recaptcha-response]');
-
-                        if (responseInput) {
-                            responseInput.value = token;
-                        }
-
-                        form.submit();
-                    })
-                    .catch(() => {
-                        form.submit();
-                    });
-            });
-
+    root.querySelectorAll('[data-recaptcha-widget]').forEach((widget) => {
+        if (widget.dataset.recaptchaWidgetId || widget.closest('dialog:not([open])')) {
             return;
         }
 
+        const widgetId = recaptcha.render(widget, {
+            sitekey: widget.dataset.sitekey,
+        });
+
+        widget.dataset.recaptchaWidgetId = String(widgetId);
+    });
+};
+
+const loadRecaptcha = () => {
+    if (!document.querySelector('[data-recaptcha-widget]') || window.grecaptcha) {
+        renderRecaptchaWidgets();
+
+        return;
+    }
+
+    window.networxRecaptchaLoaded = () => window.dispatchEvent(new Event('recaptcha:ready'));
+
+    const script = document.createElement('script');
+    script.src = 'https://www.google.com/recaptcha/api.js?onload=networxRecaptchaLoaded&render=explicit';
+    script.async = true;
+    script.defer = true;
+    document.head.append(script);
+};
+
+window.addEventListener('recaptcha:ready', () => renderRecaptchaWidgets());
+loadRecaptcha();
+
+document.querySelectorAll('[data-contact-form]').forEach((form) => {
+    form.addEventListener('submit', () => {
         setContactFormSubmitting(form, true);
     });
 });
@@ -132,10 +143,41 @@ document.addEventListener('click', (event) => {
     });
 });
 
+const modalBackdrop = (dialog) => document.querySelector(`[data-modal-backdrop="${dialog.id}"]`);
+
+const openDialog = (dialog) => {
+    if (dialog.matches('[data-contact-modal]')) {
+        modalBackdrop(dialog)?.classList.remove('hidden');
+        dialog.show();
+        document.body.classList.add('overflow-hidden');
+
+        requestAnimationFrame(() => renderRecaptchaWidgets(dialog));
+
+        return;
+    }
+
+    dialog.showModal();
+};
+
+const closeDialog = (dialog) => {
+    dialog.close();
+
+    if (dialog.matches('[data-contact-modal]')) {
+        modalBackdrop(dialog)?.classList.add('hidden');
+        document.body.classList.remove('overflow-hidden');
+    }
+};
+
 document.addEventListener('keydown', (event) => {
     if (event.key === 'Escape') {
         document.querySelectorAll('[data-dropdown-menu]').forEach((menu) => menu.classList.add('hidden'));
         setSiteMenuState(false);
+
+        const openContactModal = document.querySelector('[data-contact-modal][open]');
+
+        if (openContactModal) {
+            closeDialog(openContactModal);
+        }
     }
 });
 
@@ -161,26 +203,41 @@ document.addEventListener('click', (event) => {
                 setSiteMenuState(false);
             }
 
-            dialog.showModal();
+            openDialog(dialog);
             return;
         }
     }
 
     if (event.target.closest('[data-modal-close]')) {
-        event.target.closest('dialog')?.close();
+        const dialog = event.target.closest('dialog');
+
+        if (dialog) {
+            closeDialog(dialog);
+        }
+
+        return;
+    }
+
+    if (event.target.matches('[data-modal-backdrop]')) {
+        const dialog = document.getElementById(event.target.dataset.modalBackdrop);
+
+        if (dialog) {
+            closeDialog(dialog);
+        }
+
         return;
     }
 
     // Backdrop click: target is the dialog itself, not its inner panel.
     if (event.target instanceof HTMLDialogElement) {
-        event.target.close();
+        closeDialog(event.target);
     }
 });
 
 const contactModal = document.querySelector('[data-contact-modal]');
 
 if (contactModal?.hasAttribute('data-open-on-load')) {
-    contactModal.showModal();
+    openDialog(contactModal);
 }
 
 // ---------------------------------------------------------------------------

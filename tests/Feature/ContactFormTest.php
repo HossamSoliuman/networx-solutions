@@ -27,11 +27,8 @@ function validContactPayload(array $overrides = []): array
 
 beforeEach(function (): void {
     config()->set('services.recaptcha.enabled', false);
-    config()->set('services.recaptcha.version', 'v2');
     config()->set('services.recaptcha.site_key', null);
     config()->set('services.recaptcha.secret_key', null);
-    config()->set('services.recaptcha.threshold', 0.5);
-    config()->set('services.recaptcha.action', 'contact');
 });
 
 it('stores a contact form submission and flashes the reference', function () {
@@ -148,31 +145,27 @@ it('rejects submissions with a failing recaptcha challenge', function () {
     expect(ContactMessage::query()->count())->toBe(0);
 });
 
-it('rejects v3 submissions with a failing recaptcha score', function () {
+it('uses the v2 success result without legacy v3 score checks', function () {
     Mail::fake();
     Http::preventStrayRequests();
     Http::fake([
         'www.google.com/recaptcha/api/siteverify' => Http::response([
             'success' => true,
             'score' => 0.2,
-            'action' => 'contact',
+            'action' => 'legacy-action',
         ]),
     ]);
 
     config()->set('services.recaptcha.enabled', true);
-    config()->set('services.recaptcha.version', 'v3');
     config()->set('services.recaptcha.secret_key', 'secret-key');
-    config()->set('services.recaptcha.threshold', 0.5);
-    config()->set('services.recaptcha.action', 'contact');
 
     $this->post(route('contact.store'), validContactPayload([
-        'g-recaptcha-response' => 'low-score-token',
+        'g-recaptcha-response' => 'v2-token',
     ]))
-        ->assertSessionHasErrors('g-recaptcha-response');
+        ->assertSessionHasNoErrors()
+        ->assertSessionHas('contact_success');
 
-    Mail::assertNothingQueued();
-
-    expect(ContactMessage::query()->count())->toBe(0);
+    expect(ContactMessage::query()->count())->toBe(1);
 });
 
 it('validates required fields', function (string $field) {
@@ -195,7 +188,6 @@ it('explains honeypot rejections without claiming visible fields are invalid', f
 
 it('shows a visible field error when v2 recaptcha is missing', function () {
     config()->set('services.recaptcha.enabled', true);
-    config()->set('services.recaptcha.version', 'v2');
     config()->set('services.recaptcha.site_key', 'site-key');
 
     $this->followingRedirects()
@@ -205,41 +197,41 @@ it('shows a visible field error when v2 recaptcha is missing', function () {
         ->assertSee('Please confirm you are not a robot.');
 });
 
-it('explains hidden v3 recaptcha rejections without claiming visible fields are invalid', function () {
+it('shows the visible recaptcha error when reopening the contact modal', function () {
     config()->set('services.recaptcha.enabled', true);
-    config()->set('services.recaptcha.version', 'v3');
+    config()->set('services.recaptcha.site_key', 'site-key');
 
     $this->followingRedirects()
-        ->from(route('contact'))
+        ->from(route('home'))
         ->post(route('contact.store'), validContactPayload())
-        ->assertSee("We couldn't send that enquiry.")
-        ->assertDontSee('Check the fields outlined in red.');
+        ->assertSee('data-open-on-load', escape: false)
+        ->assertSee('Check the fields outlined in red.')
+        ->assertSee('Please confirm you are not a robot.');
 });
 
-it('renders v2 recaptcha script and checkbox when configured', function () {
+it('renders the v2 recaptcha checkbox when configured', function () {
     config()->set('services.recaptcha.enabled', true);
-    config()->set('services.recaptcha.version', 'v2');
     config()->set('services.recaptcha.site_key', 'site-key');
 
     $this->get(route('contact'))
         ->assertSuccessful()
-        ->assertSee('https://www.google.com/recaptcha/api.js', escape: false)
-        ->assertSee('class="g-recaptcha"', escape: false)
+        ->assertSee('data-recaptcha-widget', escape: false)
         ->assertSee('data-sitekey="site-key"', escape: false)
-        ->assertDontSee('data-recaptcha-action="contact"', escape: false);
+        ->assertDontSee('class="g-recaptcha"', escape: false);
 });
 
-it('renders v3 recaptcha script and form attributes when configured', function () {
+it('renders the v2 widget in the contact modal without legacy v3 attributes', function () {
     config()->set('services.recaptcha.enabled', true);
-    config()->set('services.recaptcha.version', 'v3');
     config()->set('services.recaptcha.site_key', 'site-key');
-    config()->set('services.recaptcha.action', 'contact');
 
-    $this->get(route('contact'))
+    $this->get(route('home'))
         ->assertSuccessful()
-        ->assertSee('https://www.google.com/recaptcha/api.js?render=site-key', escape: false)
-        ->assertSee('data-recaptcha-site-key="site-key"', escape: false)
-        ->assertSee('data-recaptcha-action="contact"', escape: false);
+        ->assertSee('id="contact-modal"', escape: false)
+        ->assertSee('data-modal-backdrop="contact-modal"', escape: false)
+        ->assertSee('data-recaptcha-widget', escape: false)
+        ->assertDontSee('data-recaptcha-site-key', escape: false)
+        ->assertDontSee('data-recaptcha-action', escape: false)
+        ->assertDontSee('data-recaptcha-response', escape: false);
 });
 
 it('rejects a service that does not exist', function () {

@@ -1,4 +1,8 @@
-<x-layouts.guest title="Sign in">
+@extends('layouts.guest')
+
+@section('title', 'Sign in')
+
+@section('content')
     <div class="flex min-h-screen items-center justify-center p-6">
         <div class="w-full max-w-sm">
             <div class="mb-8 flex flex-col items-center gap-3 text-center">
@@ -44,4 +48,4 @@
             </p>
         </div>
     </div>
-</x-layouts.guest>
+@endsection

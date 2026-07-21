@@ -3,7 +3,12 @@
     $reasons = $service->reasons();
 @endphp
 
-<x-layouts.public :site="$site" :navigation-services="$navigationServices" :title="$service->name" :description="$service->excerpt">
+@extends('layouts.public')
+
+@section('title', $service->name)
+@section('description', $service->excerpt)
+
+@section('content')
     <section class="relative isolate overflow-hidden bg-navy-950 text-white">
         <img src="{{ $service->imageUrl() }}" alt="{{ $service->name }}"
             class="absolute inset-0 -z-30 h-full w-full object-cover object-center">
@@ -153,4 +158,4 @@
             </div>
         </section>
     @endif
-</x-layouts.public>
+@endsection

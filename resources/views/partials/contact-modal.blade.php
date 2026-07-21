@@ -1,14 +1,13 @@
-@props(['services'])
-
 @php
-    $hiddenErrorFields = config('services.recaptcha.version', 'v2') === 'v2'
-        ? ['company_fax']
-        : ['company_fax', 'g-recaptcha-response'];
+    $hiddenErrorFields = ['company_fax'];
 @endphp
 
+<div data-modal-backdrop="contact-modal" aria-hidden="true"
+    class="fixed inset-0 z-[70] hidden bg-navy-950/75 backdrop-blur-sm"></div>
+
 <dialog id="contact-modal" data-contact-modal @if ($errors->any()) data-open-on-load @endif
-    aria-labelledby="contact-modal-title"
-    class="m-auto max-h-[calc(100dvh-2rem)] w-[calc(100%-2rem)] max-w-4xl overflow-y-auto rounded-[1.75rem] bg-white p-0 text-slate-900 shadow-[0_32px_90px_-28px_rgba(5,26,53,0.7)] backdrop:bg-navy-950/75 backdrop:backdrop-blur-sm">
+    aria-modal="true" aria-labelledby="contact-modal-title"
+    class="fixed inset-0 z-[80] m-auto max-h-[calc(100dvh-2rem)] w-[calc(100%-2rem)] max-w-4xl overflow-y-auto rounded-[1.75rem] bg-white p-0 text-slate-900 shadow-[0_32px_90px_-28px_rgba(5,26,53,0.7)]">
     <div class="relative overflow-hidden border-b border-slate-200 bg-navy-950 px-5 py-5 text-white sm:px-7">
         <img src="{{ asset('images/site/networx-logo-badge.jpeg') }}" alt="" aria-hidden="true"
             class="absolute -right-10 top-1/2 size-52 -translate-y-1/2 object-contain opacity-20 mix-blend-multiply">
@@ -27,10 +26,6 @@
 
     <form method="POST" action="{{ route('contact.store') }}" class="grid gap-x-4 gap-y-3 p-5 sm:grid-cols-2 sm:p-7 lg:grid-cols-3"
         data-contact-form
-        @if (config('services.recaptcha.enabled') && config('services.recaptcha.version', 'v2') === 'v3' && config('services.recaptcha.site_key'))
-            data-recaptcha-site-key="{{ config('services.recaptcha.site_key') }}"
-            data-recaptcha-action="{{ config('services.recaptcha.action') }}"
-        @endif
         aria-labelledby="contact-modal-title">
         @csrf
 

@@ -1,4 +1,8 @@
-<x-layouts.admin title="Messages">
+@extends('layouts.admin')
+
+@section('title', 'Messages')
+
+@section('content')
     <x-admin.page-header title="Messages"
         subtitle="Every enquiry sent through the contact form — track, assign, and reply.">
         <x-button :href="route('admin.messages.export', request()->query())" variant="secondary" icon="download">
@@ -221,4 +225,4 @@
             </div>
         @endif
     </x-card>
-</x-layouts.admin>
+@endsection

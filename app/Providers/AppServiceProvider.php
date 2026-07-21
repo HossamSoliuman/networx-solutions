@@ -37,7 +37,7 @@ class AppServiceProvider extends ServiceProvider
             return Limit::perMinute(5)->by($request->string('email')->lower()->value().'|'.$request->ip());
         });
 
-        View::composer('components.layouts.admin', function (\Illuminate\View\View $view): void {
+        View::composer('layouts.admin', function (\Illuminate\View\View $view): void {
             $view->with('unreadCount', ContactMessage::query()->inbox()->unread()->count());
         });
 

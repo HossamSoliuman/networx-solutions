@@ -1,4 +1,9 @@
-<x-layouts.public :site="$site" :navigation-services="$navigationServices" title="Services" :description="$site['services_intro']">
+@extends('layouts.public')
+
+@section('title', 'Services')
+@section('description', $site['services_intro'])
+
+@section('content')
     <section class="relative isolate overflow-hidden bg-navy-950 text-white">
         <img src="{{ asset('images/site/networking-banner.webp') }}" alt="Enterprise technology infrastructure"
             class="absolute inset-0 -z-30 h-full w-full object-cover">
@@ -61,4 +66,4 @@
             </div>
         </div>
     </section>
-</x-layouts.public>
+@endsection

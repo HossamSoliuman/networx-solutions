@@ -1,8 +1,12 @@
-<x-layouts.public :site="$site" :navigation-services="$navigationServices" title="Contact" :description="$site['contact_intro']" focused>
+@extends('layouts.public')
+
+@section('title', 'Contact')
+@section('description', $site['contact_intro'])
+@section('focused', 'true')
+
+@section('content')
     @php
-        $hiddenErrorFields = config('services.recaptcha.version', 'v2') === 'v2'
-            ? ['company_fax']
-            : ['company_fax', 'g-recaptcha-response'];
+        $hiddenErrorFields = ['company_fax'];
     @endphp
 
     <section class="relative isolate min-h-full overflow-hidden bg-navy-950 text-white">
@@ -83,11 +87,7 @@
                 </div>
 
                 <form method="POST" action="{{ route('contact.store') }}" class="mt-4 grid min-w-0 gap-x-3 gap-y-3 sm:grid-cols-2 xl:grid-cols-6"
-                    data-contact-form
-                    @if (config('services.recaptcha.enabled') && config('services.recaptcha.version', 'v2') === 'v3' && config('services.recaptcha.site_key'))
-                        data-recaptcha-site-key="{{ config('services.recaptcha.site_key') }}"
-                        data-recaptcha-action="{{ config('services.recaptcha.action') }}"
-                    @endif>
+                    data-contact-form>
                     @csrf
 
                     <div class="min-w-0 xl:col-span-2">
@@ -176,4 +176,4 @@
             </div>
         </div>
     </section>
-</x-layouts.public>
+@endsection

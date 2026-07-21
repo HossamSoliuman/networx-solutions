@@ -55,6 +55,14 @@ it('uses page content managed through settings', function () {
         ->assertSee('A custom company story written in the admin area.');
 });
 
+it('loads shared public settings within a fixed query budget', function () {
+    config()->set('cache.default', 'database');
+
+    $this->expectsDatabaseQueryCount(5);
+
+    $this->get(route('home'))->assertSuccessful();
+});
+
 it('does not publish inactive service detail pages', function () {
     $service = Service::factory()->inactive()->create();
 

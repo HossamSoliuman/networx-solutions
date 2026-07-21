@@ -1,5 +1,7 @@
 {{-- No title/description props: the home page head is controlled from the SEO settings tab. --}}
-<x-layouts.public :site="$site" :navigation-services="$navigationServices">
+@extends('layouts.public')
+
+@section('content')
     <section class="home-hero relative isolate overflow-hidden bg-navy-950 text-white">
         <img src="{{ $site['home_image_url'] }}" alt="Operational server infrastructure"
             class="hero-network-image absolute inset-0 -z-30 h-full w-full object-cover object-[58%_center] opacity-70 sm:opacity-80"
@@ -286,4 +288,4 @@
             </div>
         </div>
     </section>
-</x-layouts.public>
+@endsection

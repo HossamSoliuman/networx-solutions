@@ -1,4 +1,8 @@
-<x-layouts.admin title="Edit service">
+@extends('layouts.admin')
+
+@section('title', 'Edit service')
+
+@section('content')
     <x-admin.page-header :title="'Edit '.$service->name" subtitle="Changes appear on the website immediately." />
 
     <x-card class="max-w-3xl">
@@ -13,4 +17,4 @@
             </div>
         </form>
     </x-card>
-</x-layouts.admin>
+@endsection

@@ -1,4 +1,8 @@
-<x-layouts.admin :title="$message->reference">
+@extends('layouts.admin')
+
+@section('title', $message->reference)
+
+@section('content')
     {{-- Header --}}
     <div class="flex flex-wrap items-center justify-between gap-4">
         <div class="flex items-center gap-3">
@@ -317,18 +321,29 @@
     </div>
 
     {{-- Delete confirmation --}}
-    <x-modal id="delete-message" title="Delete this message?">
-        <p>
-            This permanently deletes <span class="font-medium">{{ $message->reference }}</span> from
-            {{ $message->name }}, including its replies, notes, and activity history. This cannot be undone.
-        </p>
+    <dialog id="delete-message"
+        class="m-auto w-full max-w-md rounded-xl p-0 shadow-xl backdrop:bg-navy-950/50 backdrop:backdrop-blur-sm open:animate-in">
+        <div class="p-6">
+            <div class="flex items-start justify-between gap-4">
+                <h2 class="text-base font-semibold text-slate-900">Delete this message?</h2>
+                <button type="button" data-modal-close
+                    class="rounded-md p-1 text-slate-400 hover:bg-slate-100 hover:text-slate-600" aria-label="Close">
+                    <x-icon name="x" class="size-4" />
+                </button>
+            </div>
 
-        <x-slot:footer>
-            <x-button variant="secondary" data-modal-close>Cancel</x-button>
-            <form method="POST" action="{{ route('admin.messages.destroy', $message) }}">
-                @csrf @method('DELETE')
-                <x-button type="submit" variant="danger" icon="trash">Delete permanently</x-button>
-            </form>
-        </x-slot:footer>
-    </x-modal>
-</x-layouts.admin>
+            <p class="mt-3 text-sm text-slate-600">
+                This permanently deletes <span class="font-medium">{{ $message->reference }}</span> from
+                {{ $message->name }}, including its replies, notes, and activity history. This cannot be undone.
+            </p>
+
+            <div class="mt-6 flex justify-end gap-2">
+                <x-button variant="secondary" data-modal-close>Cancel</x-button>
+                <form method="POST" action="{{ route('admin.messages.destroy', $message) }}">
+                    @csrf @method('DELETE')
+                    <x-button type="submit" variant="danger" icon="trash">Delete permanently</x-button>
+                </form>
+            </div>
+        </div>
+    </dialog>
+@endsection

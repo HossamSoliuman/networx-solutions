@@ -1,4 +1,8 @@
-<x-layouts.admin title="Profile">
+@extends('layouts.admin')
+
+@section('title', 'Profile')
+
+@section('content')
     <x-admin.page-header title="My profile" subtitle="Your account details and password." />
 
     <form method="POST" action="{{ route('admin.profile.update') }}" class="max-w-2xl space-y-6">
@@ -43,4 +47,4 @@
             <x-button type="submit" variant="primary" icon="check">Save profile</x-button>
         </div>
     </form>
-</x-layouts.admin>
+@endsection

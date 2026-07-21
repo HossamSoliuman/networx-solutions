@@ -1,4 +1,8 @@
-<x-layouts.admin title="Dashboard">
+@extends('layouts.admin')
+
+@section('title', 'Dashboard')
+
+@section('content')
     <x-admin.page-header title="Dashboard"
         subtitle="Overview of enquiries and support activity for Networx Solutions.">
         <x-button :href="route('admin.messages.index')" variant="secondary" icon="inbox">Open inbox</x-button>
@@ -204,4 +208,4 @@
             @endif
         </x-card>
     </div>
-</x-layouts.admin>
+@endsection

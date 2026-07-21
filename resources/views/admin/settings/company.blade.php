@@ -1,4 +1,8 @@
-<x-layouts.admin title="Company info">
+@extends('layouts.admin')
+
+@section('title', 'Company info')
+
+@section('content')
     <x-admin.page-header title="Company info"
         subtitle="Identity, contact details, and social profiles shown across the site." />
 
@@ -70,4 +74,4 @@
             <x-button type="submit" variant="primary" icon="check">Save company info</x-button>
         </div>
     </form>
-</x-layouts.admin>
+@endsection

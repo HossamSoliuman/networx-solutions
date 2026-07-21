@@ -1,4 +1,8 @@
-<x-layouts.admin title="Page content">
+@extends('layouts.admin')
+
+@section('title', 'Page content')
+
+@section('content')
     <x-admin.page-header title="Page content"
         subtitle="Copy and machine photography for every public page." />
 
@@ -135,4 +139,4 @@
             <x-button type="submit" variant="primary" icon="check">Save page content</x-button>
         </div>
     </form>
-</x-layouts.admin>
+@endsection

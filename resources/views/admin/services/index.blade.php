@@ -1,4 +1,8 @@
-<x-layouts.admin title="Services">
+@extends('layouts.admin')
+
+@section('title', 'Services')
+
+@section('content')
     <x-admin.page-header title="Services"
         subtitle="The service catalogue shown on the public website and offered on the contact form.">
         <x-button :href="route('admin.services.create')" variant="primary" icon="plus">Add service</x-button>
@@ -53,19 +57,32 @@
                                             data-modal-open="delete-service-{{ $service->id }}">Delete</x-button>
                                     </div>
 
-                                    <x-modal id="delete-service-{{ $service->id }}" title="Delete “{{ $service->name }}”?">
-                                        <p>
-                                            Existing messages keep their content, but will no longer be linked to this service.
-                                            This cannot be undone.
-                                        </p>
-                                        <x-slot:footer>
+                                    <dialog id="delete-service-{{ $service->id }}"
+                                        class="m-auto w-full max-w-md rounded-xl p-0 shadow-xl backdrop:bg-navy-950/50 backdrop:backdrop-blur-sm open:animate-in">
+                                        <div class="p-6">
+                                            <div class="flex items-start justify-between gap-4">
+                                                <h2 class="text-base font-semibold text-slate-900">Delete “{{ $service->name }}”?</h2>
+                                                <button type="button" data-modal-close
+                                                    class="rounded-md p-1 text-slate-400 hover:bg-slate-100 hover:text-slate-600"
+                                                    aria-label="Close">
+                                                    <x-icon name="x" class="size-4" />
+                                                </button>
+                                            </div>
+
+                                            <p class="mt-3 text-sm text-slate-600">
+                                                Existing messages keep their content, but will no longer be linked to this service.
+                                                This cannot be undone.
+                                            </p>
+
+                                            <div class="mt-6 flex justify-end gap-2">
                                             <x-button variant="secondary" data-modal-close>Cancel</x-button>
                                             <form method="POST" action="{{ route('admin.services.destroy', $service) }}">
                                                 @csrf @method('DELETE')
                                                 <x-button type="submit" variant="danger" icon="trash">Delete service</x-button>
                                             </form>
-                                        </x-slot:footer>
-                                    </x-modal>
+                                            </div>
+                                        </div>
+                                    </dialog>
                                 </td>
                             </tr>
                         @endforeach
@@ -74,4 +91,4 @@
             </div>
         @endif
     </x-card>
-</x-layouts.admin>
+@endsection

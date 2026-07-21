@@ -1,4 +1,8 @@
-<x-layouts.admin title="SEO & AI search">
+@extends('layouts.admin')
+
+@section('title', 'SEO & AI search')
+
+@section('content')
     <x-admin.page-header title="SEO &amp; AI search"
         subtitle="How the site appears in Google results and in AI assistants like ChatGPT, Claude, and Perplexity." />
 
@@ -71,4 +75,4 @@
             <x-button type="submit" variant="primary" icon="check">Save SEO settings</x-button>
         </div>
     </form>
-</x-layouts.admin>
+@endsection

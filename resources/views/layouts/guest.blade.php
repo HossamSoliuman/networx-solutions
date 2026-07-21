@@ -1,4 +1,6 @@
-@props(['title' => 'Welcome'])
+@php
+    $title = trim($__env->yieldContent('title')) ?: 'Welcome';
+@endphp
 
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="h-full">
@@ -19,7 +21,7 @@
 </head>
 
 <body class="min-h-full bg-white font-sans text-slate-900 antialiased">
-    {{ $slot }}
+    @yield('content')
 
     <x-flash />
 </body>
