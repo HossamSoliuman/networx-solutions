@@ -27,6 +27,7 @@ function validContactPayload(array $overrides = []): array
 
 beforeEach(function (): void {
     config()->set('services.recaptcha.enabled', false);
+    config()->set('services.recaptcha.version', 'v2');
     config()->set('services.recaptcha.site_key', null);
     config()->set('services.recaptcha.secret_key', null);
     config()->set('services.recaptcha.threshold', 0.5);
@@ -91,21 +92,24 @@ it('rejects submissions that fill the honeypot field', function () {
     expect(ContactMessage::query()->count())->toBe(0);
 });
 
+it('prevents browser autofill from populating the honeypot field', function () {
+    $this->get(route('contact'))
+        ->assertSuccessful()
+        ->assertSee('name="company_fax" type="text" tabindex="-1" autocomplete="off" readonly', escape: false)
+        ->assertSee('data-1p-ignore data-bwignore="true" data-lpignore="true"', escape: false);
+});
+
 it('verifies recaptcha when configured', function () {
     Mail::fake();
     Http::preventStrayRequests();
     Http::fake([
         'www.google.com/recaptcha/api/siteverify' => Http::response([
             'success' => true,
-            'score' => 0.9,
-            'action' => 'contact',
         ]),
     ]);
 
     config()->set('services.recaptcha.enabled', true);
     config()->set('services.recaptcha.secret_key', 'secret-key');
-    config()->set('services.recaptcha.threshold', 0.5);
-    config()->set('services.recaptcha.action', 'contact');
 
     $this->post(route('contact.store'), validContactPayload([
         'g-recaptcha-response' => 'valid-token',
@@ -122,7 +126,29 @@ it('verifies recaptcha when configured', function () {
     expect(ContactMessage::query()->count())->toBe(1);
 });
 
-it('rejects submissions with a failing recaptcha score', function () {
+it('rejects submissions with a failing recaptcha challenge', function () {
+    Mail::fake();
+    Http::preventStrayRequests();
+    Http::fake([
+        'www.google.com/recaptcha/api/siteverify' => Http::response([
+            'success' => false,
+        ]),
+    ]);
+
+    config()->set('services.recaptcha.enabled', true);
+    config()->set('services.recaptcha.secret_key', 'secret-key');
+
+    $this->post(route('contact.store'), validContactPayload([
+        'g-recaptcha-response' => 'failed-token',
+    ]))
+        ->assertSessionHasErrors('g-recaptcha-response');
+
+    Mail::assertNothingQueued();
+
+    expect(ContactMessage::query()->count())->toBe(0);
+});
+
+it('rejects v3 submissions with a failing recaptcha score', function () {
     Mail::fake();
     Http::preventStrayRequests();
     Http::fake([
@@ -134,6 +160,7 @@ it('rejects submissions with a failing recaptcha score', function () {
     ]);
 
     config()->set('services.recaptcha.enabled', true);
+    config()->set('services.recaptcha.version', 'v3');
     config()->set('services.recaptcha.secret_key', 'secret-key');
     config()->set('services.recaptcha.threshold', 0.5);
     config()->set('services.recaptcha.action', 'contact');
@@ -166,8 +193,21 @@ it('explains honeypot rejections without claiming visible fields are invalid', f
         ->assertDontSee('Check the fields outlined in red.');
 });
 
-it('explains recaptcha rejections without claiming visible fields are invalid', function () {
+it('shows a visible field error when v2 recaptcha is missing', function () {
     config()->set('services.recaptcha.enabled', true);
+    config()->set('services.recaptcha.version', 'v2');
+    config()->set('services.recaptcha.site_key', 'site-key');
+
+    $this->followingRedirects()
+        ->from(route('contact'))
+        ->post(route('contact.store'), validContactPayload())
+        ->assertSee('Check the fields outlined in red.')
+        ->assertSee('Please confirm you are not a robot.');
+});
+
+it('explains hidden v3 recaptcha rejections without claiming visible fields are invalid', function () {
+    config()->set('services.recaptcha.enabled', true);
+    config()->set('services.recaptcha.version', 'v3');
 
     $this->followingRedirects()
         ->from(route('contact'))
@@ -176,8 +216,22 @@ it('explains recaptcha rejections without claiming visible fields are invalid', 
         ->assertDontSee('Check the fields outlined in red.');
 });
 
-it('renders recaptcha script and form attributes when configured', function () {
+it('renders v2 recaptcha script and checkbox when configured', function () {
     config()->set('services.recaptcha.enabled', true);
+    config()->set('services.recaptcha.version', 'v2');
+    config()->set('services.recaptcha.site_key', 'site-key');
+
+    $this->get(route('contact'))
+        ->assertSuccessful()
+        ->assertSee('https://www.google.com/recaptcha/api.js', escape: false)
+        ->assertSee('class="g-recaptcha"', escape: false)
+        ->assertSee('data-sitekey="site-key"', escape: false)
+        ->assertDontSee('data-recaptcha-action="contact"', escape: false);
+});
+
+it('renders v3 recaptcha script and form attributes when configured', function () {
+    config()->set('services.recaptcha.enabled', true);
+    config()->set('services.recaptcha.version', 'v3');
     config()->set('services.recaptcha.site_key', 'site-key');
     config()->set('services.recaptcha.action', 'contact');
 

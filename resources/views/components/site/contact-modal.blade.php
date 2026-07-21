@@ -1,5 +1,11 @@
 @props(['services'])
 
+@php
+    $hiddenErrorFields = config('services.recaptcha.version', 'v2') === 'v2'
+        ? ['company_fax']
+        : ['company_fax', 'g-recaptcha-response'];
+@endphp
+
 <dialog id="contact-modal" data-contact-modal @if ($errors->any()) data-open-on-load @endif
     aria-labelledby="contact-modal-title"
     class="m-auto max-h-[calc(100dvh-2rem)] w-[calc(100%-2rem)] max-w-4xl overflow-y-auto rounded-[1.75rem] bg-white p-0 text-slate-900 shadow-[0_32px_90px_-28px_rgba(5,26,53,0.7)] backdrop:bg-navy-950/75 backdrop:backdrop-blur-sm">
@@ -21,17 +27,16 @@
 
     <form method="POST" action="{{ route('contact.store') }}" class="grid gap-x-4 gap-y-3 p-5 sm:grid-cols-2 sm:p-7 lg:grid-cols-3"
         data-contact-form
-        @if (config('services.recaptcha.enabled') && config('services.recaptcha.site_key'))
+        @if (config('services.recaptcha.enabled') && config('services.recaptcha.version', 'v2') === 'v3' && config('services.recaptcha.site_key'))
             data-recaptcha-site-key="{{ config('services.recaptcha.site_key') }}"
             data-recaptcha-action="{{ config('services.recaptcha.action') }}"
         @endif
         aria-labelledby="contact-modal-title">
         @csrf
-        <input type="hidden" name="g-recaptcha-response" data-recaptcha-response>
 
         @if ($errors->any())
             <div class="rounded-xl bg-red-50 p-3 text-red-800 ring-1 ring-red-200 sm:col-span-2 lg:col-span-3" role="alert">
-                @if ($errors->keys() !== [] && collect($errors->keys())->diff(['company_fax', 'g-recaptcha-response'])->isEmpty())
+                @if ($errors->keys() !== [] && collect($errors->keys())->diff($hiddenErrorFields)->isEmpty())
                     <p class="font-display text-sm font-bold">We couldn&#039;t send that enquiry.</p>
                     <p class="mt-0.5 text-xs leading-5">Please wait a moment and try again.</p>
                 @else
@@ -113,8 +118,11 @@
 
         <div class="absolute -left-[9999px]" aria-hidden="true">
             <label for="modal_company_fax">Fax</label>
-            <input id="modal_company_fax" name="company_fax" type="text" tabindex="-1" autocomplete="off">
+            <input id="modal_company_fax" name="company_fax" type="text" tabindex="-1" autocomplete="off" readonly
+                data-1p-ignore data-bwignore="true" data-lpignore="true">
         </div>
+
+        <x-form.recaptcha class="min-w-0 sm:col-span-2 lg:col-span-3" />
 
         <div class="flex flex-col gap-3 border-t border-slate-200 pt-4 sm:col-span-2 sm:flex-row sm:items-center sm:justify-between lg:col-span-3">
             <p class="max-w-sm text-xs leading-5 text-slate-500">We use your details only to review and respond to this enquiry.</p>

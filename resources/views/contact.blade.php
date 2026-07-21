@@ -1,4 +1,10 @@
 <x-layouts.public :site="$site" :navigation-services="$navigationServices" title="Contact" :description="$site['contact_intro']" focused>
+    @php
+        $hiddenErrorFields = config('services.recaptcha.version', 'v2') === 'v2'
+            ? ['company_fax']
+            : ['company_fax', 'g-recaptcha-response'];
+    @endphp
+
     <section class="relative isolate min-h-full overflow-hidden bg-navy-950 text-white">
         <img src="{{ asset('images/site/networx-logo-contact-transparent.png') }}" alt="" aria-hidden="true"
             class="absolute -left-28 top-1/2 -z-20 size-[34rem] -translate-y-1/2 object-contain opacity-30 sm:-left-20 sm:size-[42rem] lg:-left-24 lg:size-[48rem] lg:opacity-45">
@@ -58,7 +64,7 @@
 
                 @if ($errors->any())
                     <div class="mb-4 rounded-xl bg-red-50 p-3 text-red-800 ring-1 ring-red-200" role="alert">
-                        @if ($errors->keys() !== [] && collect($errors->keys())->diff(['company_fax', 'g-recaptcha-response'])->isEmpty())
+                        @if ($errors->keys() !== [] && collect($errors->keys())->diff($hiddenErrorFields)->isEmpty())
                             <p class="font-display text-sm font-bold">We couldn&#039;t send that enquiry.</p>
                             <p class="mt-0.5 text-xs leading-5">Please wait a moment and try again.</p>
                         @else
@@ -78,12 +84,11 @@
 
                 <form method="POST" action="{{ route('contact.store') }}" class="mt-4 grid min-w-0 gap-x-3 gap-y-3 sm:grid-cols-2 xl:grid-cols-6"
                     data-contact-form
-                    @if (config('services.recaptcha.enabled') && config('services.recaptcha.site_key'))
+                    @if (config('services.recaptcha.enabled') && config('services.recaptcha.version', 'v2') === 'v3' && config('services.recaptcha.site_key'))
                         data-recaptcha-site-key="{{ config('services.recaptcha.site_key') }}"
                         data-recaptcha-action="{{ config('services.recaptcha.action') }}"
                     @endif>
                     @csrf
-                    <input type="hidden" name="g-recaptcha-response" data-recaptcha-response>
 
                     <div class="min-w-0 xl:col-span-2">
                         <x-form.label for="name">Name <span class="text-brand-700" aria-hidden="true">*</span></x-form.label>
@@ -153,8 +158,11 @@
 
                     <div class="absolute -left-[9999px]" aria-hidden="true">
                         <label for="company_fax">Fax</label>
-                        <input id="company_fax" name="company_fax" type="text" tabindex="-1" autocomplete="off">
+                        <input id="company_fax" name="company_fax" type="text" tabindex="-1" autocomplete="off" readonly
+                            data-1p-ignore data-bwignore="true" data-lpignore="true">
                     </div>
+
+                    <x-form.recaptcha class="min-w-0 sm:col-span-2 xl:col-span-6" />
 
                     <div class="flex flex-col gap-3 border-t border-slate-200 pt-4 sm:col-span-2 sm:flex-row sm:items-center sm:justify-between xl:col-span-6">
                         <p class="max-w-sm text-xs leading-5 text-slate-500">We use your details only to review and respond to this enquiry.</p>

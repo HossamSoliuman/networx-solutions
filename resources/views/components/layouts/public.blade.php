@@ -6,6 +6,7 @@
     $phoneHref = $site['contact_phone'] ? preg_replace('/[^+\d]/', '', $site['contact_phone']) : null;
     $recaptchaEnabled = (bool) config('services.recaptcha.enabled');
     $recaptchaSiteKey = config('services.recaptcha.site_key');
+    $recaptchaVersion = config('services.recaptcha.version', 'v2');
 
     // Structured data read by search engines and AI assistants alike.
     $structuredData = [
@@ -63,7 +64,11 @@
     <script type="application/ld+json">{!! json_encode($structuredData, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) !!}</script>
 
     @if ($recaptchaEnabled && $recaptchaSiteKey)
-        <script src="https://www.google.com/recaptcha/api.js?render={{ rawurlencode($recaptchaSiteKey) }}" async defer></script>
+        @if ($recaptchaVersion === 'v3')
+            <script src="https://www.google.com/recaptcha/api.js?render={{ rawurlencode($recaptchaSiteKey) }}" async defer></script>
+        @else
+            <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+        @endif
     @endif
 
     <link rel="preconnect" href="https://fonts.bunny.net">

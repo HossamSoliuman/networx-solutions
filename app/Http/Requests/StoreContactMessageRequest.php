@@ -56,7 +56,7 @@ class StoreContactMessageRequest extends FormRequest
                 }
 
                 if (! $this->recaptchaPasses()) {
-                    $validator->errors()->add('g-recaptcha-response', 'Your submission could not be processed.');
+                    $validator->errors()->add('g-recaptcha-response', $this->recaptchaFailedMessage());
                 }
             },
         ];
@@ -69,7 +69,7 @@ class StoreContactMessageRequest extends FormRequest
     {
         return [
             'company_fax.prohibited' => 'Your submission could not be processed.',
-            'g-recaptcha-response.required' => 'Your submission could not be processed.',
+            'g-recaptcha-response.required' => $this->recaptchaFailedMessage(),
         ];
     }
 
@@ -89,6 +89,11 @@ class StoreContactMessageRequest extends FormRequest
     private function recaptchaEnabled(): bool
     {
         return (bool) config('services.recaptcha.enabled');
+    }
+
+    private function recaptchaVersion(): string
+    {
+        return (string) config('services.recaptcha.version', 'v2');
     }
 
     private function recaptchaPasses(): bool
@@ -112,8 +117,24 @@ class StoreContactMessageRequest extends FormRequest
 
         $verification = $response->json();
 
-        return (bool) data_get($verification, 'success')
-            && data_get($verification, 'action') === config('services.recaptcha.action')
+        if (! (bool) data_get($verification, 'success')) {
+            return false;
+        }
+
+        if ($this->recaptchaVersion() !== 'v3') {
+            return true;
+        }
+
+        return data_get($verification, 'action') === config('services.recaptcha.action')
             && (float) data_get($verification, 'score', 0) >= (float) config('services.recaptcha.threshold', 0.5);
+    }
+
+    private function recaptchaFailedMessage(): string
+    {
+        if ($this->recaptchaVersion() === 'v2') {
+            return 'Please confirm you are not a robot.';
+        }
+
+        return 'Your submission could not be processed.';
     }
 }
