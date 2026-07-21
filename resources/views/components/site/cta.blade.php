@@ -16,7 +16,7 @@
         </div>
 
         <div class="flex flex-col gap-3 sm:flex-row lg:flex-col" data-reveal>
-            <a href="{{ route('contact') }}" class="button-light">
+            <a href="{{ route('contact') }}" data-modal-open="contact-modal" class="button-light">
                 Talk to our team
                 <x-icon name="arrow-left" class="size-4 rotate-180" />
             </a>

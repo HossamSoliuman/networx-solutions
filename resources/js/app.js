@@ -113,8 +113,24 @@ document.addEventListener('keydown', (event) => {
 document.addEventListener('click', (event) => {
     const opener = event.target.closest('[data-modal-open]');
     if (opener) {
-        document.getElementById(opener.dataset.modalOpen)?.showModal();
-        return;
+        const dialog = document.getElementById(opener.dataset.modalOpen);
+
+        if (dialog) {
+            event.preventDefault();
+
+            if (dialog.matches('[data-contact-modal]')) {
+                const serviceSelect = dialog.querySelector('[data-contact-service-select]');
+
+                if (serviceSelect) {
+                    serviceSelect.value = opener.dataset.contactServiceId ?? '';
+                }
+
+                setSiteMenuState(false);
+            }
+
+            dialog.showModal();
+            return;
+        }
     }
 
     if (event.target.closest('[data-modal-close]')) {
@@ -127,6 +143,12 @@ document.addEventListener('click', (event) => {
         event.target.close();
     }
 });
+
+const contactModal = document.querySelector('[data-contact-modal]');
+
+if (contactModal?.hasAttribute('data-open-on-load')) {
+    contactModal.showModal();
+}
 
 // ---------------------------------------------------------------------------
 // Mobile sidebar drawer.

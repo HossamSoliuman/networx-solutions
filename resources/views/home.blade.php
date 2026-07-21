@@ -38,7 +38,7 @@
                 </p>
 
                 <div class="site-reveal site-reveal-delay-3 mt-7 flex flex-col gap-3 sm:flex-row">
-                    <a href="{{ route('contact') }}" class="button-primary">
+                    <a href="{{ route('contact') }}" data-modal-open="contact-modal" class="button-primary">
                         Discuss your requirements
                         <x-icon name="arrow-left" class="size-4 rotate-180" />
                     </a>

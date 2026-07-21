@@ -57,7 +57,7 @@
                     <p class="text-xs font-bold uppercase tracking-[0.16em] text-blue-200">One accountable technology partner</p>
                     <h2 class="mt-3 font-display text-3xl font-bold tracking-[-0.03em]">Tell us what needs to work better.</h2>
                 </div>
-                <a href="{{ route('contact') }}" class="button-light mt-6 shrink-0 lg:mt-0">Contact Networx <x-icon name="arrow-left" class="size-4 rotate-180" /></a>
+                <a href="{{ route('contact') }}" data-modal-open="contact-modal" class="button-light mt-6 shrink-0 lg:mt-0">Contact Networx <x-icon name="arrow-left" class="size-4 rotate-180" /></a>
             </div>
         </div>
     </section>

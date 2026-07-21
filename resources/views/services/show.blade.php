@@ -36,7 +36,7 @@
                         Explore the services
                         <x-icon name="arrow-left" class="size-4 -rotate-90" />
                     </a>
-                    <a href="{{ route('contact', ['service' => $service->slug]) }}" class="button-ghost-light w-full sm:w-auto">
+                    <a href="{{ route('contact', ['service' => $service->slug]) }}" data-modal-open="contact-modal" data-contact-service-id="{{ $service->id }}" class="button-ghost-light w-full sm:w-auto">
                         Request a consultation
                     </a>
                 </div>
@@ -105,7 +105,7 @@
 
                     <div class="rounded-[1.5rem] border border-blue-100 bg-white p-6">
                         <p class="font-display text-xl font-bold leading-7 text-navy-950">{{ $service->description }}</p>
-                        <a href="{{ route('contact', ['service' => $service->slug]) }}" class="button-primary mt-5 w-full">
+                        <a href="{{ route('contact', ['service' => $service->slug]) }}" data-modal-open="contact-modal" data-contact-service-id="{{ $service->id }}" class="button-primary mt-5 w-full">
                             Talk to a specialist
                             <x-icon name="arrow-left" class="size-4 rotate-180" />
                         </a>
@@ -126,7 +126,7 @@
                         </span>
                         <p class="max-w-3xl font-display text-2xl font-bold leading-tight sm:text-3xl">{{ $service->statement() }}</p>
                     </div>
-                    <a href="{{ route('contact', ['service' => $service->slug]) }}" class="button-light relative mt-6 shrink-0 lg:mt-0">
+                    <a href="{{ route('contact', ['service' => $service->slug]) }}" data-modal-open="contact-modal" data-contact-service-id="{{ $service->id }}" class="button-light relative mt-6 shrink-0 lg:mt-0">
                         Start a conversation
                         <x-icon name="phone" class="size-4" />
                     </a>

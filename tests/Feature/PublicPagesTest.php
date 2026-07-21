@@ -11,7 +11,11 @@ it('renders the public site as separate pages', function () {
 
     $this->get(route('home'))
         ->assertSuccessful()
-        ->assertSee(route('services.index'));
+        ->assertSee(route('services.index'))
+        ->assertSee('id="contact-modal"', escape: false)
+        ->assertSee('data-modal-open="contact-modal"', escape: false)
+        ->assertSee('href="'.route('contact').'" class="site-nav-link"', escape: false)
+        ->assertSee('href="'.route('contact').'" class="site-mobile-link"', escape: false);
 
     $this->get(route('about'))
         ->assertSuccessful()
@@ -25,7 +29,8 @@ it('renders the public site as separate pages', function () {
     $this->get(route('services.show', $service))
         ->assertSuccessful()
         ->assertSee($service->name)
-        ->assertSee('Explore the services');
+        ->assertSee('Explore the services')
+        ->assertSee('data-contact-service-id="'.$service->id.'"', escape: false);
 
     $this->get(route('contact'))
         ->assertSuccessful()

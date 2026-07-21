@@ -70,7 +70,7 @@ it('rejects submissions that fill the honeypot field', function () {
 it('validates required fields', function (string $field) {
     $this->post(route('contact.store'), validContactPayload([$field => null]))
         ->assertSessionHasErrors($field);
-})->with(['name', 'email', 'subject', 'message']);
+})->with(['name', 'email', 'phone', 'subject', 'message']);
 
 it('rejects a service that does not exist', function () {
     $this->post(route('contact.store'), validContactPayload(['service_id' => 999]))
