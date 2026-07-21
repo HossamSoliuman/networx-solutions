@@ -1,167 +1,156 @@
 @php
-    $benefits = $service->benefitList();
+    $serviceItems = $service->serviceItems();
+    $reasons = $service->reasons();
 @endphp
 
 <x-layouts.public :site="$site" :navigation-services="$navigationServices" :title="$service->name" :description="$service->excerpt">
-    <x-site.page-hero eyebrow="Connected capability" :title="$service->name" :intro="$service->excerpt"
-        :image="$service->imageUrl()" :image-alt="$service->name">
-        <x-slot:breadcrumb>
-            <nav class="flex flex-wrap items-center gap-2 font-mono text-[0.68rem] font-semibold uppercase tracking-[0.12em] text-slate-400"
-                aria-label="Breadcrumb">
-                <a href="{{ route('home') }}" class="transition-colors hover:text-white">Home</a>
-                <span aria-hidden="true">/</span>
-                <a href="{{ route('services.index') }}" class="transition-colors hover:text-white">Services</a>
-                <span aria-hidden="true">/</span>
-                <span class="text-brand-200" aria-current="page">{{ $service->name }}</span>
-            </nav>
-        </x-slot:breadcrumb>
+    <section class="relative isolate overflow-hidden bg-navy-950 text-white">
+        <img src="{{ $service->imageUrl() }}" alt="{{ $service->name }}"
+            class="absolute inset-0 -z-30 h-full w-full object-cover object-center">
+        <div class="service-hero-shade absolute inset-0 -z-20"></div>
+        <div class="bg-service-circuit absolute inset-0 -z-10 opacity-35"></div>
 
-        <x-slot:aside>
-            <div class="w-full rounded-[1.75rem] border border-white/15 bg-navy-950/70 p-6 backdrop-blur-md lg:w-80">
-                <div class="flex items-center justify-between gap-4">
-                    <span class="flex size-12 items-center justify-center rounded-2xl bg-brand-400/15 text-brand-200">
-                        <x-icon :name="$service->icon" class="size-5" />
-                    </span>
-                    <span class="technical-label text-signal-300">Capability brief</span>
+        <div class="mx-auto flex min-h-[31rem] max-w-[90rem] items-center px-5 py-12 sm:min-h-[34rem] sm:px-8 lg:min-h-[36rem] lg:px-12">
+            <div class="w-full min-w-0 max-w-3xl">
+                <nav class="site-reveal flex max-w-full items-center gap-2 overflow-hidden whitespace-nowrap text-xs font-bold uppercase tracking-[0.12em] text-blue-200/80"
+                    aria-label="Breadcrumb">
+                    <a href="{{ route('home') }}" class="transition-colors hover:text-white">Home</a>
+                    <span aria-hidden="true">/</span>
+                    <a href="{{ route('services.index') }}" class="transition-colors hover:text-white">Services</a>
+                    <span aria-hidden="true">/</span>
+                    <span class="hidden truncate text-white sm:inline" aria-current="page">{{ $service->name }}</span>
+                </nav>
+
+                <div class="site-reveal site-reveal-delay-1 mt-7 flex size-14 items-center justify-center rounded-full border-4 border-white bg-brand-600 text-white shadow-[0_14px_40px_rgba(0,44,132,0.45)]">
+                    <x-icon :name="$service->icon" class="size-7" />
                 </div>
 
-                @if ($benefits !== [])
-                    <ul class="mt-6 grid gap-3 border-t border-white/10 pt-5">
-                        @foreach (array_slice($benefits, 0, 3) as $benefit)
-                            <li class="flex gap-2.5 text-sm leading-6 text-slate-300">
-                                <x-icon name="check" class="mt-1 size-3.5 text-signal-300" />
-                                {{ $benefit }}
-                            </li>
-                        @endforeach
-                    </ul>
-                @endif
-            </div>
-        </x-slot:aside>
-    </x-site.page-hero>
-
-    <section class="relative overflow-hidden py-20 sm:py-28">
-        <div class="bg-public-grid absolute inset-0 -z-10"></div>
-
-        <div class="mx-auto grid max-w-[90rem] gap-12 px-5 sm:px-8 lg:grid-cols-[1.2fr_0.8fr] lg:gap-20 lg:px-12">
-            <div data-reveal>
-                <p class="section-kicker">Service overview</p>
-                <h2 class="mt-6 max-w-3xl font-display text-3xl font-bold leading-[1.15] tracking-[-0.04em] text-navy-950 sm:text-4xl">
-                    A practical approach to {{ $service->name }}.
-                </h2>
-                <p class="mt-7 max-w-3xl text-pretty text-xl leading-9 text-slate-700">
-                    {{ $service->description ?: $service->excerpt }}
+                <h1 class="site-reveal site-reveal-delay-1 mt-6 max-w-full break-words font-display text-[clamp(2.7rem,12vw,6rem)] font-bold leading-[0.9] tracking-[-0.045em] text-white [overflow-wrap:anywhere]">
+                    {{ $service->name }}
+                </h1>
+                <p class="site-reveal site-reveal-delay-2 mt-7 max-w-2xl text-pretty text-lg font-medium leading-8 text-blue-50 sm:text-xl sm:leading-9">
+                    {{ $service->excerpt }}
                 </p>
-
-                @if ($benefits !== [])
-                    <div class="mt-12 border-t border-slate-300 pt-10">
-                        <div class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-                            <div>
-                                <p class="technical-label text-brand-700">Typical scope</p>
-                                <h2 class="mt-3 font-display text-2xl font-bold tracking-[-0.03em] text-navy-950">What this can include</h2>
-                            </div>
-                            <p class="max-w-sm text-xs leading-5 text-slate-500">Final scope is shaped around your environment and priorities.</p>
-                        </div>
-
-                        <div class="mt-7 grid gap-4 sm:grid-cols-2">
-                            @foreach ($benefits as $benefit)
-                                <div class="flex gap-3 rounded-2xl bg-white p-5 ring-1 ring-slate-200">
-                                    <span class="mt-0.5 flex size-7 shrink-0 items-center justify-center rounded-full bg-signal-300/20 text-signal-500">
-                                        <x-icon name="check" class="size-3.5" />
-                                    </span>
-                                    <p class="text-sm font-semibold leading-6 text-navy-950">{{ $benefit }}</p>
-                                </div>
-                            @endforeach
-                        </div>
-                    </div>
-                @endif
+                <div class="site-reveal site-reveal-delay-3 mt-8 flex max-w-md flex-wrap gap-3">
+                    <a href="#service-scope" class="button-light w-full sm:w-auto">
+                        Explore the services
+                        <x-icon name="arrow-left" class="size-4 -rotate-90" />
+                    </a>
+                    <a href="{{ route('contact', ['service' => $service->slug]) }}" class="button-ghost-light w-full sm:w-auto">
+                        Request a consultation
+                    </a>
+                </div>
             </div>
+        </div>
+    </section>
 
-            <aside class="lg:sticky lg:top-28 lg:self-start" data-reveal>
-                <div class="relative overflow-hidden rounded-[2rem] bg-navy-950 p-7 text-white sm:p-9">
-                    <div class="bg-technical-dots absolute -right-24 -top-20 size-72 opacity-60"></div>
-                    <div class="relative">
-                        <p class="technical-label text-brand-200">Talk through the requirement</p>
-                        <h2 class="mt-5 font-display text-3xl font-bold leading-9 tracking-[-0.035em]">
-                            Need {{ $service->name }} expertise?
-                        </h2>
-                        <p class="mt-4 text-sm leading-7 text-slate-300">
-                            Give us the context, current pressure, and desired outcome. We will help define a practical next step.
-                        </p>
-                        <a href="{{ route('contact', ['service' => $service->slug]) }}" class="button-primary mt-7 w-full">
-                            Discuss this service
+    <section id="service-scope" class="relative overflow-hidden bg-canvas py-14 sm:py-18 lg:py-20">
+        <div class="bg-reference-dots absolute right-0 top-0 h-80 w-80 opacity-60"></div>
+
+        <div class="relative mx-auto max-w-[90rem] px-5 sm:px-8 lg:px-12">
+            <div class="grid gap-8 xl:grid-cols-[minmax(0,1.28fr)_minmax(22rem,0.72fr)] xl:items-start">
+                <div>
+                    <div class="flex min-w-0 flex-col gap-4 border-b border-blue-200 pb-7 sm:flex-row sm:items-end sm:justify-between">
+                        <div class="min-w-0">
+                            <p class="section-kicker">Our {{ $service->name }} services</p>
+                            <h2 class="mt-4 max-w-3xl break-words font-display text-3xl font-bold tracking-[-0.035em] text-navy-950 sm:text-4xl">
+                                Everything needed to deliver and support the solution.
+                            </h2>
+                        </div>
+                        <span class="font-display text-5xl font-bold text-brand-600/15">{{ str_pad((string) count($serviceItems), 2, '0', STR_PAD_LEFT) }}</span>
+                    </div>
+
+                    <div class="mt-6 grid gap-3 md:grid-cols-2" data-reveal-group>
+                        @foreach ($serviceItems as $item)
+                            <article class="group flex min-w-0 gap-4 rounded-2xl border border-blue-100 bg-white p-4 shadow-[0_12px_35px_-30px_rgba(0,39,114,0.7)] transition duration-200 hover:-translate-y-0.5 hover:border-brand-300 hover:shadow-[0_18px_45px_-28px_rgba(0,69,179,0.5)]"
+                                data-reveal>
+                                <span class="flex size-11 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-brand-700 ring-1 ring-blue-100 transition-colors group-hover:bg-brand-600 group-hover:text-white">
+                                    <x-icon :name="$item['icon']" class="size-5" />
+                                </span>
+                                <div class="min-w-0">
+                                    <h3 class="font-display text-base font-bold leading-5 text-navy-950">{{ $item['title'] }}</h3>
+                                    <p class="mt-1.5 break-words text-sm leading-5 text-slate-600">{{ $item['description'] }}</p>
+                                </div>
+                            </article>
+                        @endforeach
+                    </div>
+                </div>
+
+                <aside class="grid gap-5 xl:sticky xl:top-28" data-reveal>
+                    <div class="overflow-hidden rounded-[1.75rem] bg-navy-950 text-white shadow-[0_24px_60px_-32px_rgba(0,30,91,0.8)]">
+                        <div class="flex items-center gap-4 bg-linear-to-r from-brand-700 to-brand-500 px-6 py-5">
+                            <span class="flex size-11 items-center justify-center rounded-full border-2 border-white/80">
+                                <x-icon name="star" class="size-5" />
+                            </span>
+                            <h2 class="font-display text-2xl font-bold">Why choose us?</h2>
+                        </div>
+
+                        <ol class="relative grid gap-1 p-5 sm:p-6">
+                            @foreach ($reasons as $reason)
+                                <li class="group relative flex gap-4 py-3.5 first:pt-1 last:pb-1">
+                                    @unless ($loop->last)
+                                        <span class="absolute bottom-0 left-5 top-12 w-px bg-blue-700/60"></span>
+                                    @endunless
+                                    <span class="relative z-10 flex size-10 shrink-0 items-center justify-center rounded-full bg-brand-600 text-white ring-4 ring-navy-950">
+                                        <x-icon :name="$reason['icon']" class="size-[1.1rem]" />
+                                    </span>
+                                    <div>
+                                        <h3 class="font-display text-base font-bold text-white">{{ $reason['title'] }}</h3>
+                                        <p class="mt-1 text-sm leading-5 text-blue-100/75">{{ $reason['description'] }}</p>
+                                    </div>
+                                </li>
+                            @endforeach
+                        </ol>
+                    </div>
+
+                    <div class="rounded-[1.5rem] border border-blue-100 bg-white p-6">
+                        <p class="font-display text-xl font-bold leading-7 text-navy-950">{{ $service->description }}</p>
+                        <a href="{{ route('contact', ['service' => $service->slug]) }}" class="button-primary mt-5 w-full">
+                            Talk to a specialist
                             <x-icon name="arrow-left" class="size-4 rotate-180" />
                         </a>
                     </div>
-                </div>
-
-                <div class="mt-5 rounded-[1.75rem] border border-slate-200 bg-white p-6">
-                    <p class="technical-label text-slate-400">Every engagement considers</p>
-                    <ul class="mt-5 grid gap-3">
-                        @foreach (['Business continuity', 'Security and risk', 'Maintainability', 'Clear ownership'] as $consideration)
-                            <li class="flex items-center gap-3 text-sm font-semibold text-slate-700">
-                                <span class="size-1.5 rounded-full bg-brand-500"></span>
-                                {{ $consideration }}
-                            </li>
-                        @endforeach
-                    </ul>
-                </div>
-            </aside>
-        </div>
-    </section>
-
-    <section class="border-y border-slate-200 bg-paper py-20 sm:py-24">
-        <div class="mx-auto max-w-[90rem] px-5 sm:px-8 lg:px-12">
-            <div class="grid gap-10 lg:grid-cols-[0.75fr_1.25fr] lg:items-end" data-reveal>
-                <div>
-                    <p class="section-kicker">Delivery path</p>
-                    <h2 class="section-title mt-5">From requirement to a system your team can run.</h2>
-                </div>
-                <p class="max-w-2xl text-lg leading-8 text-slate-600">
-                    The exact work changes with the service. The discipline around decisions, continuity, testing, and handover does not.
-                </p>
-            </div>
-
-            <div class="mt-12 grid gap-6 md:grid-cols-2 xl:grid-cols-4">
-                @foreach ([
-                    ['01', 'Discover', 'Understand the environment, users, dependencies, and pressure points.'],
-                    ['02', 'Plan', 'Define scope, architecture, controls, responsibilities, and sequence.'],
-                    ['03', 'Implement', 'Configure, migrate, test, and manage change around the operation.'],
-                    ['04', 'Handover', 'Document the result and make ownership and support expectations clear.'],
-                ] as [$number, $title, $copy])
-                    <article class="rounded-[1.75rem] bg-white p-7 ring-1 ring-slate-200" data-reveal>
-                        <span class="font-mono text-xs font-semibold text-brand-600">{{ $number }}</span>
-                        <h3 class="mt-5 font-display text-xl font-bold text-navy-950">{{ $title }}</h3>
-                        <p class="mt-3 text-sm leading-7 text-slate-600">{{ $copy }}</p>
-                    </article>
-                @endforeach
+                </aside>
             </div>
         </div>
     </section>
 
-    @if ($relatedServices->isNotEmpty())
-        <section class="py-20 sm:py-24">
+    @if ($service->statement())
+        <section class="bg-white py-8 sm:py-10">
             <div class="mx-auto max-w-[90rem] px-5 sm:px-8 lg:px-12">
-                <div class="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between" data-reveal>
-                    <div>
-                        <p class="section-kicker">Related capabilities</p>
-                        <h2 class="section-title mt-5">Keep exploring.</h2>
+                <div class="relative overflow-hidden rounded-[1.75rem] bg-linear-to-r from-navy-950 via-brand-800 to-brand-600 px-6 py-8 text-white sm:px-10 lg:flex lg:items-center lg:justify-between lg:gap-10 lg:px-12">
+                    <div class="bg-reference-dots absolute right-0 top-0 h-full w-80 opacity-20"></div>
+                    <div class="relative flex items-center gap-5">
+                        <span class="flex size-14 shrink-0 items-center justify-center rounded-full border-2 border-white/80 bg-white/10">
+                            <x-icon :name="$service->icon" class="size-7" />
+                        </span>
+                        <p class="max-w-3xl font-display text-2xl font-bold leading-tight sm:text-3xl">{{ $service->statement() }}</p>
                     </div>
-                    <a href="{{ route('services.index') }}" class="text-link">
-                        All services
-                        <x-icon name="arrow-left" class="size-4 rotate-180" />
+                    <a href="{{ route('contact', ['service' => $service->slug]) }}" class="button-light relative mt-6 shrink-0 lg:mt-0">
+                        Start a conversation
+                        <x-icon name="phone" class="size-4" />
                     </a>
-                </div>
-
-                <div class="mt-10 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-                    @foreach ($relatedServices as $relatedService)
-                        <div data-reveal>
-                            <x-site.service-card :service="$relatedService" compact />
-                        </div>
-                    @endforeach
                 </div>
             </div>
         </section>
     @endif
 
-    <x-site.cta :site="$site" />
+    @if ($relatedServices->isNotEmpty())
+        <section class="border-t border-blue-100 bg-white py-14 sm:py-18">
+            <div class="mx-auto max-w-[90rem] px-5 sm:px-8 lg:px-12">
+                <div class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+                    <div>
+                        <p class="section-kicker">More services</p>
+                        <h2 class="mt-4 font-display text-3xl font-bold tracking-[-0.03em] text-navy-950 sm:text-4xl">Build a connected technology stack.</h2>
+                    </div>
+                    <a href="{{ route('services.index') }}" class="text-link">View all services <x-icon name="arrow-left" class="size-4 rotate-180" /></a>
+                </div>
+                <div class="mt-8 grid gap-5 md:grid-cols-3">
+                    @foreach ($relatedServices as $relatedService)
+                        <x-site.service-card :service="$relatedService" compact />
+                    @endforeach
+                </div>
+            </div>
+        </section>
+    @endif
 </x-layouts.public>

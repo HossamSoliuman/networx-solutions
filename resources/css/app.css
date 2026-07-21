@@ -11,28 +11,28 @@
     --font-display: 'Barlow Semi Condensed', 'Barlow', ui-sans-serif, system-ui, sans-serif;
     --font-mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 
-    --color-brand-50: #f0f7ff;
-    --color-brand-100: #dcecff;
-    --color-brand-200: #b7d8ff;
-    --color-brand-300: #84bcff;
-    --color-brand-400: #4898ff;
-    --color-brand-500: #1d78f2;
-    --color-brand-600: #0863dc;
-    --color-brand-700: #0750ba;
-    --color-brand-800: #0b4497;
-    --color-brand-900: #0d3a78;
+    --color-brand-50: #eef5ff;
+    --color-brand-100: #d9e9ff;
+    --color-brand-200: #b8d5ff;
+    --color-brand-300: #81b7ff;
+    --color-brand-400: #3d91ff;
+    --color-brand-500: #0c6fea;
+    --color-brand-600: #0057c8;
+    --color-brand-700: #0047a9;
+    --color-brand-800: #063d8b;
+    --color-brand-900: #092f68;
 
-    --color-navy-800: #12335d;
-    --color-navy-900: #09264b;
-    --color-navy-950: #051a35;
+    --color-navy-800: #082b68;
+    --color-navy-900: #031f50;
+    --color-navy-950: #02163c;
 
-    --color-signal-200: #a6f7de;
-    --color-signal-300: #72eac4;
-    --color-signal-400: #35d4aa;
-    --color-signal-500: #11b78f;
+    --color-signal-200: #c7e5ff;
+    --color-signal-300: #8ecaff;
+    --color-signal-400: #3f9fff;
+    --color-signal-500: #0873df;
 
-    --color-canvas: #f3f5f2;
-    --color-paper: #fbfcfa;
+    --color-canvas: #f2f6fc;
+    --color-paper: #f8faff;
 }
 
 @layer base {
@@ -224,14 +224,34 @@
 @layer utilities {
     .hero-image-shade {
         background:
-            linear-gradient(90deg, rgb(5 26 53 / 0.96) 0%, rgb(5 26 53 / 0.82) 42%, rgb(5 26 53 / 0.36) 72%, rgb(5 26 53 / 0.18) 100%),
-            linear-gradient(0deg, rgb(5 26 53 / 0.3), transparent 45%);
+            linear-gradient(90deg, rgb(2 22 60 / 0.96) 0%, rgb(2 22 60 / 0.84) 42%, rgb(2 22 60 / 0.38) 72%, rgb(2 22 60 / 0.18) 100%),
+            linear-gradient(0deg, rgb(2 22 60 / 0.3), transparent 45%);
     }
 
     .page-hero-image-shade {
         background:
-            linear-gradient(90deg, rgb(5 26 53 / 0.94) 0%, rgb(5 26 53 / 0.78) 48%, rgb(5 26 53 / 0.24) 100%),
-            linear-gradient(0deg, rgb(5 26 53 / 0.28), transparent 48%);
+            linear-gradient(90deg, rgb(2 22 60 / 0.94) 0%, rgb(2 22 60 / 0.78) 48%, rgb(2 22 60 / 0.24) 100%),
+            linear-gradient(0deg, rgb(2 22 60 / 0.28), transparent 48%);
+    }
+
+    .service-hero-shade {
+        background:
+            linear-gradient(90deg, rgb(2 17 52 / 0.98) 0%, rgb(2 23 62 / 0.92) 34%, rgb(2 28 74 / 0.5) 58%, rgb(2 22 60 / 0.08) 100%),
+            linear-gradient(0deg, rgb(2 22 60 / 0.35), transparent 52%);
+    }
+
+    .bg-service-circuit {
+        background-image:
+            linear-gradient(rgb(122 183 255 / 0.08) 1px, transparent 1px),
+            linear-gradient(90deg, rgb(122 183 255 / 0.08) 1px, transparent 1px);
+        background-size: 52px 52px;
+        mask-image: linear-gradient(90deg, black, transparent 65%);
+    }
+
+    .bg-reference-dots {
+        background-image: radial-gradient(circle, rgb(0 87 200 / 0.2) 1.4px, transparent 1.6px);
+        background-size: 16px 16px;
+        mask-image: radial-gradient(circle at top right, black, transparent 72%);
     }
 
     .hero-network-image {
@@ -302,8 +322,8 @@
 
     .bg-public-grid {
         background-image:
-            linear-gradient(rgb(8 99 220 / 0.065) 1px, transparent 1px),
-            linear-gradient(90deg, rgb(8 99 220 / 0.065) 1px, transparent 1px);
+            linear-gradient(rgb(0 87 200 / 0.065) 1px, transparent 1px),
+            linear-gradient(90deg, rgb(0 87 200 / 0.065) 1px, transparent 1px);
         background-size: 40px 40px;
         mask-image: linear-gradient(to bottom, black, transparent 90%);
     }
@@ -324,8 +344,8 @@
 
     .bg-signal-glow {
         background:
-            radial-gradient(circle at 78% 18%, rgb(53 212 170 / 0.15), transparent 28%),
-            radial-gradient(circle at 18% 82%, rgb(29 120 242 / 0.18), transparent 32%);
+            radial-gradient(circle at 78% 18%, rgb(63 159 255 / 0.16), transparent 28%),
+            radial-gradient(circle at 18% 82%, rgb(12 111 234 / 0.2), transparent 32%);
     }
 
     .text-balance {
@@ -454,14 +474,20 @@
 @media (max-width: 63.999rem) {
     .hero-image-shade {
         background:
-            linear-gradient(90deg, rgb(5 26 53 / 0.94), rgb(5 26 53 / 0.66)),
-            linear-gradient(0deg, rgb(5 26 53 / 0.45), transparent 55%);
+            linear-gradient(90deg, rgb(2 22 60 / 0.94), rgb(2 22 60 / 0.66)),
+            linear-gradient(0deg, rgb(2 22 60 / 0.45), transparent 55%);
     }
 
     .page-hero-image-shade {
         background:
-            linear-gradient(90deg, rgb(5 26 53 / 0.94), rgb(5 26 53 / 0.68)),
-            linear-gradient(0deg, rgb(5 26 53 / 0.42), transparent 55%);
+            linear-gradient(90deg, rgb(2 22 60 / 0.94), rgb(2 22 60 / 0.68)),
+            linear-gradient(0deg, rgb(2 22 60 / 0.42), transparent 55%);
+    }
+
+    .service-hero-shade {
+        background:
+            linear-gradient(90deg, rgb(2 17 52 / 0.96), rgb(2 22 60 / 0.74)),
+            linear-gradient(0deg, rgb(2 22 60 / 0.42), transparent 58%);
     }
 }
 

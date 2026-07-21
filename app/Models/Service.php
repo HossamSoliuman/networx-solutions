@@ -23,6 +23,7 @@ class Service extends Model
         'description',
         'image_path',
         'benefits',
+        'details',
         'sort_order',
         'is_active',
     ];
@@ -46,6 +47,7 @@ class Service extends Model
         return [
             'is_active' => 'boolean',
             'sort_order' => 'integer',
+            'details' => 'array',
         ];
     }
 
@@ -94,5 +96,26 @@ class Service extends Model
             ->filter()
             ->values()
             ->all();
+    }
+
+    /**
+     * @return list<array{title: string, description: string, icon: string}>
+     */
+    public function serviceItems(): array
+    {
+        return $this->details['service_items'] ?? [];
+    }
+
+    /**
+     * @return list<array{title: string, description: string, icon: string}>
+     */
+    public function reasons(): array
+    {
+        return $this->details['reasons'] ?? [];
+    }
+
+    public function statement(): ?string
+    {
+        return $this->details['statement'] ?? null;
     }
 }

@@ -25,7 +25,7 @@ it('renders the public site as separate pages', function () {
     $this->get(route('services.show', $service))
         ->assertSuccessful()
         ->assertSee($service->name)
-        ->assertSee('Service overview');
+        ->assertSee('Explore the services');
 
     $this->get(route('contact'))
         ->assertSuccessful()
@@ -70,6 +70,12 @@ it('ships readable machine photography for every default public placement', func
         'cybersecurity.jpg',
         'cctv-systems.jpg',
         'microsoft-365-services.jpg',
+        'it-support-banner.webp',
+        'networking-banner.webp',
+        'cloud-solutions-banner.webp',
+        'cybersecurity-banner.webp',
+        'cctv-systems-banner.webp',
+        'microsoft-365-services-banner.webp',
     ];
 
     foreach ($imageFiles as $imageFile) {

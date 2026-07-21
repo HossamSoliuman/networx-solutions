@@ -1,143 +1,64 @@
 <x-layouts.public :site="$site" :navigation-services="$navigationServices" title="Services" :description="$site['services_intro']">
-    <x-site.page-hero eyebrow="Service catalogue" :title="$site['services_title']" :intro="$site['services_intro']"
-        :image="$site['home_image_url']" image-alt="Connected enterprise technology infrastructure">
-        <x-slot:aside>
-            <div class="grid w-full grid-cols-2 gap-px overflow-hidden rounded-[1.75rem] bg-white/15 lg:w-80">
-                <div class="bg-navy-950/75 p-6 backdrop-blur-md">
-                    <p class="font-display text-4xl font-bold text-white">{{ str_pad((string) $services->count(), 2, '0', STR_PAD_LEFT) }}</p>
-                    <p class="technical-label mt-2 text-slate-400">Capabilities</p>
-                </div>
-                <div class="bg-navy-950/75 p-6 backdrop-blur-md">
-                    <p class="font-display text-4xl font-bold text-white">01</p>
-                    <p class="technical-label mt-2 text-slate-400">Partner</p>
-                </div>
-                <div class="col-span-2 bg-navy-950/75 p-5 backdrop-blur-md">
-                    <p class="technical-label text-brand-200">One connected lifecycle</p>
-                    <p class="mt-2 text-sm font-semibold text-white">Assess → Design → Deliver → Support</p>
+    <section class="relative isolate overflow-hidden bg-navy-950 text-white">
+        <img src="{{ asset('images/site/networking-banner.webp') }}" alt="Enterprise technology infrastructure"
+            class="absolute inset-0 -z-30 h-full w-full object-cover">
+        <div class="service-hero-shade absolute inset-0 -z-20"></div>
+        <div class="bg-service-circuit absolute inset-0 -z-10 opacity-35"></div>
+
+        <div class="mx-auto grid min-h-[31rem] max-w-[90rem] items-center gap-10 px-5 py-12 sm:px-8 lg:grid-cols-[1.1fr_0.9fr] lg:px-12">
+            <div class="max-w-3xl">
+                <p class="site-reveal section-kicker text-blue-200">Networx Solutions services</p>
+                <h1 class="site-reveal site-reveal-delay-1 mt-6 font-display text-[clamp(3.4rem,7vw,6.4rem)] font-bold leading-[0.86] tracking-[-0.045em]">
+                    Connected.<br><span class="text-brand-300">Secure.</span> Productive.
+                </h1>
+                <p class="site-reveal site-reveal-delay-2 mt-7 max-w-2xl text-lg font-medium leading-8 text-blue-50 sm:text-xl">
+                    Six practical technology services, delivered as standalone solutions or one connected operating environment.
+                </p>
+            </div>
+
+            <div class="site-reveal site-reveal-delay-3 hidden justify-self-end rounded-[1.75rem] border border-white/15 bg-navy-950/75 p-6 backdrop-blur-md sm:block lg:w-[22rem]">
+                <div class="grid grid-cols-2 gap-3">
+                    @foreach ($services as $service)
+                        <a href="{{ route('services.show', $service) }}" class="group flex min-h-24 flex-col justify-between rounded-xl bg-white/7 p-4 ring-1 ring-white/10 transition hover:bg-brand-600/25 hover:ring-brand-300/50">
+                            <x-icon :name="$service->icon" class="size-5 text-brand-200" />
+                            <span class="mt-3 font-display text-sm font-bold leading-4 text-white">{{ $service->name }}</span>
+                        </a>
+                    @endforeach
                 </div>
             </div>
-        </x-slot:aside>
-    </x-site.page-hero>
+        </div>
+    </section>
 
-    <section class="relative overflow-hidden py-20 sm:py-28">
-        <div class="bg-public-grid absolute inset-0 -z-10"></div>
-
-        <div class="mx-auto max-w-[90rem] px-5 sm:px-8 lg:px-12">
-            <div class="grid gap-8 border-b border-slate-300 pb-10 lg:grid-cols-[0.7fr_1.3fr] lg:items-end" data-reveal>
+    <section class="relative overflow-hidden bg-canvas py-14 sm:py-18 lg:py-20">
+        <div class="bg-reference-dots absolute right-0 top-0 h-80 w-80 opacity-50"></div>
+        <div class="relative mx-auto max-w-[90rem] px-5 sm:px-8 lg:px-12">
+            <div class="grid gap-5 border-b border-blue-200 pb-8 lg:grid-cols-[0.8fr_1.2fr] lg:items-end">
                 <div>
-                    <p class="section-kicker">Choose the starting point</p>
-                    <p class="mt-5 max-w-sm text-sm leading-7 text-slate-600">Every capability can stand alone or connect into a wider operating plan.</p>
+                    <p class="section-kicker">Choose your starting point</p>
+                    <p class="mt-4 max-w-md text-sm leading-6 text-slate-600">Every page lists the exact services, support scope, and operational benefits available.</p>
                 </div>
-                <h2 class="section-title">Services designed to remove friction, risk, and uncertainty.</h2>
+                <h2 class="font-display text-3xl font-bold leading-[1.02] tracking-[-0.035em] text-navy-950 sm:text-4xl lg:text-5xl">The right expertise for every layer of your business technology.</h2>
             </div>
 
-            <div class="mt-10 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-                @forelse ($services as $service)
+            <div class="mt-8 grid gap-5 md:grid-cols-2 xl:grid-cols-3" data-reveal-group>
+                @foreach ($services as $service)
                     <div data-reveal>
                         <x-site.service-card :service="$service" :index="$loop->iteration" />
                     </div>
-                @empty
-                    <div class="rounded-[2rem] border border-dashed border-slate-300 bg-white p-10 text-slate-600 md:col-span-2 xl:col-span-3">
-                        <p class="font-display text-xl font-bold text-navy-950">Our service catalogue is being updated.</p>
-                        <p class="mt-3 text-sm leading-7">Contact us and we will help identify the right path for your requirement.</p>
-                    </div>
-                @endforelse
+                @endforeach
             </div>
         </div>
     </section>
 
-    <section class="relative isolate overflow-hidden bg-navy-950 py-20 text-white sm:py-28">
-        <div class="bg-machine-grid absolute inset-0 -z-10 opacity-45"></div>
-
+    <section class="bg-white py-10 sm:py-12">
         <div class="mx-auto max-w-[90rem] px-5 sm:px-8 lg:px-12">
-            <div class="grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:items-end" data-reveal>
+            <div class="rounded-[1.75rem] bg-linear-to-r from-navy-950 via-brand-800 to-brand-600 px-6 py-8 text-white sm:px-10 lg:flex lg:items-center lg:justify-between lg:gap-10 lg:px-12">
                 <div>
-                    <p class="section-kicker text-brand-200">How services connect</p>
-                    <h2 class="mt-6 text-balance font-display text-4xl font-bold leading-[1.03] tracking-[-0.05em] sm:text-5xl lg:text-6xl">
-                        No isolated fixes. One operating picture.
-                    </h2>
+                    <p class="text-xs font-bold uppercase tracking-[0.16em] text-blue-200">One accountable technology partner</p>
+                    <h2 class="mt-3 font-display text-3xl font-bold tracking-[-0.03em]">Tell us what needs to work better.</h2>
                 </div>
-                <p class="max-w-2xl text-lg leading-8 text-slate-300">
-                    The right solution is rarely just a product. It is a sequence of decisions that protects continuity, reduces risk, and leaves the environment easier to run.
-                </p>
-            </div>
-
-            <div class="mt-14 grid gap-px overflow-hidden rounded-[2rem] bg-white/10 md:grid-cols-2 xl:grid-cols-4" data-reveal>
-                @foreach ([
-                    ['01', 'Assess', 'Understand the environment, dependencies, risk, and desired business outcome.'],
-                    ['02', 'Design', 'Choose the architecture, controls, equipment, and delivery sequence.'],
-                    ['03', 'Deliver', 'Install, migrate, configure, test, document, and hand over clearly.'],
-                    ['04', 'Support', 'Maintain, improve, and respond as the operation and its priorities change.'],
-                ] as [$number, $title, $copy])
-                    <article class="bg-navy-900/85 p-7 sm:p-8">
-                        <span class="font-mono text-xs font-semibold text-signal-300">{{ $number }}</span>
-                        <h3 class="mt-6 font-display text-2xl font-bold text-white">{{ $title }}</h3>
-                        <p class="mt-4 text-sm leading-7 text-slate-400">{{ $copy }}</p>
-                    </article>
-                @endforeach
+                <a href="{{ route('contact') }}" class="button-light mt-6 shrink-0 lg:mt-0">Contact Networx <x-icon name="arrow-left" class="size-4 rotate-180" /></a>
             </div>
         </div>
     </section>
-
-    <section class="bg-paper py-20 sm:py-28">
-        <div class="mx-auto max-w-[90rem] px-5 sm:px-8 lg:px-12">
-            <div class="grid gap-10 lg:grid-cols-[0.72fr_1.28fr] lg:items-end" data-reveal>
-                <div>
-                    <p class="section-kicker">Designed around outcomes</p>
-                    <h2 class="section-title mt-5">What the technology should make possible.</h2>
-                </div>
-                <p class="max-w-2xl text-lg leading-8 text-slate-600">
-                    Tools matter, but the operating result matters more. We use these outcomes to keep scope and decisions grounded.
-                </p>
-            </div>
-
-            <div class="mt-12 grid gap-6 md:grid-cols-3">
-                @foreach ([
-                    ['shield', 'Lower operational risk', 'Reduce avoidable exposure, single points of failure, and uncertainty during change.'],
-                    ['cog', 'Simpler day-to-day operations', 'Give teams clearer ownership, better visibility, and systems that are easier to maintain.'],
-                    ['grid', 'A stronger platform for growth', 'Build an environment that can absorb new users, locations, workflows, and requirements.'],
-                ] as [$icon, $title, $copy])
-                    <article class="site-panel p-8 sm:p-9" data-reveal>
-                        <span class="flex size-12 items-center justify-center rounded-2xl bg-brand-50 text-brand-700">
-                            <x-icon :name="$icon" class="size-5" />
-                        </span>
-                        <h3 class="mt-7 font-display text-2xl font-bold tracking-[-0.03em] text-navy-950">{{ $title }}</h3>
-                        <p class="mt-4 text-sm leading-7 text-slate-600">{{ $copy }}</p>
-                    </article>
-                @endforeach
-            </div>
-        </div>
-    </section>
-
-    <section class="border-t border-slate-200 py-20 sm:py-24">
-        <div class="mx-auto grid max-w-[90rem] gap-12 px-5 sm:px-8 lg:grid-cols-[0.72fr_1.28fr] lg:gap-20 lg:px-12">
-            <div data-reveal>
-                <p class="section-kicker">Common questions</p>
-                <h2 class="section-title mt-5">A clearer starting point.</h2>
-                <p class="mt-5 max-w-md text-base leading-7 text-slate-600">
-                    You do not need a finished technical brief before speaking with us. A business problem is enough to begin.
-                </p>
-            </div>
-
-            <div class="border-t border-slate-300" data-reveal>
-                @foreach ([
-                    ['Can we engage Networx for one service?', 'Yes. A requirement can begin with one capability, while still accounting for the systems and teams it connects to.'],
-                    ['Can you work with our existing environment?', 'The assessment starts with what is already in place. Recommendations are shaped around current constraints, risk, priorities, and the outcome you need.'],
-                    ['What happens after implementation?', 'Testing, documentation, handover, ownership, and support expectations are included in the delivery conversation so the next step is clear.'],
-                ] as [$question, $answer])
-                    <details class="group border-b border-slate-300">
-                        <summary class="flex cursor-pointer list-none items-center justify-between gap-6 py-6 font-display text-lg font-bold text-navy-950">
-                            {{ $question }}
-                            <span class="flex size-9 shrink-0 items-center justify-center rounded-full bg-white text-brand-700 ring-1 ring-slate-200">
-                                <x-icon name="plus" class="size-4 transition-transform group-open:rotate-45" />
-                            </span>
-                        </summary>
-                        <p class="max-w-2xl pb-7 pr-12 text-sm leading-7 text-slate-600">{{ $answer }}</p>
-                    </details>
-                @endforeach
-            </div>
-        </div>
-    </section>
-
-    <x-site.cta :site="$site" />
 </x-layouts.public>
