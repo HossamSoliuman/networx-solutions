@@ -68,20 +68,53 @@ if (revealElements.length > 0 && !window.matchMedia('(prefers-reduced-motion: re
     });
 }
 
+const setContactFormSubmitting = (form, isSubmitting) => {
+    const submitButton = form.querySelector('[data-contact-submit]');
+    const submitLabel = submitButton?.querySelector('[data-contact-submit-label]');
+
+    if (submitButton) {
+        submitButton.disabled = isSubmitting;
+        submitButton.setAttribute('aria-busy', String(isSubmitting));
+        submitButton.classList.toggle('cursor-wait', isSubmitting);
+        submitButton.classList.toggle('opacity-75', isSubmitting);
+    }
+
+    if (submitLabel) {
+        submitLabel.textContent = isSubmitting ? 'Sending enquiry...' : 'Send enquiry';
+    }
+};
+
 document.querySelectorAll('[data-contact-form]').forEach((form) => {
-    form.addEventListener('submit', () => {
-        const submitButton = form.querySelector('[data-contact-submit]');
-        const submitLabel = submitButton?.querySelector('[data-contact-submit-label]');
+    form.addEventListener('submit', (event) => {
+        const siteKey = form.dataset.recaptchaSiteKey;
+        const action = form.dataset.recaptchaAction ?? 'contact';
+        const recaptcha = window.grecaptcha;
 
-        if (submitButton) {
-            submitButton.disabled = true;
-            submitButton.setAttribute('aria-busy', 'true');
-            submitButton.classList.add('cursor-wait', 'opacity-75');
+        if (siteKey && recaptcha) {
+            event.preventDefault();
+            setContactFormSubmitting(form, true);
+
+            recaptcha.ready(() => {
+                recaptcha
+                    .execute(siteKey, { action })
+                    .then((token) => {
+                        const responseInput = form.querySelector('[data-recaptcha-response]');
+
+                        if (responseInput) {
+                            responseInput.value = token;
+                        }
+
+                        form.submit();
+                    })
+                    .catch(() => {
+                        form.submit();
+                    });
+            });
+
+            return;
         }
 
-        if (submitLabel) {
-            submitLabel.textContent = 'Sending enquiry…';
-        }
+        setContactFormSubmitting(form, true);
     });
 });
 

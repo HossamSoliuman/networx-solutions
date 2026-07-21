@@ -4,6 +4,8 @@
     $pageTitle = $title ? $title.' · '.$site['site_name'] : ($site['seo_meta_title'] ?: $site['site_name']);
     $metaDescription = $description ?: ($site['seo_meta_description'] ?: $site['home_intro']);
     $phoneHref = $site['contact_phone'] ? preg_replace('/[^+\d]/', '', $site['contact_phone']) : null;
+    $recaptchaEnabled = (bool) config('services.recaptcha.enabled');
+    $recaptchaSiteKey = config('services.recaptcha.site_key');
 
     // Structured data read by search engines and AI assistants alike.
     $structuredData = [
@@ -59,6 +61,10 @@
     <title>{{ $pageTitle }}</title>
 
     <script type="application/ld+json">{!! json_encode($structuredData, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) !!}</script>
+
+    @if ($recaptchaEnabled && $recaptchaSiteKey)
+        <script src="https://www.google.com/recaptcha/api.js?render={{ rawurlencode($recaptchaSiteKey) }}" async defer></script>
+    @endif
 
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=barlow:400,500,600,700|barlow-semi-condensed:500,600,700|ibm-plex-mono:500,600"

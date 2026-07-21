@@ -58,7 +58,7 @@
 
                 @if ($errors->any())
                     <div class="mb-4 rounded-xl bg-red-50 p-3 text-red-800 ring-1 ring-red-200" role="alert">
-                        @if ($errors->has('company_fax') && $errors->count() === 1)
+                        @if ($errors->keys() !== [] && collect($errors->keys())->diff(['company_fax', 'g-recaptcha-response'])->isEmpty())
                             <p class="font-display text-sm font-bold">We couldn&#039;t send that enquiry.</p>
                             <p class="mt-0.5 text-xs leading-5">Please wait a moment and try again.</p>
                         @else
@@ -76,8 +76,14 @@
                     <p class="hidden text-xs text-slate-500 sm:block">* Required fields</p>
                 </div>
 
-                <form method="POST" action="{{ route('contact.store') }}" class="mt-4 grid min-w-0 gap-x-3 gap-y-3 sm:grid-cols-2 xl:grid-cols-6" data-contact-form>
+                <form method="POST" action="{{ route('contact.store') }}" class="mt-4 grid min-w-0 gap-x-3 gap-y-3 sm:grid-cols-2 xl:grid-cols-6"
+                    data-contact-form
+                    @if (config('services.recaptcha.enabled') && config('services.recaptcha.site_key'))
+                        data-recaptcha-site-key="{{ config('services.recaptcha.site_key') }}"
+                        data-recaptcha-action="{{ config('services.recaptcha.action') }}"
+                    @endif>
                     @csrf
+                    <input type="hidden" name="g-recaptcha-response" data-recaptcha-response>
 
                     <div class="min-w-0 xl:col-span-2">
                         <x-form.label for="name">Name <span class="text-brand-700" aria-hidden="true">*</span></x-form.label>

@@ -20,12 +20,18 @@
     </div>
 
     <form method="POST" action="{{ route('contact.store') }}" class="grid gap-x-4 gap-y-3 p-5 sm:grid-cols-2 sm:p-7 lg:grid-cols-3"
-        data-contact-form aria-labelledby="contact-modal-title">
+        data-contact-form
+        @if (config('services.recaptcha.enabled') && config('services.recaptcha.site_key'))
+            data-recaptcha-site-key="{{ config('services.recaptcha.site_key') }}"
+            data-recaptcha-action="{{ config('services.recaptcha.action') }}"
+        @endif
+        aria-labelledby="contact-modal-title">
         @csrf
+        <input type="hidden" name="g-recaptcha-response" data-recaptcha-response>
 
         @if ($errors->any())
             <div class="rounded-xl bg-red-50 p-3 text-red-800 ring-1 ring-red-200 sm:col-span-2 lg:col-span-3" role="alert">
-                @if ($errors->has('company_fax') && $errors->count() === 1)
+                @if ($errors->keys() !== [] && collect($errors->keys())->diff(['company_fax', 'g-recaptcha-response'])->isEmpty())
                     <p class="font-display text-sm font-bold">We couldn&#039;t send that enquiry.</p>
                     <p class="mt-0.5 text-xs leading-5">Please wait a moment and try again.</p>
                 @else
