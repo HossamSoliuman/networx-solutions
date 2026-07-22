@@ -49,6 +49,22 @@ it('stores a contact form submission and flashes the reference', function () {
         ->and($message->ip_address)->not->toBeNull();
 });
 
+it('shows a success alert after a contact modal submission', function () {
+    Mail::fake();
+
+    $response = $this->followingRedirects()
+        ->from(route('home'))
+        ->post(route('contact.store'), validContactPayload());
+
+    $message = ContactMessage::query()->sole();
+
+    $response
+        ->assertSuccessful()
+        ->assertSee('data-flash role="status"', escape: false)
+        ->assertSee($message->reference)
+        ->assertDontSee('data-open-on-load', escape: false);
+});
+
 it('accepts formatted international phone numbers', function () {
     Mail::fake();
 
@@ -92,6 +108,8 @@ it('rejects submissions that fill the honeypot field', function () {
 it('prevents browser autofill from populating the honeypot field', function () {
     $this->get(route('contact'))
         ->assertSuccessful()
+        ->assertSee('data-contact-viewport', escape: false)
+        ->assertSee('lg:h-24 lg:min-h-24', escape: false)
         ->assertSee('name="company_fax" type="text" tabindex="-1" autocomplete="off" readonly', escape: false)
         ->assertSee('data-1p-ignore data-bwignore="true" data-lpignore="true"', escape: false);
 });
