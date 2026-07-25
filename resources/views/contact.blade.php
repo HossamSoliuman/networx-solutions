@@ -44,15 +44,18 @@
                         @endif
 
                         @if ($site['address'])
-                            <div class="flex items-center gap-4 py-5 lg:py-3">
-                                <span class="flex size-10 shrink-0 items-center justify-center rounded-full border border-white/15 text-signal-300 lg:size-9">
+                            <a href="https://www.google.com/maps/search/?api=1&amp;query={{ rawurlencode($site['address']) }}"
+                                target="_blank" rel="noopener noreferrer"
+                                aria-label="View {{ $site['address'] }} on Google Maps"
+                                class="group flex items-center gap-4 py-5 lg:py-3">
+                                <span class="flex size-10 shrink-0 items-center justify-center rounded-full border border-white/15 text-signal-300 transition group-hover:border-white/30 group-hover:bg-white/10 lg:size-9">
                                     <x-icon name="building" class="size-4.5" />
                                 </span>
                                 <span>
                                     <span class="technical-label block text-brand-100/85">Location</span>
                                     <span class="mt-1 block text-base font-semibold text-white">{{ $site['address'] }}</span>
                                 </span>
-                            </div>
+                            </a>
                         @endif
                 </div>
             </div>
