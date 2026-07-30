@@ -24,7 +24,7 @@ it('sends a reply email and tracks the full state change', function () {
         ->assertRedirect()
         ->assertSessionHas('success');
 
-    Mail::assertQueued(ContactReplyMail::class, fn (ContactReplyMail $mail) => $mail->hasTo($message->email));
+    Mail::assertSent(ContactReplyMail::class, fn (ContactReplyMail $mail) => $mail->hasTo($message->email));
 
     $message->refresh();
 
@@ -55,7 +55,7 @@ it('allows only a single reply per message', function () {
         ->assertSessionHas('error');
 
     expect($message->refresh()->replies)->toHaveCount(1);
-    Mail::assertQueued(ContactReplyMail::class, 1);
+    Mail::assertSent(ContactReplyMail::class, 1);
 });
 
 it('validates the reply form', function (array $payload, string $field) {
@@ -67,7 +67,7 @@ it('validates the reply form', function (array $payload, string $field) {
         ->post(route('admin.messages.reply', $message), $payload)
         ->assertSessionHasErrors($field);
 
-    Mail::assertNothingQueued();
+    Mail::assertNothingSent();
 })->with([
     'missing subject' => [['body' => 'A body without a subject.'], 'subject'],
     'missing body' => [['subject' => 'A subject without a body'], 'body'],

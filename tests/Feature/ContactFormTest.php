@@ -84,10 +84,38 @@ it('emails the notification address when one is configured', function () {
 
     $this->post(route('contact.store'), validContactPayload());
 
-    Mail::assertQueued(
+    Mail::assertSent(
         NewContactMessageMail::class,
-        fn (NewContactMessageMail $mail) => $mail->hasTo('inbox@networx-solutions.com'),
+        fn (NewContactMessageMail $mail) => $mail->hasTo('inbox@networx-solutions.com')
+            && $mail->hasSubject('Networx Solutions contact form notification'),
     );
+});
+
+it('keeps visitor content out of the contact notification', function () {
+    $message = ContactMessage::factory()->create([
+        'name' => 'Visitor Supplied Name',
+        'email' => 'visitor@example.com',
+        'subject' => 'Visitor supplied subject',
+        'message' => 'Visitor supplied message content.',
+    ]);
+
+    $mail = new NewContactMessageMail($message);
+
+    $mail
+        ->assertHasSubject('Networx Solutions contact form notification')
+        ->assertSeeInHtml('A new website enquiry was received.')
+        ->assertDontSeeInHtml('href=')
+        ->assertDontSeeInHtml($message->reference)
+        ->assertDontSeeInHtml($message->email)
+        ->assertDontSeeInHtml($message->subject)
+        ->assertDontSeeInHtml($message->message)
+        ->assertSeeInText('A new website enquiry was received.')
+        ->assertDontSeeInText($message->reference)
+        ->assertDontSeeInText($message->email)
+        ->assertDontSeeInText($message->subject)
+        ->assertDontSeeInText($message->message);
+
+    expect($mail->envelope()->replyTo)->toBe([]);
 });
 
 it('sends no notification when the setting is empty', function () {
@@ -95,7 +123,7 @@ it('sends no notification when the setting is empty', function () {
 
     $this->post(route('contact.store'), validContactPayload());
 
-    Mail::assertNothingQueued();
+    Mail::assertNothingSent();
 });
 
 it('rejects submissions that fill the honeypot field', function () {
@@ -158,7 +186,7 @@ it('rejects submissions with a failing recaptcha challenge', function () {
     ]))
         ->assertSessionHasErrors('g-recaptcha-response');
 
-    Mail::assertNothingQueued();
+    Mail::assertNothingSent();
 
     expect(ContactMessage::query()->count())->toBe(0);
 });
