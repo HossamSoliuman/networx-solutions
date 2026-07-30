@@ -5,6 +5,10 @@ on:
     branches:
       - main
 
+concurrency:
+  group: production-ftp-deployment
+  cancel-in-progress: false
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -21,6 +25,8 @@ jobs:
           password: ${{ secrets.FTP_PASSWORD }}
           protocol: ftp
           port: 21
+          timeout: 120000
+          log-level: verbose
           local-dir: ./
           server-dir: /domains/networx-solutions.com/public_html/tst/
           exclude: |
