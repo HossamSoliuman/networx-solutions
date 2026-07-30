@@ -73,6 +73,10 @@
                     Messaging
                 </x-admin.sidebar-link>
 
+                <x-admin.sidebar-link :href="route('admin.settings.edit', 'email')" icon="send" :active="$settingsSection === 'email'">
+                    Email testing
+                </x-admin.sidebar-link>
+
                 <div class="mt-auto mb-4 border-t border-white/10 pt-4">
                     <x-admin.sidebar-link :href="route('home')" icon="external">
                         View site

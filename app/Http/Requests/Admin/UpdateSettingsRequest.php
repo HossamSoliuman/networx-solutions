@@ -64,6 +64,9 @@ class UpdateSettingsRequest extends FormRequest
                 'notification_email' => ['nullable', 'email', 'max:255'],
                 'mail_signature' => ['nullable', 'string', 'max:1000'],
             ],
+            'email' => [
+                'mail_test_recipient' => ['required', 'email', 'max:255'],
+            ],
             default => abort(404),
         };
     }

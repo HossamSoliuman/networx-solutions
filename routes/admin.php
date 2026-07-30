@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\ContactMessageReplyController;
 use App\Http\Controllers\Admin\ContactMessageStarController;
 use App\Http\Controllers\Admin\ContactMessageStatusController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\EmailTestController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\ServiceController;
 use App\Http\Controllers\Admin\SettingsController;
@@ -48,6 +49,9 @@ Route::middleware('auth')->group(function () {
     Route::put('settings/{section}', [SettingsController::class, 'update'])
         ->whereIn('section', SettingsController::SECTIONS)
         ->name('settings.update');
+    Route::post('settings/email/test', EmailTestController::class)
+        ->middleware('throttle:email-test')
+        ->name('settings.email.test');
 
     Route::get('profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::put('profile', [ProfileController::class, 'update'])->name('profile.update');

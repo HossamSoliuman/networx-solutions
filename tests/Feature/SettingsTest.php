@@ -19,7 +19,19 @@ it('renders each settings section', function (string $section, string $expected)
     ['company', 'Company identity'],
     ['seo', 'AI search'],
     ['messaging', 'Email reply signature'],
+    ['email', 'Hostinger SMTP'],
 ]);
+
+it('saves the email test recipient', function () {
+    $this->actingAs($this->user)
+        ->put(route('admin.settings.update', 'email'), [
+            'mail_test_recipient' => 'mohamed@example.com',
+        ])
+        ->assertRedirect()
+        ->assertSessionHas('success');
+
+    expect(Setting::get('mail_test_recipient'))->toBe('mohamed@example.com');
+});
 
 it('defaults to the page content section and rejects unknown sections', function () {
     $this->actingAs($this->user)
