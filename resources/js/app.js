@@ -114,7 +114,7 @@ const loadRecaptcha = () => {
     window.networxRecaptchaLoaded = () => window.dispatchEvent(new Event('recaptcha:ready'));
 
     const script = document.createElement('script');
-    script.src = 'https://www.google.com/recaptcha/api.js?onload=networxRecaptchaLoaded&render=explicit';
+    script.src = 'https://www.google.com/recaptcha/api.js?onload=networxRecaptchaLoaded&render=explicit&hl=en';
     script.async = true;
     script.defer = true;
     document.head.append(script);

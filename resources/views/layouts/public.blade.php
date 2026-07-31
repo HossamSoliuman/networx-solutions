@@ -253,7 +253,7 @@
                 </div>
 
                 <div>
-                    <p class="technical-label text-white">Talk to Networx</p>
+                    <p class="technical-label text-white">TALK TO NETWORX SOLUTIONS</p>
                     <div class="mt-5 grid gap-4 text-sm">
                         @if ($site['contact_email'])
                             <a href="mailto:{{ $site['contact_email'] }}"
