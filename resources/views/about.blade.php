@@ -21,7 +21,7 @@
                     </p>
                 @endif
                 @if ($site['linkedin_url'] || $site['facebook_url'] || $site['instagram_url'])
-                    <div class="mt-4 flex items-center justify-between gap-4 border-t border-white/10 pt-4">
+                    <div class="mt-2 flex items-center justify-between gap-4 border-t border-white/10 pt-3 sm:mt-4 sm:pt-4">
                         <p class="font-mono text-[0.65rem] font-semibold uppercase tracking-[0.16em] text-slate-400">
                             {{ __('public.about.follow_us') }}
                         </p>
