@@ -49,7 +49,7 @@ class Setting extends Model
         'instagram_url' => 'https://instagram.com/networx_solutions',
         'home_eyebrow' => 'Infrastructure that works',
         'home_title' => 'Connect. Secure. Empower.',
-        'home_intro' => 'Networx Solutions brings support, networks, cloud, security, and surveillance together under one accountable technology partner.',
+        'home_intro' => 'Networx Solutions brings IT support, networking, cloud solutions, cybersecurity, CCTV & surveillance, and Microsoft 365 into one integrated technology ecosystem—meeting all your business needs through a single trusted technology partner.',
         'home_image' => 'images/site/hero.jpg',
         'services_title' => 'One partner across your technology stack.',
         'services_intro' => 'Practical services designed around uptime, security, and the way your operation actually works.',
