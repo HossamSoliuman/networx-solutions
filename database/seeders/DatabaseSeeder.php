@@ -33,6 +33,7 @@ class DatabaseSeeder extends Seeder
             Setting::query()->firstOrCreate(['key' => $key], ['value' => $value]);
         }
 
+        $this->call(AboutContentSeeder::class);
         $this->call(ServiceSeeder::class);
 
         if (app()->environment('local')) {

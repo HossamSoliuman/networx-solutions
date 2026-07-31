@@ -283,18 +283,29 @@
                 <p>© {{ now()->year }} {{ $site['site_name'] }}. All rights reserved.</p>
 
                 <div class="flex flex-wrap items-center gap-5">
-                    @if ($site['linkedin_url'])
-                        <a href="{{ $site['linkedin_url'] }}" target="_blank" rel="noopener noreferrer"
-                            class="hover:text-white">LinkedIn</a>
-                    @endif
-                    @if ($site['facebook_url'])
-                        <a href="{{ $site['facebook_url'] }}" target="_blank" rel="noopener noreferrer"
-                            class="hover:text-white">Facebook</a>
-                    @endif
-                    @if ($site['instagram_url'])
-                        <a href="{{ $site['instagram_url'] }}" target="_blank" rel="noopener noreferrer"
-                            class="hover:text-white">Instagram</a>
-                    @endif
+                    <div class="flex items-center gap-2">
+                        @if ($site['linkedin_url'])
+                            <a href="{{ $site['linkedin_url'] }}" target="_blank" rel="noopener noreferrer"
+                                class="inline-flex size-10 items-center justify-center rounded-full border border-white/15 text-slate-400 transition duration-200 hover:-translate-y-0.5 hover:border-brand-300/60 hover:bg-brand-500/15 hover:text-white"
+                                aria-label="Visit LinkedIn (opens in a new tab)">
+                                <x-icon name="linkedin" solid class="size-4" />
+                            </a>
+                        @endif
+                        @if ($site['facebook_url'])
+                            <a href="{{ $site['facebook_url'] }}" target="_blank" rel="noopener noreferrer"
+                                class="inline-flex size-10 items-center justify-center rounded-full border border-white/15 text-slate-400 transition duration-200 hover:-translate-y-0.5 hover:border-brand-300/60 hover:bg-brand-500/15 hover:text-white"
+                                aria-label="Visit Facebook (opens in a new tab)">
+                                <x-icon name="facebook" solid class="size-4" />
+                            </a>
+                        @endif
+                        @if ($site['instagram_url'])
+                            <a href="{{ $site['instagram_url'] }}" target="_blank" rel="noopener noreferrer"
+                                class="inline-flex size-10 items-center justify-center rounded-full border border-white/15 text-slate-400 transition duration-200 hover:-translate-y-0.5 hover:border-brand-300/60 hover:bg-brand-500/15 hover:text-white"
+                                aria-label="Visit Instagram (opens in a new tab)">
+                                <x-icon name="instagram" solid class="size-4" />
+                            </a>
+                        @endif
+                    </div>
                     <span class="font-mono uppercase tracking-[0.12em]">Connect · Secure · Empower</span>
                 </div>
             </div>
