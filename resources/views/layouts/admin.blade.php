@@ -57,6 +57,10 @@
                     Website content
                 </p>
 
+                <x-admin.sidebar-link :href="route('admin.arabic-content.edit')" icon="globe" :active="request()->routeIs('admin.arabic-content.*')">
+                    Arabic content
+                </x-admin.sidebar-link>
+
                 <x-admin.sidebar-link :href="route('admin.settings.edit', 'company')" icon="building" :active="$settingsSection === 'company'">
                     Company info
                 </x-admin.sidebar-link>

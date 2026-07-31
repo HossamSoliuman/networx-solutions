@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AuthenticatedSessionController;
+use App\Http\Controllers\Admin\ArabicContentController;
 use App\Http\Controllers\Admin\ContactMessageArchiveController;
 use App\Http\Controllers\Admin\ContactMessageAssignController;
 use App\Http\Controllers\Admin\ContactMessageBulkController;
@@ -42,6 +43,9 @@ Route::middleware('auth')->group(function () {
     Route::patch('messages/{message}/archive', [ContactMessageArchiveController::class, 'update'])->name('messages.archive');
 
     Route::resource('services', ServiceController::class)->except(['show']);
+
+    Route::get('arabic-content', [ArabicContentController::class, 'edit'])->name('arabic-content.edit');
+    Route::put('arabic-content', [ArabicContentController::class, 'update'])->name('arabic-content.update');
 
     Route::get('settings/{section?}', [SettingsController::class, 'edit'])
         ->whereIn('section', SettingsController::SECTIONS)

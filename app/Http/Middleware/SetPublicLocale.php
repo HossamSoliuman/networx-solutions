@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Support\ArabicContent;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
@@ -9,6 +10,8 @@ use Symfony\Component\HttpFoundation\Response;
 
 class SetPublicLocale
 {
+    public function __construct(private ArabicContent $arabicContent) {}
+
     /**
      * Apply the visitor's preferred locale to public pages only.
      *
@@ -31,6 +34,10 @@ class SetPublicLocale
 
         $previousLocale = App::currentLocale();
         App::setLocale($locale);
+
+        if ($locale === 'ar') {
+            $this->arabicContent->applyOverrides();
+        }
 
         try {
             return $next($request);
