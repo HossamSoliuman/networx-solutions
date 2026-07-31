@@ -3,13 +3,62 @@
 @section('title', 'Page content')
 
 @section('content')
+    @php
+        $pageTabs = [
+            'home' => ['label' => 'Home', 'icon' => 'home'],
+            'services' => ['label' => 'Services', 'icon' => 'grid'],
+            'about' => ['label' => 'About', 'icon' => 'building'],
+            'contact' => ['label' => 'Contact', 'icon' => 'envelope'],
+            'cta' => ['label' => 'Call to action', 'icon' => 'send'],
+        ];
+        $tabFields = [
+            'home' => ['home_eyebrow', 'home_title', 'home_intro', 'home_image'],
+            'services' => ['services_title', 'services_intro'],
+            'about' => ['about_eyebrow', 'about_title', 'about_intro', 'about_story', 'about_image'],
+            'contact' => ['contact_eyebrow', 'contact_title', 'contact_intro', 'contact_image'],
+            'cta' => ['cta_title', 'cta_intro'],
+        ];
+        $activeTab = 'home';
+
+        foreach ($tabFields as $tab => $fields) {
+            if ($errors->hasAny($fields)) {
+                $activeTab = $tab;
+
+                break;
+            }
+        }
+    @endphp
+
     <x-admin.page-header title="Page content"
         subtitle="Copy and machine photography for every public page." />
 
-    <form method="POST" action="{{ route('admin.settings.update', 'pages') }}" enctype="multipart/form-data" class="max-w-5xl space-y-6">
+    <form method="POST" action="{{ route('admin.settings.update', 'pages') }}" enctype="multipart/form-data"
+        class="max-w-5xl space-y-6" data-page-content-tabs>
         @csrf @method('PUT')
 
-        <x-card title="Home page">
+        <nav aria-label="Public page content" class="overflow-x-auto rounded-xl bg-white shadow-sm ring-1 ring-slate-900/5">
+            <div class="flex min-w-max items-center gap-1 p-1.5 sm:min-w-0" role="tablist" data-page-content-tablist>
+                @foreach ($pageTabs as $tab => $details)
+                    <a id="page-content-tab-{{ $tab }}" href="#page-content-panel-{{ $tab }}"
+                        @class([
+                            'inline-flex min-h-11 items-center gap-2 whitespace-nowrap rounded-lg px-4 py-2.5 text-sm font-semibold transition-colors sm:flex-1 sm:justify-center',
+                            'bg-navy-950 text-white shadow-sm' => $activeTab === $tab,
+                            'text-slate-500 hover:bg-slate-100 hover:text-navy-950' => $activeTab !== $tab,
+                        ])
+                        role="tab" aria-controls="page-content-panel-{{ $tab }}"
+                        aria-selected="{{ $activeTab === $tab ? 'true' : 'false' }}"
+                        tabindex="{{ $activeTab === $tab ? '0' : '-1' }}"
+                        data-page-content-tab="{{ $tab }}">
+                        <x-icon :name="$details['icon']" class="size-4" />
+                        <span>{{ $details['label'] }}</span>
+                    </a>
+                @endforeach
+            </div>
+        </nav>
+
+        <section id="page-content-panel-home" role="tabpanel" aria-labelledby="page-content-tab-home"
+            data-page-content-panel="home" @if ($activeTab !== 'home') hidden @endif>
+            <x-card title="Home page">
             <div class="space-y-5">
                 <div>
                     <x-form.label for="home_eyebrow">Eyebrow</x-form.label>
@@ -37,9 +86,12 @@
                     <img src="{{ $settings['home_image_url'] }}" alt="" class="h-28 w-full rounded-xl object-cover ring-1 ring-slate-200">
                 </div>
             </div>
-        </x-card>
+            </x-card>
+        </section>
 
-        <x-card title="Services page">
+        <section id="page-content-panel-services" role="tabpanel" aria-labelledby="page-content-tab-services"
+            data-page-content-panel="services" @if ($activeTab !== 'services') hidden @endif>
+            <x-card title="Services page">
             <div class="space-y-5">
                 <div>
                     <x-form.label for="services_title">Page title</x-form.label>
@@ -53,9 +105,12 @@
                 </div>
                 <p class="text-xs leading-5 text-slate-400">Individual service content and photography are managed from the Services section.</p>
             </div>
-        </x-card>
+            </x-card>
+        </section>
 
-        <x-card title="About page">
+        <section id="page-content-panel-about" role="tabpanel" aria-labelledby="page-content-tab-about"
+            data-page-content-panel="about" @if ($activeTab !== 'about') hidden @endif>
+            <x-card title="About page">
             <div class="space-y-5">
                 <div>
                     <x-form.label for="about_eyebrow">Eyebrow</x-form.label>
@@ -87,9 +142,12 @@
                     <img src="{{ $settings['about_image_url'] }}" alt="" class="h-28 w-full rounded-xl object-cover ring-1 ring-slate-200">
                 </div>
             </div>
-        </x-card>
+            </x-card>
+        </section>
 
-        <x-card title="Contact page">
+        <section id="page-content-panel-contact" role="tabpanel" aria-labelledby="page-content-tab-contact"
+            data-page-content-panel="contact" @if ($activeTab !== 'contact') hidden @endif>
+            <x-card title="Contact page">
             <div class="space-y-5">
                 <div class="grid gap-5 sm:grid-cols-2">
                     <div>
@@ -118,9 +176,12 @@
                     <img src="{{ $settings['contact_image_url'] }}" alt="" class="h-28 w-full rounded-xl object-cover ring-1 ring-slate-200">
                 </div>
             </div>
-        </x-card>
+            </x-card>
+        </section>
 
-        <x-card title="Call to action">
+        <section id="page-content-panel-cta" role="tabpanel" aria-labelledby="page-content-tab-cta"
+            data-page-content-panel="cta" @if ($activeTab !== 'cta') hidden @endif>
+            <x-card title="Call to action">
             <div class="space-y-5">
                 <div>
                     <x-form.label for="cta_title">Heading</x-form.label>
@@ -133,7 +194,8 @@
                     <x-form.error field="cta_intro" />
                 </div>
             </div>
-        </x-card>
+            </x-card>
+        </section>
 
         <div class="flex justify-end">
             <x-button type="submit" variant="primary" icon="check">Save page content</x-button>

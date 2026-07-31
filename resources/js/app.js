@@ -259,6 +259,85 @@ overlay?.addEventListener('click', () => {
 });
 
 // ---------------------------------------------------------------------------
+// Page-content tabs: responsive, keyboard accessible, and validation aware.
+// ---------------------------------------------------------------------------
+document.querySelectorAll('[data-page-content-tabs]').forEach((container) => {
+    const tablist = container.querySelector('[data-page-content-tablist]');
+    const tabs = [...container.querySelectorAll('[data-page-content-tab]')];
+    const panels = [...container.querySelectorAll('[data-page-content-panel]')];
+    const inactiveClasses = ['text-slate-500', 'hover:bg-slate-100', 'hover:text-navy-950'];
+
+    if (!tablist || tabs.length === 0 || panels.length === 0) {
+        return;
+    }
+
+    const panelFor = (name) => panels.find((panel) => panel.dataset.pageContentPanel === name);
+
+    const activateTab = (name, focus = false) => {
+        if (!panelFor(name)) {
+            return;
+        }
+
+        tabs.forEach((tab) => {
+            const isActive = tab.dataset.pageContentTab === name;
+
+            tab.setAttribute('aria-selected', String(isActive));
+            tab.tabIndex = isActive ? 0 : -1;
+            tab.classList.toggle('bg-navy-950', isActive);
+            tab.classList.toggle('text-white', isActive);
+            tab.classList.toggle('shadow-sm', isActive);
+            inactiveClasses.forEach((className) => tab.classList.toggle(className, !isActive));
+        });
+
+        panels.forEach((panel) => {
+            panel.hidden = panel.dataset.pageContentPanel !== name;
+        });
+
+        if (focus) {
+            tabs.find((tab) => tab.dataset.pageContentTab === name)?.focus();
+        }
+    };
+
+    tablist.setAttribute('role', 'tablist');
+
+    tabs.forEach((tab, index) => {
+        tab.setAttribute('role', 'tab');
+        tab.setAttribute('aria-controls', panelFor(tab.dataset.pageContentTab)?.id ?? '');
+
+        tab.addEventListener('click', (event) => {
+            event.preventDefault();
+            activateTab(tab.dataset.pageContentTab);
+        });
+
+        tab.addEventListener('keydown', (event) => {
+            let targetIndex;
+
+            if (event.key === 'ArrowRight') {
+                targetIndex = (index + 1) % tabs.length;
+            } else if (event.key === 'ArrowLeft') {
+                targetIndex = (index - 1 + tabs.length) % tabs.length;
+            } else if (event.key === 'Home') {
+                targetIndex = 0;
+            } else if (event.key === 'End') {
+                targetIndex = tabs.length - 1;
+            } else {
+                return;
+            }
+
+            event.preventDefault();
+            activateTab(tabs[targetIndex].dataset.pageContentTab, true);
+        });
+    });
+
+    panels.forEach((panel) => panel.setAttribute('role', 'tabpanel'));
+
+    const initialTab = tabs.find((tab) => tab.getAttribute('aria-selected') === 'true')?.dataset.pageContentTab
+        ?? tabs[0].dataset.pageContentTab;
+
+    activateTab(initialTab);
+});
+
+// ---------------------------------------------------------------------------
 // Flash toasts fade out automatically.
 // ---------------------------------------------------------------------------
 document.querySelectorAll('[data-flash]').forEach((flash) => {
