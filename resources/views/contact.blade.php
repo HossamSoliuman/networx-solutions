@@ -96,7 +96,7 @@
                     <div class="min-w-0 xl:col-span-2">
                         <x-form.label for="name">{{ __('public.contact.name') }} <span class="text-brand-700" aria-hidden="true">*</span></x-form.label>
                         <x-form.input id="name" name="name" :value="old('name')" required autocomplete="name"
-                            :placeholder="__('public.contact.name_placeholder')" dir="auto" class="mt-1 h-10 bg-white lg:h-9"
+                            :placeholder="__('public.contact.name_placeholder')" class="mt-1 h-10 bg-white lg:h-9"
                             aria-invalid="{{ $errors->has('name') ? 'true' : 'false' }}"
                             aria-describedby="name-error" />
                         <x-form.error field="name" />
@@ -112,7 +112,7 @@
                     <div class="min-w-0 xl:col-span-2">
                         <x-form.label for="company">{{ __('public.contact.company') }}</x-form.label>
                         <x-form.input id="company" name="company" :value="old('company')" autocomplete="organization"
-                            :placeholder="__('public.contact.company_placeholder')" dir="auto" class="mt-1 h-10 bg-white lg:h-9"
+                            :placeholder="__('public.contact.company_placeholder')" class="mt-1 h-10 bg-white lg:h-9"
                             aria-invalid="{{ $errors->has('company') ? 'true' : 'false' }}"
                             aria-describedby="company-error" />
                         <x-form.error field="company" />
@@ -144,7 +144,7 @@
                     <div class="min-w-0 xl:col-span-2">
                         <x-form.label for="subject">{{ __('public.contact.subject') }} <span class="text-brand-700" aria-hidden="true">*</span></x-form.label>
                         <x-form.input id="subject" name="subject" :value="old('subject')" required
-                            :placeholder="__('public.contact.subject_placeholder')" dir="auto" class="mt-1 h-10 bg-white lg:h-9"
+                            :placeholder="__('public.contact.subject_placeholder')" class="mt-1 h-10 bg-white lg:h-9"
                             aria-invalid="{{ $errors->has('subject') ? 'true' : 'false' }}"
                             aria-describedby="subject-error" />
                         <x-form.error field="subject" />
@@ -152,7 +152,7 @@
                     <div class="min-w-0 sm:col-span-2 xl:col-span-6">
                         <x-form.label for="message">{{ __('public.contact.message') }} <span class="text-brand-700" aria-hidden="true">*</span></x-form.label>
                         <x-form.textarea id="message" name="message" rows="4" required
-                            :placeholder="__('public.contact.message_placeholder')" dir="auto"
+                            :placeholder="__('public.contact.message_placeholder')"
                             class="mt-1 min-h-32 resize-none bg-white lg:h-24 lg:min-h-24 xl:h-28 xl:min-h-28"
                             aria-invalid="{{ $errors->has('message') ? 'true' : 'false' }}"
                             aria-describedby="message-error">{{ old('message') }}</x-form.textarea>
@@ -173,7 +173,7 @@
                             data-contact-submit>
                             <span data-contact-submit-label data-idle-label="{{ __('public.contact.send') }}"
                                 data-busy-label="{{ __('public.contact.sending') }}">{{ __('public.contact.send') }}</span>
-                            <x-icon name="send" class="size-4" />
+                            <x-icon name="send" class="size-4 rtl:-scale-x-100" />
                         </button>
                     </div>
                 </form>

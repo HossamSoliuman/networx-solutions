@@ -33,7 +33,7 @@
                     <x-icon :name="$service->icon" class="size-7" />
                 </div>
 
-                <h1 class="site-reveal site-reveal-delay-1 mt-6 max-w-full break-words font-display text-[clamp(2.7rem,12vw,6rem)] font-bold leading-[0.9] tracking-[-0.045em] text-white [overflow-wrap:anywhere]">
+                <h1 class="site-reveal site-reveal-delay-1 mt-6 max-w-full break-words font-display text-[clamp(2.7rem,12vw,6rem)] font-bold leading-[0.9] tracking-[-0.045em] text-white [overflow-wrap:anywhere] lg:max-w-none lg:break-normal lg:text-[clamp(3rem,4vw,4.5rem)] lg:leading-none lg:whitespace-nowrap lg:[overflow-wrap:normal]">
                     <bdi>{{ $serviceName }}</bdi>
                 </h1>
                 <p dir="auto" class="site-reveal site-reveal-delay-2 mt-7 max-w-2xl text-pretty text-lg font-medium leading-8 text-blue-50 sm:text-xl sm:leading-9">
