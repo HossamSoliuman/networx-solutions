@@ -66,10 +66,10 @@
                 <p class="section-kicker text-brand-200">Our mission</p>
                 <div>
                     <h2 class="text-balance font-display text-4xl font-semibold leading-[1.03] tracking-[-0.035em] sm:text-5xl">
-                        Deliver reliable IT support with clear business value.
+                        Delivering reliable IT services that create real business value.
                     </h2>
                     <p class="mt-3 max-w-3xl text-base leading-7 text-slate-300">
-                        We combine excellent service, strong security, innovation, and close collaboration to support long-term growth.
+                       We combine expertise, security, innovation, and collaboration to help businesses operate more efficiently, securely, and confidently.
                     </p>
                 </div>
             </div>
