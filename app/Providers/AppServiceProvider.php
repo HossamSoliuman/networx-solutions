@@ -53,7 +53,7 @@ class AppServiceProvider extends ServiceProvider
             'contact',
         ], function (\Illuminate\View\View $view): void {
             $view
-                ->with('site', Setting::siteValues())
+                ->with('site', Setting::localizedSiteValues())
                 ->with('navigationServices', Service::query()->active()->ordered()->get(['id', 'name', 'slug']));
         });
     }

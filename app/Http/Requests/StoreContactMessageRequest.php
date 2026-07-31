@@ -68,7 +68,7 @@ class StoreContactMessageRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'company_fax.prohibited' => 'Your submission could not be processed.',
+            'company_fax.prohibited' => __('public.contact.submission_failed'),
             'g-recaptcha-response.required' => $this->recaptchaFailedMessage(),
         ];
     }
@@ -81,8 +81,8 @@ class StoreContactMessageRequest extends FormRequest
     public function attributes(): array
     {
         return [
-            'phone_country' => 'country code',
-            'phone_local' => 'phone number',
+            'phone_country' => __('public.contact.country_code'),
+            'phone_local' => __('public.contact.phone_number'),
         ];
     }
 
@@ -117,6 +117,6 @@ class StoreContactMessageRequest extends FormRequest
 
     private function recaptchaFailedMessage(): string
     {
-        return 'Please confirm you are not a robot.';
+        return __('public.contact.recaptcha_failed');
     }
 }

@@ -40,6 +40,8 @@ class ContactFormController extends Controller
             Mail::to($notificationEmail)->send(new NewContactMessageMail($message));
         }
 
-        return back()->with('contact_success', "Thank you! Your message has been received. Your reference is {$message->reference}.");
+        return back()->with('contact_success', __('public.contact.success', [
+            'reference' => $message->reference,
+        ]));
     }
 }

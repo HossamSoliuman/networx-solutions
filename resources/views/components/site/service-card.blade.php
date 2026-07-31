@@ -1,26 +1,27 @@
 @props(['service', 'index' => null, 'compact' => false])
 
 @php
-    $benefits = $service->benefitList();
+    $benefits = $service->localizedBenefitList();
+    $serviceName = $service->localizedName();
 @endphp
 
 <article
     class="group relative flex h-full flex-col overflow-hidden rounded-[1.5rem] bg-white ring-1 ring-blue-100 transition duration-300 hover:-translate-y-1 hover:ring-brand-300 hover:shadow-[0_26px_70px_-38px_rgba(0,39,114,0.55)]">
     <div class="relative overflow-hidden bg-navy-950">
-        <img src="{{ $service->imageUrl() }}" alt="{{ $service->name }}"
+        <img src="{{ $service->imageUrl() }}" alt="{{ $serviceName }}"
             class="h-44 w-full object-cover transition duration-700 group-hover:scale-[1.045] sm:h-48"
             loading="lazy">
         <div class="absolute inset-0 bg-linear-to-t from-navy-950/80 via-navy-950/5 to-transparent"></div>
 
         @if ($index)
             <span
-                class="absolute left-4 top-4 rounded-full border border-white/20 bg-navy-950/75 px-3 py-1.5 text-[0.65rem] font-bold uppercase tracking-[0.12em] text-white backdrop-blur-sm">
-                Service {{ str_pad((string) $index, 2, '0', STR_PAD_LEFT) }}
+                class="absolute start-4 top-4 rounded-full border border-white/20 bg-navy-950/75 px-3 py-1.5 text-[0.65rem] font-bold uppercase tracking-[0.12em] text-white backdrop-blur-sm">
+                {{ __('public.service.label', ['number' => str_pad((string) $index, 2, '0', STR_PAD_LEFT)]) }}
             </span>
         @endif
 
         <span
-            class="absolute bottom-4 right-4 flex size-11 items-center justify-center rounded-full border-2 border-white bg-brand-600 text-white shadow-lg">
+            class="absolute bottom-4 end-4 flex size-11 items-center justify-center rounded-full border-2 border-white bg-brand-600 text-white shadow-lg">
             <x-icon :name="$service->icon" class="size-5" />
         </span>
     </div>
@@ -30,11 +31,11 @@
             <a href="{{ route('services.show', $service) }}"
                 class="after:absolute after:inset-0"
                 aria-describedby="service-summary-{{ $service->getKey() }}">
-                {{ $service->name }}
+                <bdi>{{ $serviceName }}</bdi>
             </a>
         </h3>
-        <p id="service-summary-{{ $service->getKey() }}" class="mt-3 text-sm leading-6 text-slate-600">
-            {{ $service->excerpt }}
+        <p id="service-summary-{{ $service->getKey() }}" dir="auto" class="mt-3 text-sm leading-6 text-slate-600">
+            {{ $service->localizedExcerpt() }}
         </p>
 
         @if (! $compact && $benefits !== [])
@@ -49,9 +50,9 @@
         @endif
 
         <span class="mt-auto inline-flex items-center gap-2 pt-6 text-sm font-bold text-brand-700">
-            Explore service
+            {{ __('public.service.explore') }}
             <x-icon name="arrow-left"
-                class="size-4 rotate-180 transition-transform duration-200 group-hover:translate-x-1" />
+                class="size-4 rotate-180 transition-transform duration-200 group-hover:translate-x-1 rtl:rotate-0 rtl:group-hover:-translate-x-1" />
         </span>
     </div>
 </article>

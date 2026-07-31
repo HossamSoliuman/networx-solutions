@@ -10,6 +10,7 @@
         'Segoe UI Symbol', 'Noto Color Emoji';
     --font-display: 'Barlow Semi Condensed', 'Barlow', ui-sans-serif, system-ui, sans-serif;
     --font-mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    --font-arabic: 'Cairo', ui-sans-serif, system-ui, sans-serif;
 
     --color-brand-50: #eff8ff;
     --color-brand-100: #dff1ff;
@@ -44,6 +45,31 @@
     body {
         overflow-x: clip;
         text-rendering: optimizeLegibility;
+    }
+
+    html[dir='rtl'] body,
+    html[dir='rtl'] .font-sans,
+    html[dir='rtl'] .font-display,
+    html[dir='rtl'] .font-mono {
+        font-family: var(--font-arabic);
+    }
+
+    html[dir='rtl'] [class*='tracking-'] {
+        letter-spacing: 0;
+    }
+
+    html[dir='rtl'] .uppercase {
+        text-transform: none;
+    }
+
+    html[dir='rtl'] .technical-label,
+    html[dir='rtl'] .section-kicker {
+        letter-spacing: 0;
+        text-transform: none;
+    }
+
+    .mixed-direction {
+        unicode-bidi: plaintext;
     }
 
     a,
@@ -81,6 +107,10 @@
     .site-nav-link::after {
         content: '';
         @apply absolute inset-x-0 bottom-1 h-0.5 origin-left scale-x-0 bg-brand-600 transition-transform duration-200;
+    }
+
+    html[dir='rtl'] .site-nav-link::after {
+        transform-origin: right;
     }
 
     .site-nav-link:hover::after,
@@ -129,7 +159,7 @@
 
     .hero-step {
         @apply flex items-baseline gap-x-3 sm:gap-x-5;
-        padding-left: calc(var(--step, 0) * clamp(0.65rem, 3vw, 3.25rem));
+        padding-inline-start: calc(var(--step, 0) * clamp(0.65rem, 3vw, 3.25rem));
     }
 
     .hero-step-dot {
@@ -141,10 +171,47 @@
         animation-delay: calc(var(--step, 0) * -0.9s);
     }
 
+    .hero-step-term {
+        @apply inline-flex items-baseline gap-[0.04em] whitespace-nowrap;
+    }
+
     .site-page-title {
         font-size: clamp(2.75rem, 5.25vw, 5.75rem);
         overflow-wrap: anywhere;
         @apply text-balance font-display font-semibold leading-[0.94] tracking-[-0.04em] text-white;
+    }
+
+    html[dir='rtl'] .site-hero-title {
+        font-size: clamp(1.75rem, 3.6vw, 3.75rem);
+        line-height: 1.15;
+        letter-spacing: 0;
+        white-space: nowrap;
+    }
+
+    html[dir='rtl'] .hero-steps {
+        @apply flex-row items-baseline;
+        column-gap: clamp(0.5rem, 1vw, 0.9rem);
+        row-gap: 0;
+        white-space: nowrap;
+    }
+
+    html[dir='rtl'] .hero-step {
+        column-gap: clamp(0.3rem, 0.6vw, 0.6rem);
+        padding-inline-start: 0;
+    }
+
+    html[dir='rtl'] .section-title,
+    html[dir='rtl'] .site-page-title,
+    html[dir='rtl'] .why-choose-title {
+        line-height: 1.2;
+        letter-spacing: 0;
+    }
+
+    @media (min-width: 64rem) {
+        html[dir='rtl'] .why-choose-title {
+            font-size: 3rem;
+            white-space: nowrap;
+        }
     }
 
     .button-primary {
@@ -231,9 +298,21 @@
             linear-gradient(0deg, rgb(7 52 111 / 0.22), transparent 45%);
     }
 
+    html[dir='rtl'] .hero-image-shade {
+        background:
+            linear-gradient(270deg, rgb(7 52 111 / 0.9) 0%, rgb(6 68 135 / 0.72) 42%, rgb(0 128 252 / 0.24) 72%, rgb(0 128 252 / 0.08) 100%),
+            linear-gradient(0deg, rgb(7 52 111 / 0.22), transparent 45%);
+    }
+
     .page-hero-image-shade {
         background:
             linear-gradient(90deg, rgb(7 52 111 / 0.88) 0%, rgb(6 68 135 / 0.68) 48%, rgb(0 128 252 / 0.18) 100%),
+            linear-gradient(0deg, rgb(7 52 111 / 0.2), transparent 48%);
+    }
+
+    html[dir='rtl'] .page-hero-image-shade {
+        background:
+            linear-gradient(270deg, rgb(7 52 111 / 0.88) 0%, rgb(6 68 135 / 0.68) 48%, rgb(0 128 252 / 0.18) 100%),
             linear-gradient(0deg, rgb(7 52 111 / 0.2), transparent 48%);
     }
 
@@ -241,6 +320,20 @@
         background:
             linear-gradient(90deg, rgb(7 52 111 / 0.92) 0%, rgb(6 68 135 / 0.8) 34%, rgb(0 128 252 / 0.34) 58%, rgb(0 128 252 / 0.05) 100%),
             linear-gradient(0deg, rgb(7 52 111 / 0.24), transparent 52%);
+    }
+
+    html[dir='rtl'] .service-hero-shade {
+        background:
+            linear-gradient(270deg, rgb(7 52 111 / 0.92) 0%, rgb(6 68 135 / 0.8) 34%, rgb(0 128 252 / 0.34) 58%, rgb(0 128 252 / 0.05) 100%),
+            linear-gradient(0deg, rgb(7 52 111 / 0.24), transparent 52%);
+    }
+
+    .contact-page-shade {
+        background: linear-gradient(90deg, rgb(7 52 111 / 0.18) 0%, rgb(7 52 111 / 0.72) 42%, rgb(7 52 111 / 0.94) 100%);
+    }
+
+    html[dir='rtl'] .contact-page-shade {
+        background: linear-gradient(270deg, rgb(7 52 111 / 0.18) 0%, rgb(7 52 111 / 0.72) 42%, rgb(7 52 111 / 0.94) 100%);
     }
 
     .bg-service-circuit {
@@ -292,7 +385,7 @@
 
     .network-node::after {
         position: absolute;
-        right: 0.75rem;
+        inset-inline-end: 0.75rem;
         width: 0.25rem;
         height: 0.25rem;
         content: '';
@@ -462,15 +555,15 @@
 
 @keyframes handoff-signal {
     0% {
-        left: 0;
+        inset-inline-start: 0;
     }
 
     50% {
-        left: calc(100% - 0.5rem);
+        inset-inline-start: calc(100% - 0.5rem);
     }
 
     100% {
-        left: 0;
+        inset-inline-start: 0;
     }
 }
 
@@ -490,6 +583,24 @@
     .service-hero-shade {
         background:
             linear-gradient(90deg, rgb(7 52 111 / 0.9), rgb(0 128 252 / 0.5)),
+            linear-gradient(0deg, rgb(7 52 111 / 0.3), transparent 58%);
+    }
+
+    html[dir='rtl'] .hero-image-shade {
+        background:
+            linear-gradient(270deg, rgb(7 52 111 / 0.88), rgb(0 128 252 / 0.46)),
+            linear-gradient(0deg, rgb(7 52 111 / 0.3), transparent 55%);
+    }
+
+    html[dir='rtl'] .page-hero-image-shade {
+        background:
+            linear-gradient(270deg, rgb(7 52 111 / 0.88), rgb(0 128 252 / 0.48)),
+            linear-gradient(0deg, rgb(7 52 111 / 0.3), transparent 55%);
+    }
+
+    html[dir='rtl'] .service-hero-shade {
+        background:
+            linear-gradient(270deg, rgb(7 52 111 / 0.9), rgb(0 128 252 / 0.5)),
             linear-gradient(0deg, rgb(7 52 111 / 0.3), transparent 58%);
     }
 }

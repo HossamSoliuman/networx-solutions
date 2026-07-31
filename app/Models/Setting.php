@@ -24,7 +24,7 @@ class Setting extends Model
         'instagram_url' => 'https://instagram.com/networx_solutions',
         'home_eyebrow' => 'Infrastructure that works',
         'home_title' => 'Connect. Secure. Empower.',
-        'home_intro' => 'Networx brings support, networks, cloud, security, and surveillance together under one accountable technology partner.',
+        'home_intro' => 'Networx Solutions brings support, networks, cloud, security, and surveillance together under one accountable technology partner.',
         'home_image' => 'images/site/hero.jpg',
         'services_title' => 'One partner across your technology stack.',
         'services_intro' => 'Practical services designed around uptime, security, and the way your operation actually works.',
@@ -80,6 +80,27 @@ class Setting extends Model
 
         foreach (['home_image', 'about_image', 'contact_image'] as $imageKey) {
             $values[$imageKey.'_url'] = self::publicImageUrl($values[$imageKey]);
+        }
+
+        return $values;
+    }
+
+    /**
+     * @return array<string, string>
+     */
+    public static function localizedSiteValues(): array
+    {
+        $values = self::siteValues();
+        $translations = trans('site');
+
+        if (! is_array($translations)) {
+            return $values;
+        }
+
+        foreach ($translations as $key => $translation) {
+            if (is_string($translation) && array_key_exists($key, $values)) {
+                $values[$key] = $translation;
+            }
         }
 
         return $values;

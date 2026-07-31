@@ -3,7 +3,7 @@
 
 @section('content')
     <section class="home-hero relative isolate overflow-hidden bg-navy-950 text-white">
-        <img src="{{ $site['home_image_url'] }}" alt="Operational server infrastructure"
+        <img src="{{ $site['home_image_url'] }}" alt="{{ __('public.home.image_alt') }}"
             class="hero-network-image absolute inset-0 -z-30 h-full w-full object-cover object-[58%_center] opacity-70 sm:opacity-80"
             fetchpriority="high">
         <div class="hero-image-shade absolute inset-0 -z-20"></div>
@@ -27,7 +27,7 @@
                             @foreach ($heroSteps as $index => $term)
                                 <span class="hero-step site-reveal" style="--step: {{ $index }}; animation-delay: {{ 120 + $index * 130 }}ms">
                                     <span class="hero-step-dot" aria-hidden="true"></span>
-                                    <span class="hero-step-term">{{ $term }}.</span>
+                                    <span class="hero-step-term"><span>{{ $term }}</span><span>.</span></span>
                                 </span>
                             @endforeach
                         </span>
@@ -41,19 +41,19 @@
 
                 <div class="site-reveal site-reveal-delay-3 mt-7 flex flex-col gap-3 sm:flex-row">
                     <a href="{{ route('contact') }}" data-modal-open="contact-modal" class="button-primary">
-                        Discuss your requirements
-                        <x-icon name="arrow-left" class="size-4 rotate-180" />
+                        {{ __('public.home.discuss_requirements') }}
+                        <x-icon name="arrow-left" class="size-4 rotate-180 rtl:rotate-0" />
                     </a>
                     <a href="{{ route('services.index') }}" class="button-ghost-light">
-                        Explore our services
+                        {{ __('public.home.explore_services') }}
                     </a>
                 </div>
 
                 <div class="site-reveal site-reveal-delay-3 mt-8 flex flex-wrap gap-x-6 gap-y-3 border-t border-white/10 pt-5">
-                    @foreach (['Support', 'Networks', 'Cloud', 'Security', 'Surveillance', 'Microsoft 365'] as $capability)
+                    @foreach (__('public.home.capability_labels') as $capability)
                         <span class="flex items-center gap-2 text-xs font-semibold text-slate-400">
                             <span class="size-1 rounded-full bg-signal-400"></span>
-                            {{ $capability }}
+                            <bdi>{{ $capability }}</bdi>
                         </span>
                     @endforeach
                 </div>
@@ -64,13 +64,13 @@
                     class="hero-operations-card relative min-w-0 w-full overflow-hidden rounded-[2rem] border border-white/15 bg-navy-950/90 p-5 shadow-[0_35px_100px_-35px_rgba(0,0,0,0.8)] backdrop-blur-md sm:p-7 lg:w-[31rem]">
                     <div class="flex items-center justify-between gap-4 border-b border-white/10 pb-5">
                         <div>
-                            <p class="technical-label text-slate-500">Infrastructure view</p>
-                            <p class="mt-1 font-display text-lg font-bold text-white">One operating picture</p>
+                            <p class="technical-label text-slate-500">{{ __('public.home.infrastructure_view') }}</p>
+                            <p class="mt-1 font-display text-lg font-bold text-white">{{ __('public.home.operating_picture') }}</p>
                         </div>
                         <span
                             class="inline-flex items-center gap-2 rounded-full border border-signal-400/20 bg-signal-400/10 px-3 py-1.5 font-mono text-[0.62rem] font-semibold uppercase tracking-[0.12em] text-signal-200">
                             <span class="status-pulse size-1.5 rounded-full bg-signal-400"></span>
-                            Connected
+                            {{ __('public.home.connected') }}
                         </span>
                     </div>
 
@@ -84,7 +84,7 @@
                                         class="flex size-9 shrink-0 items-center justify-center rounded-xl bg-brand-400/10 text-brand-200">
                                         <x-icon :name="$service->icon" class="size-4" />
                                     </span>
-                                    <span class="min-w-0 break-words text-xs font-bold leading-5 text-slate-200">{{ $service->name }}</span>
+                                    <bdi class="min-w-0 break-words text-xs font-bold leading-5 text-slate-200">{{ $service->localizedName() }}</bdi>
                                 </a>
                             @endforeach
                         </div>
@@ -93,27 +93,27 @@
                     <div class="grid grid-cols-3 gap-px overflow-hidden rounded-2xl bg-white/10">
                         <div class="bg-navy-900/90 p-4">
                             <p class="font-display text-2xl font-bold text-white">{{ str_pad((string) $services->count(), 2, '0', STR_PAD_LEFT) }}</p>
-                            <p class="technical-label mt-1 text-slate-500">Capabilities</p>
+                            <p class="technical-label mt-1 text-slate-500">{{ __('public.home.capabilities') }}</p>
                         </div>
                         <div class="bg-navy-900/90 p-4">
                             <p class="font-display text-2xl font-bold text-white">01</p>
-                            <p class="technical-label mt-1 text-slate-500">Partner</p>
+                            <p class="technical-label mt-1 text-slate-500">{{ __('public.home.partner') }}</p>
                         </div>
                         <div class="bg-navy-900/90 p-4">
                             <p class="font-display text-2xl font-bold text-white">04</p>
-                            <p class="technical-label mt-1 text-slate-500">Stages</p>
+                            <p class="technical-label mt-1 text-slate-500">{{ __('public.home.stages') }}</p>
                         </div>
                     </div>
                 </div>
 
                 <div
-                    class="hero-delivery-badge absolute -bottom-10 -left-5 hidden items-center gap-3 rounded-2xl border border-white/10 bg-white px-4 py-3 text-navy-950 shadow-xl sm:flex">
+                    class="hero-delivery-badge absolute -bottom-10 -start-5 hidden items-center gap-3 rounded-2xl border border-white/10 bg-white px-4 py-3 text-navy-950 shadow-xl sm:flex">
                     <span class="flex size-9 items-center justify-center rounded-full bg-signal-300/20 text-signal-500">
                         <x-icon name="check" class="size-4" />
                     </span>
                     <span>
-                        <span class="technical-label block text-slate-400">Delivery principle</span>
-                        <span class="mt-1 block text-sm font-bold">Clear ownership end to end</span>
+                        <span class="technical-label block text-slate-400">{{ __('public.home.delivery_principle') }}</span>
+                        <span class="mt-1 block text-sm font-bold">{{ __('public.home.clear_ownership') }}</span>
                     </span>
                 </div>
             </div>
@@ -122,19 +122,14 @@
 
     <section class="border-b border-slate-200 bg-slate-200">
         <div class="mx-auto grid max-w-[90rem] gap-px sm:grid-cols-2 lg:grid-cols-4">
-            @foreach ([
-                ['network', 'One accountable team', 'Connected decisions across the stack.'],
-                ['shield', 'Secure by design', 'Risk considered from the first decision.'],
-                ['check', 'Documented delivery', 'Clear scope, handover, and next steps.'],
-                ['cog', 'Built to be maintained', 'Practical systems your team can operate.'],
-            ] as [$icon, $title, $copy])
+            @foreach (__('public.home.proof_points') as $point)
                 <div class="flex gap-4 bg-paper px-5 py-7 sm:px-8 lg:px-7">
                     <span class="flex size-10 shrink-0 items-center justify-center rounded-full bg-brand-50 text-brand-700">
-                        <x-icon :name="$icon" class="size-4.5" />
+                        <x-icon :name="$point['icon']" class="size-4.5" />
                     </span>
                     <div>
-                        <h2 class="font-display text-sm font-bold text-navy-950">{{ $title }}</h2>
-                        <p class="mt-1 text-xs leading-5 text-slate-500">{{ $copy }}</p>
+                        <h2 class="font-display text-sm font-bold text-navy-950">{{ $point['title'] }}</h2>
+                        <p class="mt-1 text-xs leading-5 text-slate-500">{{ $point['copy'] }}</p>
                     </div>
                 </div>
             @endforeach
@@ -146,7 +141,7 @@
 
         <div class="mx-auto max-w-[90rem] px-5 sm:px-8 lg:px-12">
             <div class="grid gap-5 border-b border-slate-300 pb-7 lg:grid-cols-[0.58fr_1.42fr] lg:items-start" data-reveal>
-                <p class="section-kicker">Connected capabilities</p>
+                <p class="section-kicker">{{ __('public.home.connected_capabilities') }}</p>
                 <div>
                     <h2 class="section-title">{{ $site['services_title'] }}</h2>
                     <p class="mt-3 max-w-2xl text-base leading-7 text-slate-600 sm:text-lg sm:leading-8">
@@ -165,8 +160,8 @@
 
             <div class="mt-8 flex justify-end">
                 <a href="{{ route('services.index') }}" class="text-link">
-                    View the complete service catalogue
-                    <x-icon name="arrow-left" class="size-4 rotate-180" />
+                    {{ __('public.home.view_catalogue') }}
+                    <x-icon name="arrow-left" class="size-4 rotate-180 rtl:rotate-0" />
                 </a>
             </div>
         </div>
@@ -179,48 +174,38 @@
         <div class="mx-auto max-w-[90rem] px-5 sm:px-8 lg:px-12">
             <div class="grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:gap-16">
                 <div data-reveal>
-                    <p class="section-kicker text-brand-200">Why choose us</p>
-                    <h2 class="mt-5 text-balance font-display text-4xl font-semibold leading-[1.03] tracking-[-0.035em] sm:text-5xl lg:text-6xl">
-                        Why choose Networx Solutions?
+                    <p class="section-kicker text-brand-200">{{ __('public.home.why_choose_us') }}</p>
+                    <h2 class="why-choose-title mixed-direction mt-5 text-balance font-display text-4xl font-semibold leading-[1.03] tracking-[-0.035em] sm:text-5xl lg:text-6xl">
+                        {{ __('public.home.why_choose_title') }}
                     </h2>
                     <p class="mt-5 max-w-xl text-lg leading-8 text-slate-300">
-                        Choosing the right IT support partner is crucial for your business’s success. Our dedicated team is committed to handling your IT support needs so you can focus on growing your business.
+                        {{ __('public.home.why_choose_intro') }}
                     </p>
                     <a href="{{ route('about') }}" class="mt-7 inline-flex items-center gap-2 text-sm font-bold text-brand-200">
-                        More about Networx Solutions
-                        <x-icon name="arrow-left" class="size-4 rotate-180" />
+                        {{ __('public.home.more_about') }}
+                        <x-icon name="arrow-left" class="size-4 rotate-180 rtl:rotate-0" />
                     </a>
                 </div>
 
                 <div class="grid gap-px overflow-hidden rounded-[2rem] bg-white/10 sm:grid-cols-2" data-reveal>
-                    @foreach ([
-                        ['users', 'Expertise and experience', 'Highly skilled professionals bring extensive IT support experience to every project.'],
-                        ['eye', 'Customer-centric approach', 'We work closely with you to understand your challenges and align solutions with your business objectives.'],
-                        ['cog', 'Proactive support', 'Monitoring and maintenance identify potential problems early, minimizing downtime.'],
-                        ['shield', 'Security focused', 'Robust cybersecurity measures and proactive threat management protect your digital assets.'],
-                    ] as [$icon, $title, $copy])
+                    @foreach (__('public.home.choice_cards') as $card)
                         <article class="bg-navy-900/80 p-6 sm:p-7">
-                            <x-icon :name="$icon" class="size-5 text-signal-300" />
-                            <h3 class="mt-4 font-display text-xl font-semibold text-white">{{ $title }}</h3>
-                            <p class="mt-3 text-sm leading-7 text-slate-400">{{ $copy }}</p>
+                            <x-icon :name="$card['icon']" class="size-5 text-signal-300" />
+                            <h3 class="mt-4 font-display text-xl font-semibold text-white">{{ $card['title'] }}</h3>
+                            <p class="mt-3 text-sm leading-7 text-slate-400">{{ $card['copy'] }}</p>
                         </article>
                     @endforeach
                 </div>
             </div>
 
             <div class="mt-12 border-t border-white/10 pt-8" data-reveal>
-                <p class="technical-label text-slate-500">IT support that grows with you</p>
+                <p class="technical-label text-slate-500">{{ __('public.home.support_grows') }}</p>
                 <div class="mt-6 grid gap-7 sm:grid-cols-2 lg:grid-cols-4">
-                    @foreach ([
-                        ['01', 'Comprehensive services', 'Troubleshooting, system maintenance, network management, and cybersecurity under one roof.'],
-                        ['02', 'Reliability and trust', 'Consistent, dependable support and long-term relationships built on trust.'],
-                        ['03', 'Scalable support', 'Solutions designed to grow with your business and expanding operations.'],
-                        ['04', '24/7 availability', 'Round-the-clock assistance whenever an IT issue arises.'],
-                    ] as [$number, $title, $copy])
-                        <div class="relative border-l border-white/15 pl-5">
-                            <span class="font-mono text-xs font-semibold text-brand-300">{{ $number }}</span>
-                            <h3 class="mt-3 font-display text-lg font-semibold text-white">{{ $title }}</h3>
-                            <p class="mt-2 text-sm leading-6 text-slate-400">{{ $copy }}</p>
+                    @foreach (__('public.home.growth_points') as $point)
+                        <div class="relative border-s border-white/15 ps-5">
+                            <span class="font-mono text-xs font-semibold text-brand-300">{{ $point['number'] }}</span>
+                            <h3 class="mt-3 font-display text-lg font-semibold text-white">{{ $point['title'] }}</h3>
+                            <p class="mt-2 text-sm leading-6 text-slate-400">{{ $point['copy'] }}</p>
                         </div>
                     @endforeach
                 </div>
@@ -230,27 +215,27 @@
 
     <div id="operational-handoff" class="section-handoff border-b border-slate-200 bg-paper">
         <div class="mx-auto flex min-h-16 max-w-[90rem] items-center gap-5 px-5 sm:px-8 lg:px-12">
-            <span class="technical-label shrink-0 text-brand-700">Design to operations</span>
+            <span class="technical-label shrink-0 text-brand-700">{{ __('public.home.design_to_operations') }}</span>
             <span class="handoff-track relative h-px flex-1 bg-slate-300" aria-hidden="true">
-                <span class="absolute left-1/4 top-1/2 size-1.5 -translate-y-1/2 rounded-full bg-brand-500"></span>
-                <span class="absolute left-1/2 top-1/2 size-1.5 -translate-y-1/2 rounded-full bg-brand-500"></span>
-                <span class="absolute left-3/4 top-1/2 size-1.5 -translate-y-1/2 rounded-full bg-brand-500"></span>
-                <span class="handoff-signal absolute left-0 top-1/2 size-2 -translate-y-1/2 rounded-full bg-signal-400"></span>
+                <span class="absolute start-1/4 top-1/2 size-1.5 -translate-y-1/2 rounded-full bg-brand-500"></span>
+                <span class="absolute start-1/2 top-1/2 size-1.5 -translate-y-1/2 rounded-full bg-brand-500"></span>
+                <span class="absolute start-3/4 top-1/2 size-1.5 -translate-y-1/2 rounded-full bg-brand-500"></span>
+                <span class="handoff-signal absolute start-0 top-1/2 size-2 -translate-y-1/2 rounded-full bg-signal-400"></span>
             </span>
-            <span class="technical-label hidden shrink-0 text-slate-500 sm:inline">One accountable team</span>
+            <span class="technical-label hidden shrink-0 text-slate-500 sm:inline">{{ __('public.home.accountable_team') }}</span>
         </div>
     </div>
 
     <section class="overflow-hidden bg-paper">
         <div class="mx-auto grid max-w-[90rem] lg:grid-cols-2">
             <div class="relative min-h-[28rem] lg:min-h-[40rem]" data-reveal>
-                <img src="{{ $site['about_image_url'] }}" alt="Enterprise network switching equipment"
+                <img src="{{ $site['about_image_url'] }}" alt="{{ __('public.home.about_image_alt') }}"
                     class="absolute inset-0 h-full w-full object-cover" loading="lazy">
                 <div class="absolute inset-0 bg-linear-to-t from-navy-950/75 via-transparent to-transparent"></div>
                 <div class="absolute inset-x-5 bottom-5 flex items-end justify-between gap-6 rounded-2xl border border-white/15 bg-navy-950/75 p-5 text-white backdrop-blur-md sm:inset-x-8 sm:bottom-8">
                     <div>
-                        <p class="technical-label text-brand-200">What we deliver</p>
-                        <p class="mt-2 max-w-sm font-display text-xl font-bold">Efficiency, security, and growth.</p>
+                        <p class="technical-label text-brand-200">{{ __('public.home.what_we_deliver') }}</p>
+                        <p class="mt-2 max-w-sm font-display text-xl font-bold">{{ __('public.home.efficiency_security_growth') }}</p>
                     </div>
                     <span class="hidden size-11 items-center justify-center rounded-full bg-signal-300/15 text-signal-300 sm:flex">
                         <x-icon name="check" class="size-5" />
@@ -265,24 +250,20 @@
                     <p class="mt-6 text-lg leading-8 text-slate-600">{{ $site['about_intro'] }}</p>
 
                     <div class="mt-9 grid gap-5">
-                        @foreach ([
-                            ['Software development', 'High-quality software development shaped around client needs.'],
-                            ['Cybersecurity', 'Robust cybersecurity measures that protect digital assets.'],
-                            ['IT consulting', 'Expert advice and customized solutions that support long-term growth.'],
-                        ] as [$title, $copy])
+                        @foreach (__('public.home.about_services') as $serviceSummary)
                             <div class="flex gap-4 border-t border-slate-200 pt-5">
                                 <span class="mt-1 size-2 shrink-0 rounded-full bg-brand-500"></span>
                                 <div>
-                                    <h3 class="font-display font-bold text-navy-950">{{ $title }}</h3>
-                                    <p class="mt-1.5 text-sm leading-6 text-slate-600">{{ $copy }}</p>
+                                    <h3 class="font-display font-bold text-navy-950">{{ $serviceSummary['title'] }}</h3>
+                                    <p class="mt-1.5 text-sm leading-6 text-slate-600">{{ $serviceSummary['copy'] }}</p>
                                 </div>
                             </div>
                         @endforeach
                     </div>
 
                     <a href="{{ route('about') }}" class="text-link mt-9">
-                        More about Networx
-                        <x-icon name="arrow-left" class="size-4 rotate-180" />
+                        {{ __('public.home.more_about_short') }}
+                        <x-icon name="arrow-left" class="size-4 rotate-180 rtl:rotate-0" />
                     </a>
                 </div>
             </div>

@@ -4,7 +4,7 @@
 
 @if ($successMessage || session('error'))
     <div data-flash role="{{ $successMessage ? 'status' : 'alert' }}"
-        class="pointer-events-auto fixed right-4 top-4 z-50 flex max-w-sm items-start gap-3 rounded-xl bg-white p-4 shadow-lg ring-1 ring-slate-900/10 transition-all duration-300">
+        class="pointer-events-auto fixed end-4 top-4 z-50 flex max-w-sm items-start gap-3 rounded-xl bg-white p-4 shadow-lg ring-1 ring-slate-900/10 transition-all duration-300">
         @if ($successMessage)
             <span class="mt-0.5 flex size-6 shrink-0 items-center justify-center rounded-full bg-emerald-100 text-emerald-600">
                 <x-icon name="check" class="size-3.5" />

@@ -16,8 +16,8 @@
 
     <div class="bg-machine-grid absolute inset-0 -z-10 opacity-45"></div>
     <div class="bg-signal-glow absolute inset-0 -z-10"></div>
-    <div class="absolute inset-y-0 right-[9%] -z-10 hidden w-px bg-white/10 lg:block"></div>
-    <div class="absolute right-[9%] top-12 -z-10 hidden font-mono text-[0.6rem] uppercase tracking-[0.2em] text-white/35 lg:block">
+    <div class="absolute inset-y-0 end-[9%] -z-10 hidden w-px bg-white/10 lg:block"></div>
+    <div class="absolute end-[9%] top-12 -z-10 hidden font-mono text-[0.6rem] uppercase tracking-[0.2em] text-white/35 lg:block" dir="ltr">
         NX / OPERATIONS
     </div>
 
@@ -33,9 +33,9 @@
                 </div>
             @endisset
 
-            <p class="site-reveal section-kicker text-brand-200">{{ $eyebrow }}</p>
-            <h1 class="site-reveal site-reveal-delay-1 site-page-title mt-6">{{ $title }}</h1>
-            <p class="site-reveal site-reveal-delay-2 mt-7 max-w-3xl text-pretty text-lg leading-8 text-slate-300 sm:text-xl sm:leading-9">
+            <p class="site-reveal section-kicker text-brand-200"><bdi>{{ $eyebrow }}</bdi></p>
+            <h1 class="site-reveal site-reveal-delay-1 site-page-title mt-6"><bdi>{{ $title }}</bdi></h1>
+            <p class="site-reveal site-reveal-delay-2 mixed-direction mt-7 max-w-3xl text-pretty text-lg leading-8 text-slate-300 sm:text-xl sm:leading-9">
                 {{ $intro }}
             </p>
         </div>

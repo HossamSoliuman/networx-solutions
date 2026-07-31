@@ -13,7 +13,10 @@ const setSiteMenuState = (isOpen) => {
 
     siteMenu?.classList.toggle('hidden', !isOpen);
     siteMenuToggle?.setAttribute('aria-expanded', String(isOpen));
-    siteMenuToggle?.setAttribute('aria-label', isOpen ? 'Close navigation' : 'Open navigation');
+    siteMenuToggle?.setAttribute(
+        'aria-label',
+        isOpen ? siteMenuToggle.dataset.closeLabel : siteMenuToggle.dataset.openLabel,
+    );
     siteMenuOpenIcon?.classList.toggle('hidden', isOpen);
     siteMenuCloseIcon?.classList.toggle('hidden', !isOpen);
     document.body.classList.toggle('overflow-hidden', isOpen);
@@ -80,7 +83,7 @@ const setContactFormSubmitting = (form, isSubmitting) => {
     }
 
     if (submitLabel) {
-        submitLabel.textContent = isSubmitting ? 'Sending enquiry...' : 'Send enquiry';
+        submitLabel.textContent = isSubmitting ? submitLabel.dataset.busyLabel : submitLabel.dataset.idleLabel;
     }
 };
 
@@ -114,7 +117,9 @@ const loadRecaptcha = () => {
     window.networxRecaptchaLoaded = () => window.dispatchEvent(new Event('recaptcha:ready'));
 
     const script = document.createElement('script');
-    script.src = 'https://www.google.com/recaptcha/api.js?onload=networxRecaptchaLoaded&render=explicit&hl=en';
+    const recaptchaLocale = document.documentElement.lang.startsWith('ar') ? 'ar' : 'en';
+
+    script.src = `https://www.google.com/recaptcha/api.js?onload=networxRecaptchaLoaded&render=explicit&hl=${recaptchaLocale}`;
     script.async = true;
     script.defer = true;
     document.head.append(script);
