@@ -92,16 +92,16 @@
 
                     <div class="grid grid-cols-3 gap-px overflow-hidden rounded-2xl bg-white/10 text-center">
                         <div class="min-w-0 bg-navy-900/90 px-2 py-4 sm:p-4">
-                            <p class="font-display text-2xl font-bold text-white">{{ str_pad((string) $services->count(), 2, '0', STR_PAD_LEFT) }}</p>
-                            <p class="technical-label mt-1 text-[0.6rem] tracking-[0.08em] text-slate-500 sm:text-[0.68rem] sm:tracking-[0.16em]">{{ __('public.home.capabilities') }}</p>
+                            <p class="font-display text-3xl font-bold leading-none text-white">{{ str_pad((string) $services->count(), 2, '0', STR_PAD_LEFT) }}</p>
+                            <p class="technical-label mt-2 text-xs leading-4 tracking-[0.06em] text-slate-200 sm:tracking-[0.12em]">{{ __('public.home.capabilities') }}</p>
                         </div>
                         <div class="min-w-0 bg-navy-900/90 px-2 py-4 sm:p-4">
-                            <p class="font-display text-2xl font-bold text-white">01</p>
-                            <p class="technical-label mt-1 text-[0.6rem] tracking-[0.08em] text-slate-500 sm:text-[0.68rem] sm:tracking-[0.16em]">{{ __('public.home.partner') }}</p>
+                            <p class="font-display text-3xl font-bold leading-none text-white">01</p>
+                            <p class="technical-label mt-2 text-xs leading-4 tracking-[0.06em] text-slate-200 sm:tracking-[0.12em]">{{ __('public.home.partner') }}</p>
                         </div>
                         <div class="min-w-0 bg-navy-900/90 px-2 py-4 sm:p-4">
-                            <p class="font-display text-2xl font-bold text-white">04</p>
-                            <p class="technical-label mt-1 text-[0.6rem] tracking-[0.08em] text-slate-500 sm:text-[0.68rem] sm:tracking-[0.16em]">{{ __('public.home.stages') }}</p>
+                            <p class="font-display text-3xl font-bold leading-none text-white">04</p>
+                            <p class="technical-label mt-2 text-xs leading-4 tracking-[0.06em] text-slate-200 sm:tracking-[0.12em]">{{ __('public.home.stages') }}</p>
                         </div>
                     </div>
                 </div>
