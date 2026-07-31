@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Support\Facades\Lang;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
@@ -18,13 +18,18 @@ class Service extends Model
 
     protected $fillable = [
         'name',
+        'name_ar',
         'slug',
         'icon',
         'excerpt',
+        'excerpt_ar',
         'description',
+        'description_ar',
         'image_path',
         'benefits',
+        'benefits_ar',
         'details',
+        'details_ar',
         'sort_order',
         'is_active',
     ];
@@ -49,6 +54,7 @@ class Service extends Model
             'is_active' => 'boolean',
             'sort_order' => 'integer',
             'details' => 'array',
+            'details_ar' => 'json:unicode',
         ];
     }
 
@@ -90,13 +96,7 @@ class Service extends Model
      */
     public function benefitList(): array
     {
-        return Str::of($this->benefits ?? '')
-            ->replace("\r\n", "\n")
-            ->explode("\n")
-            ->map(fn (string $benefit): string => Str::squish($benefit))
-            ->filter()
-            ->values()
-            ->all();
+        return $this->splitBenefits($this->benefits);
     }
 
     /**
@@ -122,17 +122,17 @@ class Service extends Model
 
     public function localizedName(): string
     {
-        return $this->translatedString('name', $this->name);
+        return $this->localizedString('name_ar', $this->name);
     }
 
     public function localizedExcerpt(): string
     {
-        return $this->translatedString('excerpt', $this->excerpt);
+        return $this->localizedString('excerpt_ar', $this->excerpt);
     }
 
     public function localizedDescription(): string
     {
-        return $this->translatedString('description', $this->description ?? '');
+        return $this->localizedString('description_ar', $this->description ?? '');
     }
 
     /**
@@ -140,18 +140,11 @@ class Service extends Model
      */
     public function localizedBenefitList(): array
     {
-        $benefits = $this->benefitList();
-        $translations = $this->translatedArray('benefits');
-
-        if ($translations === null) {
-            return $benefits;
+        if (! App::isLocale('ar') || blank($this->benefits_ar)) {
+            return $this->benefitList();
         }
 
-        return collect($benefits)
-            ->map(fn (string $benefit, int $index): string => is_string($translations[$index] ?? null)
-                ? $translations[$index]
-                : $benefit)
-            ->all();
+        return $this->splitBenefits($this->benefits_ar);
     }
 
     /**
@@ -173,26 +166,28 @@ class Service extends Model
     public function localizedStatement(): ?string
     {
         $statement = $this->statement();
+        $localizedStatement = $this->arabicDetails()['statement'] ?? null;
 
-        return $statement === null ? null : $this->translatedString('statement', $statement);
+        return App::isLocale('ar') && is_string($localizedStatement) && filled($localizedStatement)
+            ? $localizedStatement
+            : $statement;
     }
 
-    private function translatedString(string $key, string $fallback): string
+    private function localizedString(string $arabicAttribute, string $fallback): string
     {
-        $translationKey = "services.catalog.{$this->slug}.{$key}";
+        $arabicValue = $this->getAttribute($arabicAttribute);
 
-        return Lang::has($translationKey) ? trans($translationKey) : $fallback;
+        return App::isLocale('ar') && is_string($arabicValue) && filled($arabicValue)
+            ? $arabicValue
+            : $fallback;
     }
 
     /**
-     * @return array<mixed>|null
+     * @return array<string, mixed>
      */
-    private function translatedArray(string $key): ?array
+    private function arabicDetails(): array
     {
-        $translationKey = "services.catalog.{$this->slug}.{$key}";
-        $translation = Lang::has($translationKey) ? trans($translationKey) : null;
-
-        return is_array($translation) ? $translation : null;
+        return is_array($this->details_ar) ? $this->details_ar : [];
     }
 
     /**
@@ -201,9 +196,9 @@ class Service extends Model
      */
     private function localizedDetailItems(string $key, array $items): array
     {
-        $translations = $this->translatedArray($key);
+        $translations = $this->arabicDetails()[$key] ?? null;
 
-        if ($translations === null) {
+        if (! App::isLocale('ar') || ! is_array($translations)) {
             return $items;
         }
 
@@ -217,6 +212,20 @@ class Service extends Model
                     'icon' => $item['icon'],
                 ];
             })
+            ->all();
+    }
+
+    /**
+     * @return list<string>
+     */
+    private function splitBenefits(?string $benefits): array
+    {
+        return Str::of($benefits ?? '')
+            ->replace("\r\n", "\n")
+            ->explode("\n")
+            ->map(fn (string $benefit): string => Str::squish($benefit))
+            ->filter()
+            ->values()
             ->all();
     }
 }

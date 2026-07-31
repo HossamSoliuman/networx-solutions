@@ -24,10 +24,14 @@ it('creates a service and generates the slug from the name when blank', function
     $this->actingAs($this->user)
         ->post(route('admin.services.store'), [
             'name' => 'Managed Backups',
+            'name_ar' => 'النسخ الاحتياطي المُدار',
             'slug' => '',
             'icon' => 'cloud',
             'excerpt' => 'Automated off-site backups for critical business data.',
+            'excerpt_ar' => 'نسخ احتياطي آلي وآمن لبيانات الأعمال المهمة.',
             'description' => 'Daily encrypted backups with quarterly restore drills.',
+            'description_ar' => 'نسخ احتياطية يومية مشفرة مع اختبارات دورية للاستعادة.',
+            'benefits_ar' => "نسخ يومي\nاختبار الاستعادة",
             'sort_order' => 7,
             'is_active' => '1',
         ])
@@ -35,9 +39,14 @@ it('creates a service and generates the slug from the name when blank', function
 
     $this->assertDatabaseHas('services', [
         'name' => 'Managed Backups',
+        'name_ar' => 'النسخ الاحتياطي المُدار',
         'slug' => 'managed-backups',
         'is_active' => true,
     ]);
+
+    $service = Service::query()->where('slug', 'managed-backups')->sole();
+
+    expect($service->benefits_ar)->toBe("نسخ يومي\nاختبار الاستعادة");
 });
 
 it('stores a managed service image', function () {
@@ -83,6 +92,7 @@ it('updates a service', function () {
     $this->actingAs($this->user)
         ->put(route('admin.services.update', $service), [
             'name' => 'Renamed Service',
+            'name_ar' => 'خدمة باسم جديد',
             'slug' => $service->slug,
             'icon' => 'network',
             'excerpt' => 'A refreshed description of what we offer.',
@@ -94,6 +104,7 @@ it('updates a service', function () {
     $service->refresh();
 
     expect($service->name)->toBe('Renamed Service')
+        ->and($service->name_ar)->toBe('خدمة باسم جديد')
         ->and($service->is_active)->toBeFalse();
 });
 

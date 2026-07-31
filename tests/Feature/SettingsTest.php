@@ -2,8 +2,6 @@
 
 use App\Models\Setting;
 use App\Models\User;
-use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\Storage;
 
 beforeEach(function () {
     $this->user = User::factory()->create();
@@ -15,7 +13,6 @@ it('renders each settings section', function (string $section, string $expected)
         ->assertSuccessful()
         ->assertSee($expected);
 })->with([
-    ['pages', 'Home page'],
     ['company', 'Company identity'],
     ['seo', 'AI search'],
     ['messaging', 'Email reply signature'],
@@ -33,11 +30,16 @@ it('saves the email test recipient', function () {
     expect(Setting::get('mail_test_recipient'))->toBe('mohamed@example.com');
 });
 
-it('defaults to the page content section and rejects unknown sections', function () {
+it('defaults to company settings and rejects removed or unknown sections', function () {
     $this->actingAs($this->user)
         ->get(route('admin.settings.edit'))
         ->assertSuccessful()
-        ->assertSee('Page content');
+        ->assertSee('Company identity')
+        ->assertDontSee('Page content');
+
+    $this->actingAs($this->user)
+        ->get('/admin/settings/pages')
+        ->assertNotFound();
 
     $this->actingAs($this->user)
         ->get('/admin/settings/bogus')
@@ -100,18 +102,9 @@ it('validates settings input', function () {
         ->assertSessionHasErrors(['contact_email', 'facebook_url']);
 });
 
-it('stores admin managed public page photography', function () {
-    Storage::fake('public');
+it('keeps public page content fixed when legacy settings exist', function () {
+    Setting::set('home_title', 'Legacy editable title');
 
-    $this->actingAs($this->user)
-        ->put(route('admin.settings.update', 'pages'), [
-            'home_image' => UploadedFile::fake()->image('server-room.jpg', 1600, 1000),
-        ])
-        ->assertRedirect()
-        ->assertSessionHas('success');
-
-    $imagePath = Setting::get('home_image');
-
-    expect($imagePath)->toStartWith('site/');
-    Storage::disk('public')->assertExists($imagePath);
+    expect(Setting::siteValues()['home_title'])
+        ->toBe(Setting::SITE_DEFAULTS['home_title']);
 });

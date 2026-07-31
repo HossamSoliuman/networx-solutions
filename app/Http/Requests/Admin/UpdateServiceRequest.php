@@ -26,15 +26,19 @@ class UpdateServiceRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'max:255'],
+            'name_ar' => ['nullable', 'string', 'max:255'],
             'slug' => [
                 'required', 'string', 'max:255', 'alpha_dash',
                 Rule::unique('services', 'slug')->ignore($this->route('service')),
             ],
             'icon' => ['required', 'string', 'max:50'],
             'excerpt' => ['required', 'string', 'max:255'],
+            'excerpt_ar' => ['nullable', 'string', 'max:255'],
             'description' => ['nullable', 'string', 'max:5000'],
+            'description_ar' => ['nullable', 'string', 'max:5000'],
             'image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:5120'],
             'benefits' => ['nullable', 'string', 'max:5000'],
+            'benefits_ar' => ['nullable', 'string', 'max:5000'],
             'sort_order' => ['required', 'integer', 'min:0', 'max:1000'],
             'is_active' => ['boolean'],
         ];

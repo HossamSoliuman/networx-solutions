@@ -23,25 +23,6 @@ class UpdateSettingsRequest extends FormRequest
     public function rules(): array
     {
         return match ($this->route('section')) {
-            'pages' => [
-                'home_eyebrow' => ['nullable', 'string', 'max:255'],
-                'home_title' => ['nullable', 'string', 'max:255'],
-                'home_intro' => ['nullable', 'string', 'max:1000'],
-                'home_image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:5120'],
-                'services_title' => ['nullable', 'string', 'max:255'],
-                'services_intro' => ['nullable', 'string', 'max:1000'],
-                'about_eyebrow' => ['nullable', 'string', 'max:255'],
-                'about_title' => ['nullable', 'string', 'max:255'],
-                'about_intro' => ['nullable', 'string', 'max:1000'],
-                'about_story' => ['nullable', 'string', 'max:5000'],
-                'about_image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:5120'],
-                'contact_eyebrow' => ['nullable', 'string', 'max:255'],
-                'contact_title' => ['nullable', 'string', 'max:255'],
-                'contact_intro' => ['nullable', 'string', 'max:1000'],
-                'contact_image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:5120'],
-                'cta_title' => ['nullable', 'string', 'max:255'],
-                'cta_intro' => ['nullable', 'string', 'max:1000'],
-            ],
             'company' => [
                 'site_name' => ['required', 'string', 'max:255'],
                 'tagline' => ['nullable', 'string', 'max:255'],

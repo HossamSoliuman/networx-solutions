@@ -42,17 +42,19 @@ it('renders the public site as separate pages', function () {
         ->assertSee('name="phone_local"', escape: false);
 });
 
-it('uses page content managed through settings', function () {
+it('uses hard-coded page content instead of legacy settings', function () {
     Setting::set('home_title', 'Infrastructure managed from the admin');
     Setting::set('about_story', 'A custom company story written in the admin area.');
 
     $this->get(route('home'))
         ->assertSuccessful()
-        ->assertSee('Infrastructure managed from the admin');
+        ->assertSee(Setting::SITE_DEFAULTS['home_title'])
+        ->assertDontSee('Infrastructure managed from the admin');
 
     $this->get(route('about'))
         ->assertSuccessful()
-        ->assertSee('A custom company story written in the admin area.');
+        ->assertSee(Setting::SITE_DEFAULTS['about_story'])
+        ->assertDontSee('A custom company story written in the admin area.');
 });
 
 it('loads shared public settings within a fixed query budget', function () {

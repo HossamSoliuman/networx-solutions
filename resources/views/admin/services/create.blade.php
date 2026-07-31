@@ -5,7 +5,7 @@
 @section('content')
     <x-admin.page-header title="Add service" subtitle="Create a new entry in the service catalogue." />
 
-    <x-card class="max-w-3xl">
+    <x-card class="max-w-4xl">
         <form method="POST" action="{{ route('admin.services.store') }}" enctype="multipart/form-data" class="space-y-5">
             @csrf
 

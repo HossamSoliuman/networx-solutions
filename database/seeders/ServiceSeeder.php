@@ -12,10 +12,28 @@ class ServiceSeeder extends Seeder
      */
     public function run(): void
     {
+        /** @var array<string, array<string, mixed>> $translations */
+        $translations = require database_path('seeders/data/service-translations.php');
+
         foreach ($this->services() as $index => $service) {
+            $translation = $translations[$service['slug']] ?? [];
+
             Service::query()->updateOrCreate(
                 ['slug' => $service['slug']],
-                [...$service, 'sort_order' => $index, 'is_active' => true],
+                [
+                    ...$service,
+                    'name_ar' => $translation['name'] ?? null,
+                    'excerpt_ar' => $translation['excerpt'] ?? null,
+                    'description_ar' => $translation['description'] ?? null,
+                    'benefits_ar' => implode("\n", $translation['benefits'] ?? []),
+                    'details_ar' => [
+                        'statement' => $translation['statement'] ?? null,
+                        'service_items' => $translation['service_items'] ?? [],
+                        'reasons' => $translation['reasons'] ?? [],
+                    ],
+                    'sort_order' => $index,
+                    'is_active' => true,
+                ],
             );
         }
     }

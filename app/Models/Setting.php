@@ -10,6 +10,31 @@ use Illuminate\Support\Str;
 class Setting extends Model
 {
     /**
+     * Public page copy and photography are fixed in code and cannot be overridden from settings.
+     *
+     * @var list<string>
+     */
+    private const PAGE_CONTENT_KEYS = [
+        'home_eyebrow',
+        'home_title',
+        'home_intro',
+        'home_image',
+        'services_title',
+        'services_intro',
+        'about_eyebrow',
+        'about_title',
+        'about_intro',
+        'about_story',
+        'about_image',
+        'contact_eyebrow',
+        'contact_title',
+        'contact_intro',
+        'contact_image',
+        'cta_title',
+        'cta_intro',
+    ];
+
+    /**
      * @var array<string, string>
      */
     public const SITE_DEFAULTS = [
@@ -73,9 +98,13 @@ class Setting extends Model
         $settings = self::cachedValues();
 
         $values = collect(self::SITE_DEFAULTS)
-            ->mapWithKeys(fn (string $default, string $key): array => [
-                $key => $settings[$key] ?? $default,
-            ])
+            ->mapWithKeys(function (string $default, string $key) use ($settings): array {
+                $value = in_array($key, self::PAGE_CONTENT_KEYS, true)
+                    ? $default
+                    : ($settings[$key] ?? $default);
+
+                return [$key => $value];
+            })
             ->all();
 
         foreach (['home_image', 'about_image', 'contact_image'] as $imageKey) {

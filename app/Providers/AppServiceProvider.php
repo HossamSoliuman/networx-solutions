@@ -54,7 +54,7 @@ class AppServiceProvider extends ServiceProvider
         ], function (\Illuminate\View\View $view): void {
             $view
                 ->with('site', Setting::localizedSiteValues())
-                ->with('navigationServices', Service::query()->active()->ordered()->get(['id', 'name', 'slug']));
+                ->with('navigationServices', Service::query()->active()->ordered()->get(['id', 'name', 'name_ar', 'slug']));
         });
     }
 }

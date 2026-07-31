@@ -36,7 +36,7 @@
             </div>
 
             @php
-                $settingsSection = request()->routeIs('admin.settings.*') ? (request()->route('section') ?? 'pages') : null;
+                $settingsSection = request()->routeIs('admin.settings.*') ? (request()->route('section') ?? 'company') : null;
             @endphp
 
             <nav class="mt-4 flex flex-1 flex-col gap-1 overflow-y-auto px-3">
@@ -56,10 +56,6 @@
                 <p class="px-3 pb-1 pt-4 font-mono text-[0.65rem] font-semibold uppercase tracking-[0.14em] text-slate-500">
                     Website content
                 </p>
-
-                <x-admin.sidebar-link :href="route('admin.settings.edit', 'pages')" icon="note" :active="$settingsSection === 'pages'">
-                    Page content
-                </x-admin.sidebar-link>
 
                 <x-admin.sidebar-link :href="route('admin.settings.edit', 'company')" icon="building" :active="$settingsSection === 'company'">
                     Company info
