@@ -5,6 +5,9 @@
     $pageTitle = $title ? $title.' · '.$site['site_name'] : ($site['seo_meta_title'] ?: $site['site_name']);
     $metaDescription = $description ?: ($site['seo_meta_description'] ?: $site['home_intro']);
     $phoneHref = $site['contact_phone'] ? preg_replace('/[^+\d]/', '', $site['contact_phone']) : null;
+    $mapsUrl = $site['address']
+        ? 'https://www.google.com/maps/search/?api=1&query='.rawurlencode($site['address'])
+        : null;
     $isRtl = app()->isLocale('ar');
     $alternateLocale = $isRtl ? 'en' : 'ar';
     $alternateLocaleLabel = $isRtl
@@ -93,6 +96,14 @@
                 </p>
 
                 <div class="flex items-center gap-6">
+                    @if ($mapsUrl)
+                        <a href="{{ $mapsUrl }}" target="_blank" rel="noopener noreferrer"
+                            aria-label="{{ __('public.accessibility.view_on_maps', ['address' => $site['address']]) }}"
+                            class="hidden items-center gap-2 transition-colors hover:text-white md:inline-flex">
+                            <x-icon name="map-pin" class="size-3.5" />
+                            <bdi>{{ $site['address'] }}</bdi>
+                        </a>
+                    @endif
                     @if ($site['contact_phone'])
                         <a href="tel:{{ $phoneHref }}" class="inline-flex items-center gap-2 transition-colors hover:text-white">
                             <x-icon name="phone" class="size-3.5" />
@@ -224,6 +235,15 @@
                     <span class="technical-label text-slate-400">04</span>
                 </a>
 
+                @if ($mapsUrl)
+                    <a href="{{ $mapsUrl }}" target="_blank" rel="noopener noreferrer"
+                        aria-label="{{ __('public.accessibility.view_on_maps', ['address' => $site['address']]) }}"
+                        class="mt-4 flex items-center gap-3 rounded-xl bg-canvas px-4 py-3 text-sm font-semibold text-navy-950 transition-colors hover:bg-brand-50">
+                        <x-icon name="map-pin" class="size-4 text-brand-600" />
+                        <bdi>{{ $site['address'] }}</bdi>
+                    </a>
+                @endif
+
                 <div class="mt-6 grid grid-cols-2 gap-3">
                     <a href="{{ $localeSwitchUrl }}" hreflang="{{ $alternateLocale }}"
                         class="button-light border border-slate-300" aria-label="{{ __('public.locale.change_language') }}">
@@ -295,11 +315,13 @@
                                 <bdi dir="ltr">{{ $site['contact_phone'] }}</bdi>
                             </a>
                         @endif
-                        @if ($site['address'])
-                            <p class="flex items-start gap-3 text-slate-400">
-                                <x-icon name="building" class="mt-0.5 size-4 text-brand-300" />
+                        @if ($mapsUrl)
+                            <a href="{{ $mapsUrl }}" target="_blank" rel="noopener noreferrer"
+                                aria-label="{{ __('public.accessibility.view_on_maps', ['address' => $site['address']]) }}"
+                                class="flex items-start gap-3 text-slate-400 transition-colors hover:text-white">
+                                <x-icon name="map-pin" class="mt-0.5 size-4 text-brand-300" />
                                 <bdi>{{ $site['address'] }}</bdi>
-                            </p>
+                            </a>
                         @endif
                     </div>
                 </div>

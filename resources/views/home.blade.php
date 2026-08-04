@@ -120,6 +120,50 @@
         </div>
     </section>
 
+    @if ($technologies->isNotEmpty())
+        <section id="technologies" class="relative overflow-hidden border-b border-slate-200 bg-canvas py-12 sm:py-14 lg:py-16">
+            <div class="bg-technical-dots absolute inset-0 -z-10 opacity-60"></div>
+
+            <div class="mx-auto max-w-[90rem] px-5 sm:px-8 lg:px-12">
+                <div class="mx-auto max-w-4xl text-center" data-reveal>
+                    <p class="section-kicker justify-center">{{ __('public.home.technologies.eyebrow') }}</p>
+                    <h2 class="section-title mt-4">{{ __('public.home.technologies.title') }}</h2>
+                    <p class="mt-4 text-base leading-7 text-slate-600 sm:text-lg sm:leading-8 lg:whitespace-nowrap">
+                        {{ __('public.home.technologies.intro') }}
+                    </p>
+                </div>
+            </div>
+
+            <div class="technology-marquee mt-9" data-reveal>
+                <div class="technology-track">
+                    @foreach ($technologies as $technology)
+                        <x-site.technology-card :technology="$technology" class="technology-slide" />
+                    @endforeach
+                    {{-- Duplicated set keeps the loop seamless; hidden from assistive technology. --}}
+                    @foreach ($technologies as $technology)
+                        <x-site.technology-card :technology="$technology" class="technology-slide" aria-hidden="true"
+                            tabindex="-1" />
+                    @endforeach
+                </div>
+            </div>
+
+            <div class="mx-auto max-w-[90rem] px-5 sm:px-8 lg:px-12">
+                <div class="mt-10 grid gap-x-8 gap-y-5 border-t border-slate-300/70 pt-7 sm:grid-cols-2 lg:grid-cols-4"
+                    data-reveal>
+                    @foreach (__('public.home.technologies.assurances') as $assurance)
+                        <div class="flex items-start gap-3 lg:border-s lg:border-slate-300/70 lg:ps-6 lg:first:border-s-0 lg:first:ps-0">
+                            <x-icon :name="$assurance['icon']" class="mt-0.5 size-4.5 shrink-0 text-brand-600" />
+                            <div>
+                                <h3 class="font-display text-sm font-bold text-navy-950">{{ $assurance['title'] }}</h3>
+                                <p class="mt-1 text-xs leading-5 text-slate-500">{{ $assurance['copy'] }}</p>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+        </section>
+    @endif
+
     <section class="border-b border-slate-200 bg-slate-200">
         <div class="mx-auto grid max-w-[90rem] gap-px sm:grid-cols-2 lg:grid-cols-4">
             @foreach (__('public.home.proof_points') as $point)
@@ -166,6 +210,7 @@
             </div>
         </div>
     </section>
+
 
     <section class="relative isolate overflow-hidden bg-navy-950 py-16 text-white sm:py-20">
         <div class="bg-machine-grid absolute inset-0 -z-10 opacity-45"></div>

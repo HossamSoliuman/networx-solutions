@@ -242,6 +242,58 @@
         @apply rounded-[1.75rem] bg-white ring-1 ring-slate-200/90;
     }
 
+    .technology-marquee {
+        /* Brand marks keep their left-to-right reading order in both locales. */
+        direction: ltr;
+        mask-image: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent);
+        @apply relative overflow-hidden py-3;
+    }
+
+    .technology-track {
+        @apply flex w-max items-stretch gap-4;
+        animation: technology-scroll 42s linear infinite;
+    }
+
+    .technology-marquee:hover .technology-track,
+    .technology-marquee:focus-within .technology-track {
+        animation-play-state: paused;
+    }
+
+    .technology-slide {
+        @apply w-44 shrink-0 sm:w-52;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .technology-marquee {
+            @apply overflow-x-auto;
+            mask-image: none;
+        }
+
+        .technology-track {
+            animation: none;
+        }
+    }
+
+    .technology-card {
+        @apply flex h-24 items-center justify-center rounded-2xl border border-slate-200 bg-white px-5 py-4 transition duration-200 sm:h-28;
+    }
+
+    a.technology-card:hover {
+        transform: translateY(-2px);
+        border-color: color-mix(in srgb, var(--technology-color, var(--color-brand-500)) 45%, transparent);
+        box-shadow: 0 20px 38px -24px color-mix(in srgb, var(--technology-color, var(--color-brand-500)) 65%, transparent);
+    }
+
+    .technology-logo {
+        /* Capped on both axes so square marks and wide wordmarks read at a similar weight. */
+        @apply max-h-8 w-auto max-w-full object-contain sm:max-h-10;
+    }
+
+    .technology-wordmark {
+        @apply text-center font-display text-lg font-bold leading-tight tracking-[-0.02em] sm:text-xl;
+        color: var(--technology-color, var(--color-navy-950));
+    }
+
     .site-input {
         @apply min-h-12 rounded-xl bg-paper px-4 py-3 shadow-none ring-slate-300 transition placeholder:text-slate-400 hover:ring-slate-400 focus:bg-white;
     }
@@ -462,6 +514,17 @@
     to {
         opacity: 1;
         transform: translateY(0);
+    }
+}
+
+/* Half the track is a duplicate set, so one loop travels 50% plus half of the joining gap. */
+@keyframes technology-scroll {
+    from {
+        transform: translateX(0);
+    }
+
+    to {
+        transform: translateX(calc(-50% - 0.5rem));
     }
 }
 

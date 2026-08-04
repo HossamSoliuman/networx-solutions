@@ -1,7 +1,7 @@
 <?php
 
-use App\Http\Controllers\Admin\AuthenticatedSessionController;
 use App\Http\Controllers\Admin\ArabicContentController;
+use App\Http\Controllers\Admin\AuthenticatedSessionController;
 use App\Http\Controllers\Admin\ContactMessageArchiveController;
 use App\Http\Controllers\Admin\ContactMessageAssignController;
 use App\Http\Controllers\Admin\ContactMessageBulkController;
@@ -16,6 +16,7 @@ use App\Http\Controllers\Admin\EmailTestController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\ServiceController;
 use App\Http\Controllers\Admin\SettingsController;
+use App\Http\Controllers\Admin\TechnologyController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest')->group(function () {
@@ -43,6 +44,7 @@ Route::middleware('auth')->group(function () {
     Route::patch('messages/{message}/archive', [ContactMessageArchiveController::class, 'update'])->name('messages.archive');
 
     Route::resource('services', ServiceController::class)->except(['show']);
+    Route::resource('technologies', TechnologyController::class)->except(['show']);
 
     Route::get('arabic-content', [ArabicContentController::class, 'edit'])->name('arabic-content.edit');
     Route::put('arabic-content', [ArabicContentController::class, 'update'])->name('arabic-content.update');

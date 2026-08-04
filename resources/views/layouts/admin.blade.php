@@ -53,6 +53,11 @@
                     Services
                 </x-admin.sidebar-link>
 
+                <x-admin.sidebar-link :href="route('admin.technologies.index')" icon="devices"
+                    :active="request()->routeIs('admin.technologies.*')">
+                    Technologies
+                </x-admin.sidebar-link>
+
                 <p class="px-3 pb-1 pt-4 font-mono text-[0.65rem] font-semibold uppercase tracking-[0.14em] text-slate-500">
                     Website content
                 </p>

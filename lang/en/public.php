@@ -62,6 +62,17 @@ return [
         ],
         'connected_capabilities' => 'Connected capabilities',
         'view_catalogue' => 'View the complete service catalogue',
+        'technologies' => [
+            'eyebrow' => 'Trusted platforms',
+            'title' => 'Technologies we work with',
+            'intro' => 'Trusted platforms and proven technologies behind every solution we deliver.',
+            'assurances' => [
+                ['icon' => 'shield', 'title' => 'Trusted technologies', 'copy' => 'We work with industry leaders you can trust.'],
+                ['icon' => 'cog', 'title' => 'Proven solutions', 'copy' => 'Tested and proven solutions for your business.'],
+                ['icon' => 'check', 'title' => 'Quality & reliability', 'copy' => 'Delivering high performance and reliability.'],
+                ['icon' => 'headset', 'title' => 'Expert support', 'copy' => 'Backed by our certified team of experts.'],
+            ],
+        ],
         'why_choose_us' => 'Why choose us',
         'why_choose_title' => 'Why choose Networx Solutions?',
         'why_choose_intro' => 'Choosing the right IT support partner is crucial for your business’s success. Our dedicated team handles your IT support needs so you can focus on growing your business.',

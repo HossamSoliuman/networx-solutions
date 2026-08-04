@@ -35,6 +35,7 @@ class DatabaseSeeder extends Seeder
 
         $this->call(AboutContentSeeder::class);
         $this->call(ServiceSeeder::class);
+        $this->call(TechnologySeeder::class);
 
         if (app()->environment('local')) {
             $this->call(ContactMessageSeeder::class);

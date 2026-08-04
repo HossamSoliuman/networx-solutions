@@ -60,7 +60,7 @@ it('uses hard-coded page content instead of legacy settings', function () {
 it('loads shared public settings within a fixed query budget', function () {
     config()->set('cache.default', 'database');
 
-    $this->expectsDatabaseQueryCount(5);
+    $this->expectsDatabaseQueryCount(6);
 
     $this->get(route('home'))->assertSuccessful();
 });
