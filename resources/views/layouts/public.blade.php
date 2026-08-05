@@ -132,6 +132,11 @@
                     {{ __('public.navigation.home') }}
                 </a>
 
+                 <a href="{{ route('about') }}" class="site-nav-link"
+                    @if (request()->routeIs('about')) aria-current="page" @endif>
+                    {{ __('public.navigation.about') }}
+                </a>
+
                 <div class="group relative">
                     <a href="{{ route('services.index') }}" class="site-nav-link"
                         @if (request()->routeIs('services.*')) aria-current="page" @endif aria-haspopup="true">
@@ -161,10 +166,6 @@
                     </div>
                 </div>
 
-                <a href="{{ route('about') }}" class="site-nav-link"
-                    @if (request()->routeIs('about')) aria-current="page" @endif>
-                    {{ __('public.navigation.about') }}
-                </a>
                 <a href="{{ route('contact') }}" class="site-nav-link"
                     @if (request()->routeIs('contact')) aria-current="page" @endif>
                     {{ __('public.navigation.contact') }}
