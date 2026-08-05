@@ -2,17 +2,15 @@
     $title = trim($__env->yieldContent('title')) ?: null;
     $description = trim($__env->yieldContent('description')) ?: null;
     $focused = trim($__env->yieldContent('focused')) === 'true';
-    $pageTitle = $title ? $title.' · '.$site['site_name'] : ($site['seo_meta_title'] ?: $site['site_name']);
+    $pageTitle = $title ? $title . ' · ' . $site['site_name'] : ($site['seo_meta_title'] ?: $site['site_name']);
     $metaDescription = $description ?: ($site['seo_meta_description'] ?: $site['home_intro']);
     $phoneHref = $site['contact_phone'] ? preg_replace('/[^+\d]/', '', $site['contact_phone']) : null;
     $mapsUrl = $site['address']
-        ? 'https://www.google.com/maps/search/?api=1&query='.rawurlencode($site['address'])
+        ? 'https://www.google.com/maps/search/?api=1&query=' . rawurlencode($site['address'])
         : null;
     $isRtl = app()->isLocale('ar');
     $alternateLocale = $isRtl ? 'en' : 'ar';
-    $alternateLocaleLabel = $isRtl
-        ? __('public.locale.switch_to_english')
-        : __('public.locale.switch_to_arabic');
+    $alternateLocaleLabel = $isRtl ? __('public.locale.switch_to_english') : __('public.locale.switch_to_arabic');
     $localeSwitchUrl = request()->fullUrlWithQuery(['lang' => $alternateLocale]);
 
     // Structured data read by search engines and AI assistants alike.
@@ -28,12 +26,13 @@
                 'email' => $site['contact_email'] ?: null,
                 'telephone' => $site['contact_phone'] ?: null,
                 'address' => $site['address'] ?: null,
-                'sameAs' => array_values(array_filter([
-                    $site['linkedin_url'],
-                    $site['facebook_url'],
-                    $site['instagram_url'],
-                ])) ?: null,
-                'knowsAbout' => $navigationServices->map(fn ($service): string => $service->localizedName())->all() ?: null,
+                'sameAs' =>
+                    array_values(
+                        array_filter([$site['linkedin_url'], $site['facebook_url'], $site['instagram_url']]),
+                    ) ?:
+                    null,
+                'knowsAbout' =>
+                    $navigationServices->map(fn($service): string => $service->localizedName())->all() ?: null,
             ]),
             [
                 '@type' => 'WebSite',
@@ -72,7 +71,8 @@
     <script type="application/ld+json">{!! json_encode($structuredData, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) !!}</script>
 
     <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=barlow:400,500,600,700|barlow-semi-condensed:500,600,700|cairo:400,500,600,700|ibm-plex-mono:500,600"
+    <link
+        href="https://fonts.bunny.net/css?family=barlow:400,500,600,700|barlow-semi-condensed:500,600,700|cairo:400,500,600,700|ibm-plex-mono:500,600"
         rel="stylesheet">
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -105,12 +105,14 @@
                         </a>
                     @endif
                     @if ($site['contact_phone'])
-                        <a href="tel:{{ $phoneHref }}" class="inline-flex items-center gap-2 transition-colors hover:text-white">
+                        <a href="tel:{{ $phoneHref }}"
+                            class="inline-flex items-center gap-2 transition-colors hover:text-white">
                             <x-icon name="phone" class="size-3.5" />
                             <bdi dir="ltr">{{ $site['contact_phone'] }}</bdi>
                         </a>
                     @endif
-                    <a href="{{ route('contact') }}" data-modal-open="contact-modal" class="inline-flex items-center gap-2 font-bold text-white">
+                    <a href="{{ route('contact') }}" data-modal-open="contact-modal"
+                        class="inline-flex items-center gap-2 font-bold text-white">
                         {{ __('public.navigation.start_project') }}
                         <x-icon name="arrow-left" class="size-3.5 rotate-180 rtl:rotate-0" />
                     </a>
@@ -122,17 +124,19 @@
     <header data-site-header
         class="site-header sticky top-0 z-50 border-b border-slate-200/80 bg-paper/95 backdrop-blur-xl transition-shadow">
         <div class="mx-auto flex h-16 max-w-[90rem] items-center justify-between gap-6 px-5 sm:px-8 lg:px-12">
-            <a href="{{ route('home') }}" aria-label="{{ __('public.accessibility.home_label', ['site' => $site['site_name']]) }}">
+            <a href="{{ route('home') }}"
+                aria-label="{{ __('public.accessibility.home_label', ['site' => $site['site_name']]) }}">
                 <x-logo />
             </a>
 
-            <nav class="hidden items-center gap-8 lg:flex" aria-label="{{ __('public.accessibility.main_navigation') }}">
+            <nav class="hidden items-center gap-8 lg:flex"
+                aria-label="{{ __('public.accessibility.main_navigation') }}">
                 <a href="{{ route('home') }}" class="site-nav-link"
                     @if (request()->routeIs('home')) aria-current="page" @endif>
                     {{ __('public.navigation.home') }}
                 </a>
 
-                 <a href="{{ route('about') }}" class="site-nav-link"
+                <a href="{{ route('about') }}" class="site-nav-link"
                     @if (request()->routeIs('about')) aria-current="page" @endif>
                     {{ __('public.navigation.about') }}
                 </a>
@@ -146,12 +150,14 @@
 
                     <div
                         class="invisible absolute left-1/2 top-[calc(100%-0.15rem)] w-[43rem] -translate-x-1/2 translate-y-2 pt-5 opacity-0 transition duration-200 group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:visible group-focus-within:translate-y-0 group-focus-within:opacity-100">
-                        <div class="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-[0_28px_70px_-30px_rgba(5,26,53,0.45)]">
+                        <div
+                            class="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-[0_28px_70px_-30px_rgba(5,26,53,0.45)]">
                             <div class="grid grid-cols-2 gap-px bg-slate-200">
                                 @foreach ($navigationServices as $navigationService)
                                     <a href="{{ route('services.show', $navigationService) }}"
                                         class="group/service flex items-center justify-between gap-4 bg-white px-5 py-4 transition-colors hover:bg-brand-50">
-                                        <bdi class="text-sm font-bold text-navy-950">{{ $navigationService->localizedName() }}</bdi>
+                                        <bdi
+                                            class="text-sm font-bold text-navy-950">{{ $navigationService->localizedName() }}</bdi>
                                         <x-icon name="arrow-left"
                                             class="size-4 rotate-180 text-brand-600 transition-transform group-hover/service:translate-x-1 rtl:rotate-0 rtl:group-hover/service:-translate-x-1" />
                                     </a>
@@ -179,7 +185,8 @@
                     <x-icon name="globe" class="size-4" />
                     <bdi>{{ $alternateLocaleLabel }}</bdi>
                 </a>
-                <a href="{{ route('contact') }}" data-modal-open="contact-modal" class="button-dark min-h-10 px-5 py-2">
+                <a href="{{ route('contact') }}" data-modal-open="contact-modal"
+                    class="button-dark min-h-10 px-5 py-2">
                     {{ __('public.navigation.get_quote') }}
                     <x-icon name="arrow-left" class="size-4 rotate-180 rtl:rotate-0" />
                 </a>
@@ -208,10 +215,17 @@
                     {{ __('public.navigation.home') }}
                     <span class="technical-label text-slate-400">01</span>
                 </a>
+
+                <a href="{{ route('about') }}" class="site-mobile-link"
+                    @if (request()->routeIs('about')) aria-current="page" @endif>
+                    {{ __('public.navigation.about') }}
+                    <span class="technical-label text-slate-400">02</span>
+                </a>
+
                 <a href="{{ route('services.index') }}" class="site-mobile-link"
                     @if (request()->routeIs('services.*')) aria-current="page" @endif>
                     {{ __('public.navigation.services') }}
-                    <span class="technical-label text-slate-400">02</span>
+                    <span class="technical-label text-slate-400">03</span>
                 </a>
 
                 @if ($navigationServices->isNotEmpty())
@@ -225,11 +239,6 @@
                     </div>
                 @endif
 
-                <a href="{{ route('about') }}" class="site-mobile-link"
-                    @if (request()->routeIs('about')) aria-current="page" @endif>
-                    {{ __('public.navigation.about') }}
-                    <span class="technical-label text-slate-400">03</span>
-                </a>
                 <a href="{{ route('contact') }}" class="site-mobile-link"
                     @if (request()->routeIs('contact')) aria-current="page" @endif>
                     {{ __('public.navigation.contact') }}
@@ -247,7 +256,8 @@
 
                 <div class="mt-6 grid grid-cols-2 gap-3">
                     <a href="{{ $localeSwitchUrl }}" hreflang="{{ $alternateLocale }}"
-                        class="button-light border border-slate-300" aria-label="{{ __('public.locale.change_language') }}">
+                        class="button-light border border-slate-300"
+                        aria-label="{{ __('public.locale.change_language') }}">
                         <x-icon name="globe" class="size-4" />
                         <bdi>{{ $alternateLocaleLabel }}</bdi>
                     </a>
@@ -265,100 +275,105 @@
 
     @unless ($focused)
         <footer class="relative overflow-hidden bg-navy-950 text-slate-300">
-        <div class="bg-technical-dots absolute -end-40 top-0 size-[32rem] opacity-40"></div>
+            <div class="bg-technical-dots absolute -end-40 top-0 size-[32rem] opacity-40"></div>
 
-        <div class="relative mx-auto max-w-[90rem] px-5 py-14 sm:px-8 lg:px-12 lg:py-20">
-            <div class="grid gap-12 border-b border-white/10 pb-12 lg:grid-cols-[1.15fr_0.55fr_1fr_0.8fr] lg:gap-16">
-                <div>
-                    <x-logo light />
-                    <p class="mixed-direction mt-5 max-w-sm text-sm leading-7 text-slate-400">{{ $site['home_intro'] }}</p>
-                    <p class="mt-6 inline-flex items-center gap-2.5 rounded-full border border-white/10 bg-white/5 px-4 py-2 font-mono text-[0.65rem] uppercase tracking-[0.14em] text-slate-300">
-                        <span class="size-1.5 rounded-full bg-signal-400"></span>
-                        {{ __('public.footer.partner') }}
-                    </p>
-                </div>
+            <div class="relative mx-auto max-w-[90rem] px-5 py-14 sm:px-8 lg:px-12 lg:py-20">
+                <div class="grid gap-12 border-b border-white/10 pb-12 lg:grid-cols-[1.15fr_0.55fr_1fr_0.8fr] lg:gap-16">
+                    <div>
+                        <x-logo light />
+                        <p class="mixed-direction mt-5 max-w-sm text-sm leading-7 text-slate-400">
+                            {{ $site['home_intro'] }}</p>
+                        <p
+                            class="mt-6 inline-flex items-center gap-2.5 rounded-full border border-white/10 bg-white/5 px-4 py-2 font-mono text-[0.65rem] uppercase tracking-[0.14em] text-slate-300">
+                            <span class="size-1.5 rounded-full bg-signal-400"></span>
+                            {{ __('public.footer.partner') }}
+                        </p>
+                    </div>
 
-                <div>
-                    <p class="technical-label text-white">{{ __('public.footer.company') }}</p>
-                    <div class="mt-5 grid gap-3 text-sm">
-                        <a href="{{ route('home') }}" class="footer-link">{{ __('public.navigation.home') }}</a>
-                        <a href="{{ route('about') }}" class="footer-link">{{ __('public.navigation.about') }}</a>
-                        <a href="{{ route('services.index') }}" class="footer-link">{{ __('public.navigation.services') }}</a>
-                        <a href="{{ route('contact') }}" data-modal-open="contact-modal" class="footer-link">{{ __('public.navigation.contact') }}</a>
+                    <div>
+                        <p class="technical-label text-white">{{ __('public.footer.company') }}</p>
+                        <div class="mt-5 grid gap-3 text-sm">
+                            <a href="{{ route('home') }}" class="footer-link">{{ __('public.navigation.home') }}</a>
+                            <a href="{{ route('about') }}" class="footer-link">{{ __('public.navigation.about') }}</a>
+                            <a href="{{ route('services.index') }}"
+                                class="footer-link">{{ __('public.navigation.services') }}</a>
+                            <a href="{{ route('contact') }}" data-modal-open="contact-modal"
+                                class="footer-link">{{ __('public.navigation.contact') }}</a>
+                        </div>
+                    </div>
+
+                    <div>
+                        <p class="technical-label text-white">{{ __('public.footer.capabilities') }}</p>
+                        <div class="mt-5 grid gap-3 text-sm sm:grid-cols-2 lg:grid-cols-1">
+                            @foreach ($navigationServices as $navigationService)
+                                <a href="{{ route('services.show', $navigationService) }}" class="footer-link">
+                                    <bdi>{{ $navigationService->localizedName() }}</bdi>
+                                </a>
+                            @endforeach
+                        </div>
+                    </div>
+
+                    <div>
+                        <p class="technical-label text-white">{{ __('public.footer.talk_to') }}</p>
+                        <div class="mt-5 grid gap-4 text-sm">
+                            @if ($site['contact_email'])
+                                <a href="mailto:{{ $site['contact_email'] }}"
+                                    class="flex items-start gap-3 text-slate-400 transition-colors hover:text-white">
+                                    <x-icon name="envelope" class="mt-0.5 size-4 text-brand-300" />
+                                    <bdi dir="ltr" class="break-all">{{ $site['contact_email'] }}</bdi>
+                                </a>
+                            @endif
+                            @if ($site['contact_phone'])
+                                <a href="tel:{{ $phoneHref }}"
+                                    class="flex items-start gap-3 text-slate-400 transition-colors hover:text-white">
+                                    <x-icon name="phone" class="mt-0.5 size-4 text-brand-300" />
+                                    <bdi dir="ltr">{{ $site['contact_phone'] }}</bdi>
+                                </a>
+                            @endif
+                            @if ($mapsUrl)
+                                <a href="{{ $mapsUrl }}" target="_blank" rel="noopener noreferrer"
+                                    aria-label="{{ __('public.accessibility.view_on_maps', ['address' => $site['address']]) }}"
+                                    class="flex items-start gap-3 text-slate-400 transition-colors hover:text-white">
+                                    <x-icon name="map-pin" class="mt-0.5 size-4 text-brand-300" />
+                                    <bdi>{{ $site['address'] }}</bdi>
+                                </a>
+                            @endif
+                        </div>
                     </div>
                 </div>
 
-                <div>
-                    <p class="technical-label text-white">{{ __('public.footer.capabilities') }}</p>
-                    <div class="mt-5 grid gap-3 text-sm sm:grid-cols-2 lg:grid-cols-1">
-                        @foreach ($navigationServices as $navigationService)
-                            <a href="{{ route('services.show', $navigationService) }}" class="footer-link">
-                                <bdi>{{ $navigationService->localizedName() }}</bdi>
-                            </a>
-                        @endforeach
-                    </div>
-                </div>
+                <div
+                    class="flex flex-col gap-5 pt-7 text-xs text-slate-500 sm:flex-row sm:items-center sm:justify-between">
+                    <p>{{ __('public.footer.rights', ['year' => now()->year, 'site' => $site['site_name']]) }}</p>
 
-                <div>
-                    <p class="technical-label text-white">{{ __('public.footer.talk_to') }}</p>
-                    <div class="mt-5 grid gap-4 text-sm">
-                        @if ($site['contact_email'])
-                            <a href="mailto:{{ $site['contact_email'] }}"
-                                class="flex items-start gap-3 text-slate-400 transition-colors hover:text-white">
-                                <x-icon name="envelope" class="mt-0.5 size-4 text-brand-300" />
-                                <bdi dir="ltr" class="break-all">{{ $site['contact_email'] }}</bdi>
-                            </a>
-                        @endif
-                        @if ($site['contact_phone'])
-                            <a href="tel:{{ $phoneHref }}"
-                                class="flex items-start gap-3 text-slate-400 transition-colors hover:text-white">
-                                <x-icon name="phone" class="mt-0.5 size-4 text-brand-300" />
-                                <bdi dir="ltr">{{ $site['contact_phone'] }}</bdi>
-                            </a>
-                        @endif
-                        @if ($mapsUrl)
-                            <a href="{{ $mapsUrl }}" target="_blank" rel="noopener noreferrer"
-                                aria-label="{{ __('public.accessibility.view_on_maps', ['address' => $site['address']]) }}"
-                                class="flex items-start gap-3 text-slate-400 transition-colors hover:text-white">
-                                <x-icon name="map-pin" class="mt-0.5 size-4 text-brand-300" />
-                                <bdi>{{ $site['address'] }}</bdi>
-                            </a>
-                        @endif
+                    <div class="flex flex-wrap items-center gap-5">
+                        <div class="flex items-center gap-2">
+                            @if ($site['linkedin_url'])
+                                <a href="{{ $site['linkedin_url'] }}" target="_blank" rel="noopener noreferrer"
+                                    class="inline-flex size-10 items-center justify-center rounded-full border border-white/15 text-slate-400 transition duration-200 hover:-translate-y-0.5 hover:border-brand-300/60 hover:bg-brand-500/15 hover:text-white"
+                                    aria-label="{{ __('public.accessibility.opens_new_tab', ['network' => 'LinkedIn']) }}">
+                                    <x-icon name="linkedin" solid class="size-4" />
+                                </a>
+                            @endif
+                            @if ($site['facebook_url'])
+                                <a href="{{ $site['facebook_url'] }}" target="_blank" rel="noopener noreferrer"
+                                    class="inline-flex size-10 items-center justify-center rounded-full border border-white/15 text-slate-400 transition duration-200 hover:-translate-y-0.5 hover:border-brand-300/60 hover:bg-brand-500/15 hover:text-white"
+                                    aria-label="{{ __('public.accessibility.opens_new_tab', ['network' => 'Facebook']) }}">
+                                    <x-icon name="facebook" solid class="size-4" />
+                                </a>
+                            @endif
+                            @if ($site['instagram_url'])
+                                <a href="{{ $site['instagram_url'] }}" target="_blank" rel="noopener noreferrer"
+                                    class="inline-flex size-10 items-center justify-center rounded-full border border-white/15 text-slate-400 transition duration-200 hover:-translate-y-0.5 hover:border-brand-300/60 hover:bg-brand-500/15 hover:text-white"
+                                    aria-label="{{ __('public.accessibility.opens_new_tab', ['network' => 'Instagram']) }}">
+                                    <x-icon name="instagram" solid class="size-4" />
+                                </a>
+                            @endif
+                        </div>
+                        <span class="font-mono uppercase tracking-[0.12em]">{{ __('public.footer.promise') }}</span>
                     </div>
                 </div>
             </div>
-
-            <div class="flex flex-col gap-5 pt-7 text-xs text-slate-500 sm:flex-row sm:items-center sm:justify-between">
-                <p>{{ __('public.footer.rights', ['year' => now()->year, 'site' => $site['site_name']]) }}</p>
-
-                <div class="flex flex-wrap items-center gap-5">
-                    <div class="flex items-center gap-2">
-                        @if ($site['linkedin_url'])
-                            <a href="{{ $site['linkedin_url'] }}" target="_blank" rel="noopener noreferrer"
-                                class="inline-flex size-10 items-center justify-center rounded-full border border-white/15 text-slate-400 transition duration-200 hover:-translate-y-0.5 hover:border-brand-300/60 hover:bg-brand-500/15 hover:text-white"
-                                aria-label="{{ __('public.accessibility.opens_new_tab', ['network' => 'LinkedIn']) }}">
-                                <x-icon name="linkedin" solid class="size-4" />
-                            </a>
-                        @endif
-                        @if ($site['facebook_url'])
-                            <a href="{{ $site['facebook_url'] }}" target="_blank" rel="noopener noreferrer"
-                                class="inline-flex size-10 items-center justify-center rounded-full border border-white/15 text-slate-400 transition duration-200 hover:-translate-y-0.5 hover:border-brand-300/60 hover:bg-brand-500/15 hover:text-white"
-                                aria-label="{{ __('public.accessibility.opens_new_tab', ['network' => 'Facebook']) }}">
-                                <x-icon name="facebook" solid class="size-4" />
-                            </a>
-                        @endif
-                        @if ($site['instagram_url'])
-                            <a href="{{ $site['instagram_url'] }}" target="_blank" rel="noopener noreferrer"
-                                class="inline-flex size-10 items-center justify-center rounded-full border border-white/15 text-slate-400 transition duration-200 hover:-translate-y-0.5 hover:border-brand-300/60 hover:bg-brand-500/15 hover:text-white"
-                                aria-label="{{ __('public.accessibility.opens_new_tab', ['network' => 'Instagram']) }}">
-                                <x-icon name="instagram" solid class="size-4" />
-                            </a>
-                        @endif
-                    </div>
-                    <span class="font-mono uppercase tracking-[0.12em]">{{ __('public.footer.promise') }}</span>
-                </div>
-            </div>
-        </div>
         </footer>
     @endunless
 
