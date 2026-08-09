@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Models\ContactMessage;
 use App\Models\Service;
 use App\Models\Setting;
+use App\Support\MailSettings;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
@@ -19,7 +20,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->resolving('mail.manager', function (): void {
+            MailSettings::applyToConfig();
+        });
     }
 
     /**

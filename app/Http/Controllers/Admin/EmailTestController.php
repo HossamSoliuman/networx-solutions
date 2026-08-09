@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\SendTestEmailRequest;
 use App\Mail\HostingerTestMail;
 use App\Models\Setting;
+use App\Support\MailSettings;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Mail;
 use Throwable;
@@ -21,12 +22,14 @@ class EmailTestController extends Controller
 
         Setting::set('mail_test_recipient', $recipient);
 
-        if (! $this->mailConfigurationIsReady()) {
+        if (! MailSettings::isReady()) {
             return back()->with(
                 'error',
-                'Recipient saved, but Hostinger SMTP is not fully configured. Add the mailbox password to MAIL_PASSWORD and try again.',
+                'Recipient saved, but Hostinger SMTP is not fully configured. Save the mailbox password below and try again.',
             );
         }
+
+        MailSettings::applyToConfig();
 
         try {
             Mail::to($recipient)->send(new HostingerTestMail(
@@ -42,14 +45,5 @@ class EmailTestController extends Controller
         }
 
         return back()->with('success', "Test email sent to {$recipient}.");
-    }
-
-    private function mailConfigurationIsReady(): bool
-    {
-        return config('mail.default') === 'smtp'
-            && filled(config('mail.mailers.smtp.host'))
-            && filled(config('mail.mailers.smtp.username'))
-            && filled(config('mail.mailers.smtp.password'))
-            && filled(config('mail.from.address'));
     }
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\UpdateSettingsRequest;
 use App\Models\Setting;
+use App\Support\MailSettings;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 
@@ -31,7 +32,7 @@ class SettingsController extends Controller
                 'mail_signature' => Setting::get('mail_signature'),
                 'mail_test_recipient' => Setting::get('mail_test_recipient', auth()->user()?->email),
             ],
-            'mailConfiguration' => $this->mailConfiguration(),
+            'mailConfiguration' => MailSettings::configuration(),
         ]);
     }
 
@@ -40,7 +41,15 @@ class SettingsController extends Controller
      */
     public function update(UpdateSettingsRequest $request, string $section): RedirectResponse
     {
-        foreach ($request->validated() as $key => $value) {
+        $validated = $request->validated();
+
+        if ($section === 'email') {
+            $this->saveMailPassword($request);
+
+            unset($validated['mail_password'], $validated['remove_mail_password']);
+        }
+
+        foreach ($validated as $key => $value) {
             Setting::set($key, $value);
         }
 
@@ -48,31 +57,20 @@ class SettingsController extends Controller
     }
 
     /**
-     * @return array{mailer: string, host: string, port: int, scheme: string, username: ?string, from_address: string, password_configured: bool, ready: bool}
+     * A blank field keeps the saved password; the removal toggle falls back to the environment value.
      */
-    private function mailConfiguration(): array
+    private function saveMailPassword(UpdateSettingsRequest $request): void
     {
-        $mailer = (string) config('mail.default');
-        $host = (string) config('mail.mailers.smtp.host');
-        $port = (int) config('mail.mailers.smtp.port');
-        $scheme = (string) config('mail.mailers.smtp.scheme');
-        $username = config('mail.mailers.smtp.username');
-        $fromAddress = (string) config('mail.from.address');
-        $passwordConfigured = filled(config('mail.mailers.smtp.password'));
+        if ($request->boolean('remove_mail_password')) {
+            MailSettings::forgetPassword();
 
-        return [
-            'mailer' => $mailer,
-            'host' => $host,
-            'port' => $port,
-            'scheme' => $scheme,
-            'username' => is_string($username) ? $username : null,
-            'from_address' => $fromAddress,
-            'password_configured' => $passwordConfigured,
-            'ready' => $mailer === 'smtp'
-                && filled($host)
-                && filled($username)
-                && $passwordConfigured
-                && filled($fromAddress),
-        ];
+            return;
+        }
+
+        $password = (string) $request->input('mail_password');
+
+        if ($password !== '') {
+            MailSettings::storePassword($password);
+        }
     }
 }

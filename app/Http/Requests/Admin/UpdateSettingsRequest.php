@@ -46,7 +46,9 @@ class UpdateSettingsRequest extends FormRequest
                 'mail_signature' => ['nullable', 'string', 'max:1000'],
             ],
             'email' => [
-                'mail_test_recipient' => ['required', 'email', 'max:255'],
+                'mail_test_recipient' => ['sometimes', 'required', 'email', 'max:255'],
+                'mail_password' => ['nullable', 'string', 'max:255'],
+                'remove_mail_password' => ['nullable', 'boolean'],
             ],
             default => abort(404),
         };
