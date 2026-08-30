@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -32,12 +33,24 @@ class Service extends Model
         'details_ar',
         'sort_order',
         'is_active',
+        'pricing_enabled',
+        'pricing_eyebrow',
+        'pricing_eyebrow_ar',
+        'pricing_title',
+        'pricing_title_ar',
+        'pricing_subtitle',
+        'pricing_subtitle_ar',
+        'pricing_yearly_note',
+        'pricing_yearly_note_ar',
+        'pricing_footnote',
+        'pricing_footnote_ar',
     ];
 
     protected $attributes = [
         'icon' => 'cog',
         'sort_order' => 0,
         'is_active' => true,
+        'pricing_enabled' => true,
     ];
 
     public function getRouteKeyName(): string
@@ -52,6 +65,7 @@ class Service extends Model
     {
         return [
             'is_active' => 'boolean',
+            'pricing_enabled' => 'boolean',
             'sort_order' => 'integer',
             'details' => 'array',
             'details_ar' => 'json:unicode',
@@ -64,6 +78,22 @@ class Service extends Model
     public function contactMessages(): HasMany
     {
         return $this->hasMany(ContactMessage::class);
+    }
+
+    /**
+     * @return HasMany<ServicePlan, $this>
+     */
+    public function plans(): HasMany
+    {
+        return $this->hasMany(ServicePlan::class);
+    }
+
+    /**
+     * @return HasMany<PlanRequest, $this>
+     */
+    public function planRequests(): HasMany
+    {
+        return $this->hasMany(PlanRequest::class);
     }
 
     /**
@@ -163,6 +193,54 @@ class Service extends Model
         return $this->localizedDetailItems('reasons', $this->reasons());
     }
 
+    /**
+     * The plans shown on the public pricing section, in display order.
+     *
+     * @return Collection<int, ServicePlan>
+     */
+    public function activePlans(): Collection
+    {
+        return $this->relationLoaded('plans')
+            ? $this->plans->where('is_active', true)->sortBy(['sort_order', 'id'])->values()
+            : $this->plans()->active()->ordered()->get();
+    }
+
+    /**
+     * The pricing section only renders when it is enabled and has plans to show.
+     */
+    public function showsPricing(): bool
+    {
+        return $this->pricing_enabled && $this->activePlans()->isNotEmpty();
+    }
+
+    public function localizedPricingEyebrow(): string
+    {
+        return $this->localizedNullableString('pricing_eyebrow_ar', $this->pricing_eyebrow)
+            ?? __('public.pricing.eyebrow');
+    }
+
+    public function localizedPricingTitle(): string
+    {
+        return $this->localizedNullableString('pricing_title_ar', $this->pricing_title)
+            ?? __('public.pricing.title', ['service' => $this->localizedName()]);
+    }
+
+    public function localizedPricingSubtitle(): string
+    {
+        return $this->localizedNullableString('pricing_subtitle_ar', $this->pricing_subtitle)
+            ?? __('public.pricing.subtitle');
+    }
+
+    public function localizedPricingYearlyNote(): ?string
+    {
+        return $this->localizedNullableString('pricing_yearly_note_ar', $this->pricing_yearly_note);
+    }
+
+    public function localizedPricingFootnote(): ?string
+    {
+        return $this->localizedNullableString('pricing_footnote_ar', $this->pricing_footnote);
+    }
+
     public function localizedStatement(): ?string
     {
         $statement = $this->statement();
@@ -180,6 +258,17 @@ class Service extends Model
         return App::isLocale('ar') && is_string($arabicValue) && filled($arabicValue)
             ? $arabicValue
             : $fallback;
+    }
+
+    private function localizedNullableString(string $arabicAttribute, ?string $fallback): ?string
+    {
+        $arabicValue = $this->getAttribute($arabicAttribute);
+
+        if (App::isLocale('ar') && is_string($arabicValue) && filled($arabicValue)) {
+            return $arabicValue;
+        }
+
+        return filled($fallback) ? $fallback : null;
     }
 
     /**

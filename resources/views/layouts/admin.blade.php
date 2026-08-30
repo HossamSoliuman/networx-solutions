@@ -49,6 +49,11 @@
                     Messages
                 </x-admin.sidebar-link>
 
+                <x-admin.sidebar-link :href="route('admin.plan-requests.index')" icon="currency"
+                    :active="request()->routeIs('admin.plan-requests.*')" :badge="$unreadPlanRequestCount ?: null">
+                    Plan requests
+                </x-admin.sidebar-link>
+
                 <x-admin.sidebar-link :href="route('admin.services.index')" icon="grid" :active="request()->routeIs('admin.services.*')">
                     Services
                 </x-admin.sidebar-link>

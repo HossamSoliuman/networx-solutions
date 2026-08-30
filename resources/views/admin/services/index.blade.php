@@ -20,6 +20,7 @@
                         <tr class="text-left text-xs font-semibold uppercase tracking-wide text-slate-400">
                             <th class="px-5 py-3">Service</th>
                             <th class="hidden px-3 py-3 md:table-cell">Excerpt</th>
+                            <th class="px-3 py-3">Plans</th>
                             <th class="px-3 py-3">Enquiries</th>
                             <th class="px-3 py-3">Order</th>
                             <th class="px-3 py-3">Status</th>
@@ -41,6 +42,16 @@
                                 <td class="hidden max-w-72 truncate px-3 py-3.5 text-slate-500 md:table-cell">
                                     {{ $service->excerpt }}
                                 </td>
+                                <td class="px-3 py-3.5">
+                                    <a href="{{ route('admin.services.plans.index', $service) }}"
+                                        class="inline-flex items-center gap-1.5 text-sm font-medium text-brand-700 hover:underline">
+                                        <x-icon name="currency" class="size-4" />
+                                        {{ $service->plans_count }}
+                                        @unless ($service->pricing_enabled)
+                                            <span class="text-xs font-normal text-slate-400">(off)</span>
+                                        @endunless
+                                    </a>
+                                </td>
                                 <td class="px-3 py-3.5 text-slate-600">{{ $service->contact_messages_count }}</td>
                                 <td class="px-3 py-3.5 text-slate-600">{{ $service->sort_order }}</td>
                                 <td class="px-3 py-3.5">
@@ -52,6 +63,7 @@
                                 </td>
                                 <td class="px-5 py-3.5">
                                     <div class="flex items-center justify-end gap-1.5">
+                                        <x-button :href="route('admin.services.plans.index', $service)" variant="ghost" size="sm">Plans</x-button>
                                         <x-button :href="route('admin.services.edit', $service)" variant="ghost" size="sm">Edit</x-button>
                                         <x-button variant="ghost" size="sm" class="text-red-600 hover:bg-red-50"
                                             data-modal-open="delete-service-{{ $service->id }}">Delete</x-button>

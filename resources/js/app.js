@@ -148,6 +148,70 @@ document.addEventListener('click', (event) => {
     });
 });
 
+// ---------------------------------------------------------------------------
+// Pricing plans: monthly/yearly switch and the "get started" request modal.
+// ---------------------------------------------------------------------------
+const planRequestTitleTemplate = (dialog) => dialog.dataset.planTitleTemplate ?? '';
+
+const preparePlanRequestModal = (dialog, planId, planName) => {
+    const planIdInput = dialog.querySelector('[data-plan-request-plan-id]');
+    const billingInput = dialog.querySelector('[data-plan-request-billing-period]');
+    const title = dialog.querySelector('[data-plan-request-title]');
+    const pricingSection = document.querySelector('[data-pricing]');
+
+    if (planIdInput) {
+        planIdInput.value = planId;
+    }
+
+    if (billingInput) {
+        billingInput.value = pricingSection?.dataset.billing ?? 'monthly';
+    }
+
+    if (title && planName) {
+        title.textContent = planRequestTitleTemplate(dialog).replace(':plan', planName);
+    }
+};
+
+document.querySelectorAll('[data-pricing]').forEach((section) => {
+    const options = [...section.querySelectorAll('[data-billing-option]')];
+    const prices = [...section.querySelectorAll('[data-plan-price]')];
+
+    const setBillingPeriod = (period) => {
+        section.dataset.billing = period;
+
+        options.forEach((option) => {
+            option.setAttribute('aria-pressed', String(option.dataset.billingOption === period));
+        });
+
+        prices.forEach((price) => {
+            price.hidden = price.dataset.planPrice !== period;
+        });
+    };
+
+    options.forEach((option) => {
+        option.addEventListener('click', () => setBillingPeriod(option.dataset.billingOption));
+    });
+
+    setBillingPeriod(section.dataset.billing ?? 'monthly');
+});
+
+const planRequestForm = document.querySelector('[data-plan-request-form]');
+
+planRequestForm?.addEventListener('submit', () => {
+    const submitButton = planRequestForm.querySelector('[data-plan-request-submit]');
+    const submitLabel = submitButton?.querySelector('[data-plan-request-submit-label]');
+
+    if (submitButton) {
+        submitButton.disabled = true;
+        submitButton.setAttribute('aria-busy', 'true');
+        submitButton.classList.add('cursor-wait', 'opacity-75');
+    }
+
+    if (submitLabel) {
+        submitLabel.textContent = submitLabel.dataset.busyLabel;
+    }
+});
+
 const modalBackdrop = (dialog) => document.querySelector(`[data-modal-backdrop="${dialog.id}"]`);
 
 const openDialog = (dialog) => {
@@ -208,6 +272,10 @@ document.addEventListener('click', (event) => {
                 setSiteMenuState(false);
             }
 
+            if (dialog.matches('[data-plan-modal]') && opener.dataset.planId) {
+                preparePlanRequestModal(dialog, opener.dataset.planId, opener.dataset.planName);
+            }
+
             openDialog(dialog);
             return;
         }
@@ -243,6 +311,12 @@ const contactModal = document.querySelector('[data-contact-modal]');
 
 if (contactModal?.hasAttribute('data-open-on-load')) {
     openDialog(contactModal);
+}
+
+const planRequestModal = document.querySelector('[data-plan-modal]');
+
+if (planRequestModal?.hasAttribute('data-open-on-load')) {
+    openDialog(planRequestModal);
 }
 
 // ---------------------------------------------------------------------------
