@@ -242,6 +242,76 @@
         @apply rounded-[1.75rem] bg-white ring-1 ring-slate-200/90;
     }
 
+    /* Pricing plans. Each card sets --plan-accent so a single set of rules
+       renders any brand colour chosen in the admin panel. */
+    .plan-card {
+        @apply relative flex h-full min-w-0 flex-col rounded-[1.5rem] bg-white p-5 ring-1 ring-blue-100 transition duration-300 hover:-translate-y-1 hover:shadow-[0_26px_70px_-40px_rgba(0,39,114,0.6)];
+    }
+
+    .plan-card:hover {
+        --tw-ring-color: color-mix(in srgb, var(--plan-accent) 45%, transparent);
+    }
+
+    .plan-card-featured {
+        @apply shadow-[0_28px_70px_-38px_rgba(0,30,91,0.7)] ring-2 ring-navy-950;
+    }
+
+    .plan-card-featured:hover {
+        --tw-ring-color: var(--color-navy-950);
+    }
+
+    .plan-badge {
+        @apply absolute -top-3 start-1/2 -translate-x-1/2 whitespace-nowrap rounded-full px-4 py-1 text-[0.62rem] font-bold uppercase tracking-[0.14em] text-white rtl:translate-x-1/2;
+        background-color: var(--plan-accent);
+    }
+
+    .plan-card-featured .plan-badge {
+        background-color: var(--color-navy-950);
+    }
+
+    .plan-icon {
+        @apply flex size-12 items-center justify-center rounded-2xl;
+        color: var(--plan-accent);
+        background-color: color-mix(in srgb, var(--plan-accent) 10%, white);
+        box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--plan-accent) 22%, transparent);
+    }
+
+    .plan-price {
+        color: var(--plan-accent);
+    }
+
+    .plan-check {
+        color: var(--plan-accent);
+    }
+
+    .plan-billing-option {
+        @apply min-w-32 rounded-full px-6 py-2.5 text-sm font-bold text-slate-500 transition-colors duration-200 hover:text-navy-950;
+    }
+
+    .plan-billing-option[aria-pressed='true'] {
+        @apply bg-brand-600 text-white shadow-[0_10px_24px_-14px_rgba(0,128,252,0.9)] hover:text-white;
+    }
+
+    .plan-cta {
+        @apply mt-6 inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-bold transition duration-200;
+        color: var(--plan-accent);
+        box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--plan-accent) 35%, transparent);
+    }
+
+    .plan-cta:hover {
+        background-color: var(--plan-accent);
+        color: #ffffff;
+    }
+
+    .plan-card-featured .plan-cta {
+        @apply bg-navy-950 text-white;
+        box-shadow: none;
+    }
+
+    .plan-card-featured .plan-cta:hover {
+        @apply bg-brand-700 text-white;
+    }
+
     .technology-marquee {
         /* Brand marks keep their left-to-right reading order in both locales. */
         direction: ltr;

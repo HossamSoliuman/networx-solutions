@@ -21,7 +21,7 @@ class ServiceController extends Controller
         return view('admin.services.index', [
             'services' => Service::query()
                 ->ordered()
-                ->withCount('contactMessages')
+                ->withCount(['contactMessages', 'plans'])
                 ->get(),
         ]);
     }

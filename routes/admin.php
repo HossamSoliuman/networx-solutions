@@ -13,8 +13,12 @@ use App\Http\Controllers\Admin\ContactMessageStarController;
 use App\Http\Controllers\Admin\ContactMessageStatusController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\EmailTestController;
+use App\Http\Controllers\Admin\PlanRequestController;
+use App\Http\Controllers\Admin\PlanRequestStatusController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\ServiceController;
+use App\Http\Controllers\Admin\ServicePlanController;
+use App\Http\Controllers\Admin\ServicePlanStatusController;
 use App\Http\Controllers\Admin\SettingsController;
 use App\Http\Controllers\Admin\TechnologyController;
 use Illuminate\Support\Facades\Route;
@@ -43,7 +47,17 @@ Route::middleware('auth')->group(function () {
     Route::patch('messages/{message}/assign', [ContactMessageAssignController::class, 'update'])->name('messages.assign');
     Route::patch('messages/{message}/archive', [ContactMessageArchiveController::class, 'update'])->name('messages.archive');
 
+    Route::get('plan-requests', [PlanRequestController::class, 'index'])->name('plan-requests.index');
+    Route::get('plan-requests/{planRequest}', [PlanRequestController::class, 'show'])->name('plan-requests.show');
+    Route::put('plan-requests/{planRequest}', [PlanRequestController::class, 'update'])->name('plan-requests.update');
+    Route::delete('plan-requests/{planRequest}', [PlanRequestController::class, 'destroy'])->name('plan-requests.destroy');
+    Route::patch('plan-requests/{planRequest}/status', [PlanRequestStatusController::class, 'update'])->name('plan-requests.status');
+
     Route::resource('services', ServiceController::class)->except(['show']);
+    Route::patch('services/{service}/plans/{plan}/status', [ServicePlanStatusController::class, 'update'])
+        ->scopeBindings()
+        ->name('services.plans.status');
+    Route::resource('services.plans', ServicePlanController::class)->except(['show'])->scoped();
     Route::resource('technologies', TechnologyController::class)->except(['show']);
 
     Route::get('arabic-content', [ArabicContentController::class, 'edit'])->name('arabic-content.edit');

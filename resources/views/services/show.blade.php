@@ -44,6 +44,11 @@
                         {{ __('public.service.explore_services') }}
                         <x-icon name="arrow-left" class="size-4 -rotate-90" />
                     </a>
+                    @if ($service->showsPricing())
+                        <a href="#service-pricing" class="button-ghost-light w-full sm:w-auto">
+                            {{ __('public.service.view_plans') }}
+                        </a>
+                    @endif
                     <a href="{{ route('contact', ['service' => $service->slug]) }}" data-modal-open="contact-modal" data-contact-service-id="{{ $service->id }}" class="button-ghost-light w-full sm:w-auto">
                         {{ __('public.service.request_consultation') }}
                     </a>
@@ -122,6 +127,10 @@
             </div>
         </div>
     </section>
+
+    @if ($service->showsPricing())
+        @include('partials.service-pricing', ['service' => $service])
+    @endif
 
     @if ($serviceStatement)
         <section class="bg-white py-8 sm:py-10">

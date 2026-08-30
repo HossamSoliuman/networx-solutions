@@ -4,6 +4,7 @@ use App\Http\Controllers\AboutController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ContactFormController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\PlanRequestController;
 use App\Http\Controllers\SeoController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Middleware\SetPublicLocale;
@@ -19,6 +20,10 @@ Route::middleware(SetPublicLocale::class)->group(function (): void {
     Route::post('/contact', [ContactFormController::class, 'store'])
         ->middleware('throttle:contact-form')
         ->name('contact.store');
+
+    Route::post('/plan-requests', [PlanRequestController::class, 'store'])
+        ->middleware('throttle:plan-request')
+        ->name('plan-requests.store');
 });
 
 Route::get('/robots.txt', [SeoController::class, 'robots'])->name('seo.robots');

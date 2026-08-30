@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\ContactMessage;
+use App\Models\PlanRequest;
 use App\Models\Service;
 use App\Models\Setting;
 use App\Support\MailSettings;
@@ -36,6 +37,10 @@ class AppServiceProvider extends ServiceProvider
             return Limit::perMinute(5)->by($request->ip());
         });
 
+        RateLimiter::for('plan-request', function (Request $request) {
+            return Limit::perMinute(5)->by($request->ip());
+        });
+
         RateLimiter::for('login', function (Request $request) {
             return Limit::perMinute(5)->by($request->string('email')->lower()->value().'|'.$request->ip());
         });
@@ -45,7 +50,9 @@ class AppServiceProvider extends ServiceProvider
         });
 
         View::composer('layouts.admin', function (\Illuminate\View\View $view): void {
-            $view->with('unreadCount', ContactMessage::query()->inbox()->unread()->count());
+            $view
+                ->with('unreadCount', ContactMessage::query()->inbox()->unread()->count())
+                ->with('unreadPlanRequestCount', PlanRequest::query()->unread()->count());
         });
 
         View::composer([

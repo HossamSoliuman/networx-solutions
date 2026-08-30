@@ -41,6 +41,17 @@ class UpdateServiceRequest extends FormRequest
             'benefits_ar' => ['nullable', 'string', 'max:5000'],
             'sort_order' => ['required', 'integer', 'min:0', 'max:1000'],
             'is_active' => ['boolean'],
+            'pricing_enabled' => ['boolean'],
+            'pricing_eyebrow' => ['nullable', 'string', 'max:255'],
+            'pricing_eyebrow_ar' => ['nullable', 'string', 'max:255'],
+            'pricing_title' => ['nullable', 'string', 'max:255'],
+            'pricing_title_ar' => ['nullable', 'string', 'max:255'],
+            'pricing_subtitle' => ['nullable', 'string', 'max:255'],
+            'pricing_subtitle_ar' => ['nullable', 'string', 'max:255'],
+            'pricing_yearly_note' => ['nullable', 'string', 'max:255'],
+            'pricing_yearly_note_ar' => ['nullable', 'string', 'max:255'],
+            'pricing_footnote' => ['nullable', 'string', 'max:1000'],
+            'pricing_footnote_ar' => ['nullable', 'string', 'max:1000'],
         ];
     }
 
@@ -52,6 +63,7 @@ class UpdateServiceRequest extends FormRequest
         $this->merge([
             'slug' => Str::slug($this->input('slug') ?: $this->input('name', '')),
             'is_active' => $this->boolean('is_active'),
+            'pricing_enabled' => $this->boolean('pricing_enabled'),
         ]);
     }
 }
