@@ -137,6 +137,44 @@
             @endforeach
         </div>
 
+        <div class="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4" data-reveal-group>
+            @foreach (__('public.pricing.highlights') as $highlight)
+                <div class="flex min-w-0 gap-3.5 lg:border-s lg:border-blue-100 lg:ps-6 lg:first:border-s-0 lg:first:ps-0"
+                    data-reveal>
+                    <span class="flex size-11 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-brand-700 ring-1 ring-blue-100">
+                        <x-icon :name="$highlight['icon']" class="size-5" />
+                    </span>
+                    <div class="min-w-0">
+                        <h3 dir="auto" class="font-display text-sm font-bold leading-5 text-navy-950"><bdi>{{ $highlight['title'] }}</bdi></h3>
+                        <p dir="auto" class="mt-1.5 text-[0.8rem] leading-5 text-slate-600">{{ $highlight['copy'] }}</p>
+                    </div>
+                </div>
+            @endforeach
+        </div>
+
+        <div class="relative mt-10 overflow-hidden rounded-[1.75rem] bg-navy-950 px-6 py-7 text-white sm:px-10 lg:flex lg:items-center lg:justify-between lg:gap-10"
+            data-reveal>
+            <div class="bg-reference-dots absolute end-0 top-0 h-full w-72 opacity-20"></div>
+
+            <div class="relative flex items-start gap-5">
+                <span class="hidden size-14 shrink-0 items-center justify-center rounded-full border-2 border-white/80 bg-white/10 sm:flex">
+                    <x-icon name="headset" class="size-7" />
+                </span>
+                <div class="min-w-0">
+                    <h3 dir="auto" class="font-display text-xl font-bold leading-tight sm:text-2xl">
+                        <bdi>{{ __('public.pricing.custom.title') }}</bdi>
+                    </h3>
+                    <p dir="auto" class="mt-2 max-w-2xl text-sm leading-6 text-blue-100/75">{{ __('public.pricing.custom.copy') }}</p>
+                </div>
+            </div>
+
+            <a href="{{ route('contact', ['service' => $service->slug]) }}" data-modal-open="contact-modal"
+                data-contact-service-id="{{ $service->id }}" class="button-primary relative mt-6 shrink-0 lg:mt-0">
+                {{ __('public.pricing.custom.cta') }}
+                <x-icon name="arrow-left" class="size-4 rotate-180 rtl:rotate-0" />
+            </a>
+        </div>
+
         @if ($footnote)
             <p dir="auto" class="mt-8 text-center text-xs leading-5 text-slate-500">{{ $footnote }}</p>
         @endif
