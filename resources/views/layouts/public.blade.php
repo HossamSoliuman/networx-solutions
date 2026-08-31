@@ -207,7 +207,7 @@
         </div>
 
         <nav id="site-menu" data-site-menu
-            class="absolute inset-x-0 top-full hidden max-h-[calc(100vh-4rem)] overflow-y-auto border-t border-slate-200 bg-paper px-5 pb-8 shadow-2xl lg:hidden"
+            class="scrollbar-none absolute inset-x-0 top-full hidden max-h-[calc(100vh-4rem)] overflow-y-auto border-t border-slate-200 bg-paper px-5 pb-8 shadow-2xl lg:hidden"
             aria-label="{{ __('public.accessibility.mobile_navigation') }}">
             <div class="mx-auto max-w-[90rem]">
                 <a href="{{ route('home') }}" class="site-mobile-link"

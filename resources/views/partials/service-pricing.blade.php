@@ -7,13 +7,20 @@
     $yearlyNote = $service->localizedPricingYearlyNote();
     $footnote = $service->localizedPricingFootnote();
 
+    /**
+     * A single plan never needs the mobile carousel, so it keeps the plain grid.
+     * Everything else scrolls horizontally below `sm` (see `.plan-grid`) instead
+     * of stacking full-height cards into a multi-screen scroll.
+     */
+    $isPlanCarousel = $plans->count() > 1;
+
     $gridColumns = match ($plans->count()) {
-        1 => 'mx-auto max-w-md grid-cols-1',
-        2 => 'mx-auto max-w-3xl sm:grid-cols-2',
-        3 => 'sm:grid-cols-2 lg:grid-cols-3',
-        4 => 'sm:grid-cols-2 xl:grid-cols-4',
-        5 => 'sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-5',
-        default => 'sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-6',
+        1 => 'mx-auto grid max-w-md grid-cols-1',
+        2 => 'plan-grid sm:mx-auto sm:max-w-3xl sm:grid-cols-2',
+        3 => 'plan-grid sm:grid-cols-2 lg:grid-cols-3',
+        4 => 'plan-grid sm:grid-cols-2 xl:grid-cols-4',
+        5 => 'plan-grid sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-5',
+        default => 'plan-grid sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-6',
     };
 @endphp
 
@@ -53,7 +60,8 @@
             </div>
         @endif
 
-        <div class="mt-10 grid gap-4 {{ $gridColumns }}" data-reveal-group>
+        <div class="scrollbar-none mt-10 gap-4 {{ $gridColumns }}" data-reveal-group
+            @if ($isPlanCarousel) tabindex="0" role="group" aria-label="{{ $service->localizedPricingTitle() }}" @endif>
             @foreach ($plans as $plan)
                 @php
                     $badge = $plan->localizedBadge();
@@ -65,7 +73,7 @@
                 @endphp
 
                 <article data-reveal style="--plan-accent: {{ $plan->accent_color ?: '#0045B3' }}"
-                    @class(['plan-card', 'plan-card-featured mt-4 sm:mt-0' => $plan->is_featured])>
+                    @class(['plan-card', 'plan-card-featured' => $plan->is_featured])>
                     @if ($badge)
                         <span class="plan-badge"><bdi>{{ $badge }}</bdi></span>
                     @endif

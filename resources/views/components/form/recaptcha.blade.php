@@ -7,8 +7,8 @@
 
 @if ($recaptchaEnabled && $recaptchaSiteKey)
     <div {{ $attributes->merge(['class' => $class]) }}>
-        <div @class([
-            'inline-block max-w-full overflow-x-auto rounded-lg bg-white',
+        <div data-recaptcha-shell @class([
+            'recaptcha-shell',
             'ring-2 ring-red-500' => $errors->has('g-recaptcha-response'),
         ])>
             <div data-recaptcha-widget data-sitekey="{{ $recaptchaSiteKey }}"></div>

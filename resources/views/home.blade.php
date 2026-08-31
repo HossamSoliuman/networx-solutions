@@ -76,7 +76,9 @@
 
                     <div class="relative py-6">
                         <div class="bg-technical-dots absolute inset-0 opacity-70"></div>
-                        <div class="relative grid grid-cols-2 gap-3">
+                        {{-- Two columns leave roughly 70px for the label on a phone, so service
+                             names break one word per line. Stay single column until `sm`. --}}
+                        <div class="relative grid grid-cols-1 gap-2.5 sm:grid-cols-2 sm:gap-3">
                             @foreach ($services as $service)
                                 <a href="{{ route('services.show', $service) }}"
                                     class="network-node group/node flex min-w-0 items-center gap-3 overflow-hidden rounded-2xl border border-white/10 bg-white/[0.06] p-3.5 transition hover:border-brand-300/35 hover:bg-brand-400/10">
@@ -93,15 +95,15 @@
                     <div class="grid grid-cols-3 gap-px overflow-hidden rounded-2xl bg-white/10 text-center">
                         <div class="min-w-0 bg-navy-900/90 px-2 py-4 sm:p-4">
                             <p class="font-display text-3xl font-bold leading-none text-white">{{ str_pad((string) $services->count(), 2, '0', STR_PAD_LEFT) }}</p>
-                            <p class="technical-label mt-2 text-xs leading-4 tracking-[0.06em] text-slate-200 sm:tracking-[0.12em]">{{ __('public.home.capabilities') }}</p>
+                            <p class="technical-label mt-2 text-[0.6rem] leading-4 tracking-[0.04em] text-slate-200 sm:text-xs sm:tracking-[0.12em]">{{ __('public.home.capabilities') }}</p>
                         </div>
                         <div class="min-w-0 bg-navy-900/90 px-2 py-4 sm:p-4">
                             <p class="font-display text-3xl font-bold leading-none text-white">01</p>
-                            <p class="technical-label mt-2 text-xs leading-4 tracking-[0.06em] text-slate-200 sm:tracking-[0.12em]">{{ __('public.home.partner') }}</p>
+                            <p class="technical-label mt-2 text-[0.6rem] leading-4 tracking-[0.04em] text-slate-200 sm:text-xs sm:tracking-[0.12em]">{{ __('public.home.partner') }}</p>
                         </div>
                         <div class="min-w-0 bg-navy-900/90 px-2 py-4 sm:p-4">
                             <p class="font-display text-3xl font-bold leading-none text-white">04</p>
-                            <p class="technical-label mt-2 text-xs leading-4 tracking-[0.06em] text-slate-200 sm:tracking-[0.12em]">{{ __('public.home.stages') }}</p>
+                            <p class="technical-label mt-2 text-[0.6rem] leading-4 tracking-[0.04em] text-slate-200 sm:text-xs sm:tracking-[0.12em]">{{ __('public.home.stages') }}</p>
                         </div>
                     </div>
                 </div>
@@ -134,7 +136,7 @@
                 </div>
             </div>
 
-            <div class="technology-marquee mt-9" data-reveal>
+            <div class="technology-marquee scrollbar-none mt-9" data-reveal>
                 <div class="technology-track">
                     @foreach ($technologies as $technology)
                         <x-site.technology-card :technology="$technology" class="technology-slide" />

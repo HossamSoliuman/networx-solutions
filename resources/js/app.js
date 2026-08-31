@@ -87,6 +87,28 @@ const setContactFormSubmitting = (form, isSubmitting) => {
     }
 };
 
+const RECAPTCHA_WIDGET_WIDTH = 304;
+const RECAPTCHA_WIDGET_HEIGHT = 78;
+
+/**
+ * The reCAPTCHA checkbox is a fixed 304x78 iframe that overflows narrow form
+ * columns. Scale each widget to the width its column actually offers.
+ */
+const fitRecaptchaWidgets = (root = document) => {
+    root.querySelectorAll('[data-recaptcha-shell]').forEach((shell) => {
+        const available = shell.parentElement?.clientWidth ?? 0;
+
+        if (available === 0) {
+            return;
+        }
+
+        const scale = Math.min(1, available / RECAPTCHA_WIDGET_WIDTH);
+
+        shell.style.setProperty('--recaptcha-scale', String(scale));
+        shell.style.height = `${Math.ceil(RECAPTCHA_WIDGET_HEIGHT * scale)}px`;
+    });
+};
+
 const renderRecaptchaWidgets = (root = document) => {
     const recaptcha = window.grecaptcha;
 
@@ -105,6 +127,8 @@ const renderRecaptchaWidgets = (root = document) => {
 
         widget.dataset.recaptchaWidgetId = String(widgetId);
     });
+
+    fitRecaptchaWidgets(root);
 };
 
 const loadRecaptcha = () => {
@@ -126,6 +150,7 @@ const loadRecaptcha = () => {
 };
 
 window.addEventListener('recaptcha:ready', () => renderRecaptchaWidgets());
+window.addEventListener('resize', () => fitRecaptchaWidgets());
 loadRecaptcha();
 
 document.querySelectorAll('[data-contact-form]').forEach((form) => {

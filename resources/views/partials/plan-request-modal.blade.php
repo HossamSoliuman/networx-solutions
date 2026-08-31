@@ -15,7 +15,7 @@
     data-plan-title-template="{{ __('public.pricing.request.title', ['plan' => ':plan']) }}"
     @if ($success || $planErrors->any()) data-open-on-load @endif
     aria-labelledby="plan-request-title"
-    class="m-auto max-h-[calc(100dvh-2rem)] w-[calc(100%-2rem)] max-w-xl overflow-y-auto rounded-[1.5rem] bg-white p-0 text-slate-900 shadow-[0_32px_90px_-28px_rgba(5,26,53,0.7)] backdrop:bg-navy-950/70 backdrop:backdrop-blur-sm">
+    class="scrollbar-none m-auto max-h-[calc(100dvh-2rem)] w-[calc(100%-2rem)] max-w-xl overflow-y-auto rounded-[1.5rem] bg-white p-0 text-slate-900 shadow-[0_32px_90px_-28px_rgba(5,26,53,0.7)] backdrop:bg-navy-950/70 backdrop:backdrop-blur-sm">
     <div class="relative overflow-hidden bg-navy-950 px-5 py-5 text-white sm:px-7">
         <img src="{{ asset('images/site/networx-logo-badge.jpeg') }}" alt="" aria-hidden="true"
             class="absolute -end-10 top-1/2 size-44 -translate-y-1/2 object-contain opacity-20 mix-blend-multiply">

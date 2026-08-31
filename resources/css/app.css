@@ -242,6 +242,28 @@
         @apply rounded-[1.75rem] bg-white ring-1 ring-slate-200/90;
     }
 
+    /* Below `sm` the plans scroll horizontally with snap points; stacking them
+       would turn the section into several screens of vertical scrolling. The
+       top padding keeps `.plan-badge` from being clipped, because an
+       `overflow-x: auto` box also clips vertically. */
+    .plan-grid {
+        @apply -mx-5 flex snap-x snap-mandatory gap-4 overflow-x-auto overscroll-x-contain scroll-px-5 px-5 pb-4 pt-5;
+    }
+
+    .plan-grid > .plan-card {
+        @apply w-[86%] max-w-[20rem] shrink-0 snap-start;
+    }
+
+    @variant sm {
+        .plan-grid {
+            @apply mx-0 grid snap-none overflow-visible px-0 pb-0 pt-0;
+        }
+
+        .plan-grid > .plan-card {
+            @apply w-auto max-w-none;
+        }
+    }
+
     /* Pricing plans. Each card sets --plan-accent so a single set of rules
        renders any brand colour chosen in the admin panel. */
     .plan-card {
@@ -333,15 +355,41 @@
         @apply w-44 shrink-0 sm:w-52;
     }
 
-    @media (prefers-reduced-motion: reduce) {
+    /* Touch devices cannot hover to pause the marquee, so they get a plain
+       swipeable strip instead. The animation is dropped because a moving
+       `translateX` fights manual scrolling, and the duplicated set is hidden
+       because it only exists to make the loop seamless. */
+    @media (max-width: 767px), (hover: none), (prefers-reduced-motion: reduce) {
         .technology-marquee {
-            @apply overflow-x-auto;
+            @apply snap-x overflow-x-auto overscroll-x-contain scroll-px-5 px-5 sm:scroll-px-8 sm:px-8;
             mask-image: none;
         }
 
         .technology-track {
             animation: none;
         }
+
+        .technology-slide {
+            @apply snap-start;
+        }
+
+        .technology-track > [aria-hidden='true'] {
+            display: none;
+        }
+    }
+
+    /* The reCAPTCHA checkbox renders as a fixed 304x78 iframe. Scale it down to
+       the column width (see `fitRecaptchaWidgets`) rather than letting it push
+       a horizontal scrollbar into narrow forms. */
+    .recaptcha-shell {
+        @apply block max-w-full overflow-hidden rounded-lg bg-white;
+        width: 304px;
+    }
+
+    .recaptcha-shell > [data-recaptcha-widget] {
+        @apply origin-top-left rtl:origin-top-right;
+        width: 304px;
+        transform: scale(var(--recaptcha-scale, 1));
     }
 
     .technology-card {
@@ -414,6 +462,16 @@
 }
 
 @layer utilities {
+    /* Keeps a scroll container scrollable while hiding its scrollbar chrome. */
+    .scrollbar-none {
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+    }
+
+    .scrollbar-none::-webkit-scrollbar {
+        display: none;
+    }
+
     .hero-image-shade {
         background:
             linear-gradient(90deg, rgb(7 52 111 / 0.9) 0%, rgb(6 68 135 / 0.72) 42%, rgb(0 128 252 / 0.24) 72%, rgb(0 128 252 / 0.08) 100%),
