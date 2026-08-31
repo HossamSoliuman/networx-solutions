@@ -182,6 +182,17 @@ return [
         'custom_price' => 'Custom',
         'get_started' => 'Get started',
         'save_percent' => 'Save :percent%',
+        'highlights' => [
+            ['icon' => 'headset', 'title' => 'Fast & reliable support', 'copy' => 'Quick response to keep your business running.'],
+            ['icon' => 'shield', 'title' => 'Prevent problems before they happen', 'copy' => 'Regular maintenance and monitoring to reduce downtime.'],
+            ['icon' => 'chart', 'title' => 'Flexible plans', 'copy' => 'Choose the plan that fits your business needs.'],
+            ['icon' => 'currency', 'title' => 'Transparent pricing', 'copy' => 'No hidden fees. Pay only for what you need.'],
+        ],
+        'custom' => [
+            'title' => 'Need something different?',
+            'copy' => 'Every business is unique. We can create a customised plan based on your devices, users, infrastructure, and support requirements.',
+            'cta' => 'Request a custom quote',
+        ],
         'request' => [
             'title' => 'Get started with :plan',
             'plan' => 'Selected plan',
