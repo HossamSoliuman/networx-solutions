@@ -136,8 +136,8 @@
                 </div>
             </div>
 
-            <div class="technology-marquee scrollbar-none mt-9" data-reveal>
-                <div class="technology-track">
+            <div class="technology-marquee scrollbar-none mt-9" data-reveal data-technology-marquee>
+                <div class="technology-track" data-technology-track>
                     @foreach ($technologies as $technology)
                         <x-site.technology-card :technology="$technology" class="technology-slide" />
                     @endforeach

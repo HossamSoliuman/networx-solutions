@@ -355,18 +355,26 @@
         @apply w-44 shrink-0 sm:w-52;
     }
 
-    /* Touch devices cannot hover to pause the marquee, so they get a plain
-       swipeable strip instead. The animation is dropped because a moving
-       `translateX` fights manual scrolling, and the duplicated set is hidden
-       because it only exists to make the loop seamless. */
+    /* Touch devices cannot hover to pause the marquee, so the strip becomes a
+       native scroller that stays draggable under a finger. A moving
+       `translateX` fights manual scrolling, so the animation is dropped and
+       `startTechnologyMarquee` advances `scrollLeft` instead. */
     @media (max-width: 767px), (hover: none), (prefers-reduced-motion: reduce) {
         .technology-marquee {
-            @apply snap-x overflow-x-auto overscroll-x-contain scroll-px-5 px-5 sm:scroll-px-8 sm:px-8;
+            @apply overflow-x-auto overscroll-x-contain px-5 sm:px-8;
             mask-image: none;
         }
 
         .technology-track {
             animation: none;
+        }
+    }
+
+    /* Without motion the strip stays put, so it snaps like a plain carousel and
+       drops the duplicated set that only exists to make the loop seamless. */
+    @media (prefers-reduced-motion: reduce) {
+        .technology-marquee {
+            @apply snap-x scroll-px-5 sm:scroll-px-8;
         }
 
         .technology-slide {

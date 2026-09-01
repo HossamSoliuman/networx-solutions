@@ -71,6 +71,122 @@ if (revealElements.length > 0 && !window.matchMedia('(prefers-reduced-motion: re
     });
 }
 
+// ---------------------------------------------------------------------------
+// Technology marquee. Pointer devices get the CSS `technology-scroll`
+// animation, which hover pauses. Touch and narrow screens instead scroll the
+// strip natively so a finger can drag it, and this loop keeps it moving
+// whenever nobody is touching it.
+// ---------------------------------------------------------------------------
+const MARQUEE_PIXELS_PER_SECOND = 40;
+const MARQUEE_RESUME_DELAY = 1500;
+
+const startTechnologyMarquee = (marquee) => {
+    const track = marquee.querySelector('[data-technology-track]');
+    const slides = track ? [...track.children] : [];
+
+    if (slides.length < 2) {
+        return () => {};
+    }
+
+    /**
+     * Distance covered by one full set of cards. The track renders the set
+     * twice, so scrolling back by this much lands on an identical frame.
+     */
+    const loopDistance = () => slides[slides.length / 2].offsetLeft - slides[0].offsetLeft;
+
+    let frameId = null;
+    let previousTimestamp = null;
+    let isPointerDown = false;
+    let resumeAt = 0;
+
+    const step = (timestamp) => {
+        const elapsed = previousTimestamp === null ? 0 : (timestamp - previousTimestamp) / 1000;
+        const distance = loopDistance();
+        previousTimestamp = timestamp;
+
+        if (!isPointerDown && distance > 0) {
+            if (timestamp >= resumeAt) {
+                marquee.scrollLeft += MARQUEE_PIXELS_PER_SECOND * elapsed;
+            }
+
+            if (marquee.scrollLeft >= distance) {
+                marquee.scrollLeft -= distance;
+            }
+        }
+
+        frameId = requestAnimationFrame(step);
+    };
+
+    const play = () => {
+        if (frameId === null) {
+            previousTimestamp = null;
+            frameId = requestAnimationFrame(step);
+        }
+    };
+
+    const pause = () => {
+        if (frameId !== null) {
+            cancelAnimationFrame(frameId);
+            frameId = null;
+        }
+    };
+
+    const holdForUser = () => {
+        isPointerDown = false;
+        resumeAt = performance.now() + MARQUEE_RESUME_DELAY;
+    };
+
+    const grab = () => {
+        isPointerDown = true;
+    };
+
+    marquee.addEventListener('pointerdown', grab);
+    marquee.addEventListener('pointerup', holdForUser);
+    marquee.addEventListener('pointercancel', holdForUser);
+    marquee.addEventListener('pointerleave', holdForUser);
+
+    // Off-screen frames are wasted work and drain phone batteries.
+    const visibilityObserver = new IntersectionObserver(
+        ([entry]) => (entry.isIntersecting ? play() : pause()),
+        { threshold: 0 },
+    );
+
+    visibilityObserver.observe(marquee);
+
+    return () => {
+        pause();
+        visibilityObserver.disconnect();
+        marquee.removeEventListener('pointerdown', grab);
+        marquee.removeEventListener('pointerup', holdForUser);
+        marquee.removeEventListener('pointercancel', holdForUser);
+        marquee.removeEventListener('pointerleave', holdForUser);
+        marquee.scrollLeft = 0;
+    };
+};
+
+document.querySelectorAll('[data-technology-marquee]').forEach((marquee) => {
+    // Mirrors the media query that turns the strip into a scroller in app.css.
+    const scrollerQuery = window.matchMedia('(max-width: 767px), (hover: none)');
+    const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+    let stop = null;
+
+    const sync = () => {
+        const shouldRun = scrollerQuery.matches && !reducedMotionQuery.matches;
+
+        if (shouldRun && !stop) {
+            stop = startTechnologyMarquee(marquee);
+        } else if (!shouldRun && stop) {
+            stop();
+            stop = null;
+        }
+    };
+
+    scrollerQuery.addEventListener('change', sync);
+    reducedMotionQuery.addEventListener('change', sync);
+    sync();
+});
+
 const setContactFormSubmitting = (form, isSubmitting) => {
     const submitButton = form.querySelector('[data-contact-submit]');
     const submitLabel = submitButton?.querySelector('[data-contact-submit-label]');
