@@ -72,7 +72,7 @@
 
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link
-        href="https://fonts.bunny.net/css?family=barlow:400,500,600,700|barlow-semi-condensed:500,600,700|cairo:400,500,600,700|ibm-plex-mono:500,600"
+        href="https://fonts.bunny.net/css?family=allura:400|barlow:400,500,600,700|barlow-semi-condensed:500,600,700|cairo:400,500,600,700|ibm-plex-mono:500,600"
         rel="stylesheet">
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -90,8 +90,7 @@
     @unless ($focused)
         <div class="hidden bg-navy-950 text-slate-300 sm:block">
             <div class="mx-auto flex min-h-10 max-w-[90rem] items-center justify-between gap-6 px-8 py-2 text-xs lg:px-12">
-                <p class="flex items-center gap-2.5 font-mono font-semibold uppercase tracking-[0.14em] text-brand-200">
-                    <span class="size-1.5 rounded-full bg-signal-400 shadow-[0_0_0_4px_rgba(53,212,170,0.12)]"></span>
+                <p class="flex items-center font-mono font-semibold uppercase tracking-[0.14em] text-brand-200">
                     <bdi>{{ $site['tagline'] }}</bdi>
                 </p>
 
@@ -207,7 +206,7 @@
         </div>
 
         <nav id="site-menu" data-site-menu
-            class="scrollbar-none absolute inset-x-0 top-full hidden max-h-[calc(100vh-4rem)] overflow-y-auto border-t border-slate-200 bg-paper px-5 pb-8 shadow-2xl lg:hidden"
+            class="scrollbar-none absolute inset-x-0 top-full hidden max-h-[calc(100dvh-4rem)] overflow-y-auto overscroll-contain border-t border-slate-200 bg-paper px-5 pb-[calc(1.5rem+env(safe-area-inset-bottom))] shadow-2xl lg:hidden"
             aria-label="{{ __('public.accessibility.mobile_navigation') }}">
             <div class="mx-auto max-w-[90rem]">
                 <a href="{{ route('home') }}" class="site-mobile-link"
@@ -229,10 +228,10 @@
                 </a>
 
                 @if ($navigationServices->isNotEmpty())
-                    <div class="grid gap-1 border-b border-slate-200 py-3 sm:grid-cols-2">
+                    <div class="grid gap-0.5 border-b border-slate-200 py-2 sm:grid-cols-2">
                         @foreach ($navigationServices as $navigationService)
                             <a href="{{ route('services.show', $navigationService) }}"
-                                class="rounded-xl px-3 py-2.5 text-sm font-semibold text-slate-600 transition-colors hover:bg-brand-50 hover:text-brand-700">
+                                class="site-mobile-service">
                                 <bdi>{{ $navigationService->localizedName() }}</bdi>
                             </a>
                         @endforeach
@@ -248,13 +247,13 @@
                 @if ($mapsUrl)
                     <a href="{{ $mapsUrl }}" target="_blank" rel="noopener noreferrer"
                         aria-label="{{ __('public.accessibility.view_on_maps', ['address' => $site['address']]) }}"
-                        class="mt-4 flex items-center gap-3 rounded-xl bg-canvas px-4 py-3 text-sm font-semibold text-navy-950 transition-colors hover:bg-brand-50">
+                        class="mt-3 flex items-center gap-3 rounded-xl bg-canvas px-4 py-2.5 text-sm font-semibold text-navy-950 transition-colors hover:bg-brand-50">
                         <x-icon name="map-pin" class="size-4 text-brand-600" />
                         <bdi>{{ $site['address'] }}</bdi>
                     </a>
                 @endif
 
-                <div class="mt-6 grid grid-cols-2 gap-3">
+                <div class="mt-4 grid grid-cols-2 gap-3">
                     <a href="{{ $localeSwitchUrl }}" hreflang="{{ $alternateLocale }}"
                         class="button-light border border-slate-300"
                         aria-label="{{ __('public.locale.change_language') }}">

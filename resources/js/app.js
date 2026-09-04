@@ -72,6 +72,82 @@ if (revealElements.length > 0 && !window.matchMedia('(prefers-reduced-motion: re
 }
 
 // ---------------------------------------------------------------------------
+// Hero headline typewriter. Each term is typed, held, then deleted before the
+// next one starts. Reduced-motion visitors keep the first term on screen.
+// ---------------------------------------------------------------------------
+const TYPER_TYPE_SPEED = 95;
+const TYPER_DELETE_SPEED = 45;
+const TYPER_HOLD = 1600;
+const TYPER_GAP = 320;
+
+const startHeroTyper = (typer) => {
+    const output = typer.querySelector('[data-hero-typer-text]');
+
+    let terms = [];
+
+    try {
+        terms = JSON.parse(typer.dataset.heroTerms ?? '[]');
+    } catch {
+        terms = [];
+    }
+
+    if (!output || terms.length === 0) {
+        return;
+    }
+
+    let termIndex = 0;
+    let characterCount = terms[0].length;
+    let isDeleting = true;
+    let timer = null;
+
+    const tick = () => {
+        const term = terms[termIndex];
+
+        characterCount += isDeleting ? -1 : 1;
+        output.textContent = term.slice(0, characterCount);
+
+        let delay = isDeleting ? TYPER_DELETE_SPEED : TYPER_TYPE_SPEED;
+
+        if (!isDeleting && characterCount === term.length) {
+            isDeleting = true;
+            delay = TYPER_HOLD;
+        } else if (isDeleting && characterCount === 0) {
+            isDeleting = false;
+            termIndex = (termIndex + 1) % terms.length;
+            delay = TYPER_GAP;
+        }
+
+        timer = window.setTimeout(tick, delay);
+    };
+
+    const play = () => {
+        if (timer === null) {
+            timer = window.setTimeout(tick, TYPER_HOLD);
+        }
+    };
+
+    const pause = () => {
+        window.clearTimeout(timer);
+        timer = null;
+    };
+
+    // Typing off-screen or in a background tab is wasted work on phones.
+    const visibilityObserver = new IntersectionObserver(
+        (entries) => {
+            entries.forEach((entry) => (entry.isIntersecting && !document.hidden ? play() : pause()));
+        },
+        { threshold: 0 },
+    );
+
+    visibilityObserver.observe(typer);
+    document.addEventListener('visibilitychange', () => (document.hidden ? pause() : play()));
+};
+
+if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    document.querySelectorAll('[data-hero-typer]').forEach(startHeroTyper);
+}
+
+// ---------------------------------------------------------------------------
 // Technology marquee. Pointer devices get the CSS `technology-scroll`
 // animation, which hover pauses. Touch and narrow screens instead scroll the
 // strip natively so a finger can drag it, and this loop keeps it moving

@@ -82,6 +82,79 @@
         </div>
     </section>
 
+    <section class="relative isolate overflow-hidden border-b border-navy-900 bg-navy-950 py-14 text-white sm:py-20">
+        <div class="bg-machine-grid absolute inset-0 -z-10 opacity-35"></div>
+        <div class="bg-signal-glow absolute inset-0 -z-10"></div>
+
+        <div class="mx-auto max-w-[90rem] px-5 sm:px-8 lg:px-12">
+            <div class="mx-auto max-w-3xl text-center" data-reveal>
+                <p class="section-kicker justify-center text-brand-200">{{ __('public.about.founder.eyebrow') }}</p>
+                <h2 class="mt-4 text-balance font-display text-4xl font-semibold leading-[1.03] tracking-[-0.035em] text-white sm:text-5xl">
+                    {{ __('public.about.founder.title') }}
+                </h2>
+                <p class="mt-4 text-base leading-7 text-slate-300 sm:text-lg">{{ __('public.about.founder.intro') }}</p>
+            </div>
+
+            <article class="founder-card relative mt-10 overflow-hidden rounded-[2rem] border border-brand-400/35 bg-navy-950/70 shadow-[0_35px_90px_-45px_rgba(0,128,252,0.9)] backdrop-blur-sm"
+                data-reveal>
+                <div class="absolute inset-x-0 top-0 h-px bg-[linear-gradient(90deg,var(--color-brand-500),var(--color-signal-400),#7ee787)]"
+                    aria-hidden="true"></div>
+                <span class="founder-card-scan" aria-hidden="true"></span>
+
+                <div class="grid lg:grid-cols-[19rem_1fr]">
+                    <aside class="founder-profile flex flex-col items-center border-b border-white/10 px-6 py-10 text-center sm:px-10 lg:border-b-0 lg:border-e lg:py-12">
+                        <div class="relative">
+                            <span class="founder-portrait-orbit absolute -inset-3 rounded-full border border-brand-300/30" aria-hidden="true"></span>
+                            <span class="absolute -inset-2 rounded-full bg-brand-400/15 blur-md" aria-hidden="true"></span>
+                            <img src="{{ asset('images/site/founder.png') }}"
+                                alt="{{ __('public.about.founder.photo_alt') }}" loading="lazy" decoding="async"
+                                class="founder-portrait relative size-40 rounded-full border-2 border-brand-400 object-cover shadow-[0_0_0_9px_rgba(0,128,252,0.1)] sm:size-48">
+                        </div>
+                        <p class="mt-6 font-display text-2xl font-bold tracking-[-0.025em] text-white">
+                            <bdi>{{ __('public.about.founder.name') }}</bdi>
+                        </p>
+                        <p class="technical-label mt-2 text-brand-300">{{ __('public.about.founder.role') }}</p>
+                        <span class="mt-6 h-1 w-12 rounded-full bg-brand-500" aria-hidden="true"></span>
+                        <img src="{{ asset('images/site/networx-logo-contact-transparent.png') }}" alt="Networx Solutions"
+                            class="founder-logo mt-7 h-auto w-44 object-contain opacity-90">
+                    </aside>
+
+                    <div class="founder-copy min-w-0 px-6 py-9 sm:px-10 sm:py-11 lg:px-12 lg:py-12">
+                        <span class="block font-display text-6xl font-bold leading-none text-brand-400" aria-hidden="true">&ldquo;</span>
+                        <blockquote class="mt-3 space-y-5 text-pretty text-base leading-8 text-slate-200 sm:text-lg sm:leading-9">
+                            <p class="mixed-direction">
+                                {{ __('public.about.founder.opening_before') }}
+                                <strong class="font-semibold text-brand-300">{{ __('public.about.founder.opening_brand') }}</strong>{{ __('public.about.founder.opening_after') }}
+                            </p>
+                            <p class="mixed-direction font-semibold text-white">{{ __('public.about.founder.commitment') }}</p>
+                            <p class="mixed-direction">
+                                {{ __('public.about.founder.mission_before') }}
+                                <strong class="font-semibold text-brand-300">{{ __('public.about.founder.microsoft_365') }}</strong>{{ __('public.about.founder.mission_middle') }}
+                                <strong class="font-semibold text-brand-300">{{ __('public.about.founder.network') }}</strong>{{ __('public.about.founder.mission_cloud') }}
+                                <strong class="font-semibold text-brand-300">{{ __('public.about.founder.cloud') }}</strong>{{ __('public.about.founder.mission_support') }}
+                                <strong class="font-semibold text-brand-300">{{ __('public.about.founder.support') }}</strong>{{ __('public.about.founder.mission_after') }}
+                            </p>
+                            <p class="mixed-direction">
+                                {{ __('public.about.founder.partnership_before') }}
+                                <strong class="font-semibold text-brand-300">{{ __('public.about.founder.partnership_brand') }}</strong>{{ __('public.about.founder.partnership_after') }}
+                            </p>
+                        </blockquote>
+
+                        <div class="founder-closing mt-8 flex flex-wrap items-center gap-x-4 gap-y-3 border-t border-white/10 pt-6 text-base text-slate-100 sm:text-lg">
+                            <span class="flex size-11 shrink-0 items-center justify-center rounded-full bg-brand-400/10 text-brand-300 ring-1 ring-brand-300/30">
+                                <x-icon name="shield" class="size-6" />
+                            </span>
+                            <p class="mixed-direction font-medium">{{ __('public.about.founder.closing') }}</p>
+                            <p class="founder-signature ms-auto text-brand-300" aria-label="{{ __('public.about.founder.name') }}">
+                                <bdi>{{ __('public.about.founder.signature') }}</bdi>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </article>
+        </div>
+    </section>
+
     <section class="relative isolate overflow-hidden bg-navy-950 py-12 text-white sm:py-14">
         <div class="bg-machine-grid absolute inset-0 -z-10 opacity-40"></div>
         <div class="bg-signal-glow absolute inset-0 -z-10"></div>

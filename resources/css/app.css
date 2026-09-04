@@ -130,6 +130,22 @@
         @apply text-brand-700;
     }
 
+    .site-mobile-service {
+        @apply rounded-xl px-3 py-2 text-sm font-semibold text-slate-600 transition-colors hover:bg-brand-50 hover:text-brand-700;
+    }
+
+    /* Short phones: the whole menu has to fit under a 4rem header, so trim the
+       row heights rather than pushing the language and CTA buttons off-screen. */
+    @media (max-height: 46rem) {
+        .site-mobile-link {
+            @apply min-h-0 py-2 text-base;
+        }
+
+        .site-mobile-service {
+            @apply py-1.5 text-[0.8125rem];
+        }
+    }
+
     .footer-link {
         @apply text-slate-400 transition-colors duration-200 hover:text-white;
     }
@@ -153,26 +169,47 @@
         @apply text-balance font-display font-semibold leading-[0.9] tracking-[-0.035em] text-white;
     }
 
-    .hero-steps {
-        @apply flex flex-col gap-y-1;
+    /* Typewriter headline: the sizer holds the widest term so typing never
+       reflows the copy underneath it, and the line is stacked on top of it. */
+    .hero-typer {
+        @apply grid;
+        grid-template-areas: 'headline';
     }
 
-    .hero-step {
-        @apply flex items-baseline gap-x-3 sm:gap-x-5;
-        padding-inline-start: calc(var(--step, 0) * clamp(0.65rem, 3vw, 3.25rem));
+    .hero-typer-sizer,
+    .hero-typer-line {
+        grid-area: headline;
+        @apply min-w-0 whitespace-nowrap;
     }
 
-    .hero-step-dot {
-        @apply shrink-0 self-center rounded-full bg-signal-400;
-        width: clamp(0.5rem, 0.85vw, 0.85rem);
-        height: clamp(0.5rem, 0.85vw, 0.85rem);
-        box-shadow: 0 0 0 0.35rem color-mix(in srgb, var(--color-signal-400) 14%, transparent);
-        animation: server-light calc(2.6s + var(--step, 0) * 0.55s) ease-in-out infinite;
-        animation-delay: calc(var(--step, 0) * -0.9s);
+    .hero-typer-sizer {
+        @apply invisible;
     }
 
-    .hero-step-term {
-        @apply inline-flex items-baseline gap-[0.04em] whitespace-nowrap;
+    .hero-typer-caret {
+        @apply inline-block rounded-[1px] bg-signal-400 align-baseline;
+        width: 0.055em;
+        height: 0.72em;
+        margin-inline-start: 0.07em;
+        animation: hero-caret-blink 1.05s steps(1, end) infinite;
+    }
+
+    @keyframes hero-caret-blink {
+        0%,
+        48% {
+            opacity: 1;
+        }
+
+        49%,
+        100% {
+            opacity: 0.12;
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .hero-typer-caret {
+            animation: none;
+        }
     }
 
     .site-page-title {
@@ -186,18 +223,6 @@
         line-height: 1.15;
         letter-spacing: 0;
         white-space: nowrap;
-    }
-
-    html[dir='rtl'] .hero-steps {
-        @apply flex-row items-baseline;
-        column-gap: clamp(0.5rem, 1vw, 0.9rem);
-        row-gap: 0;
-        white-space: nowrap;
-    }
-
-    html[dir='rtl'] .hero-step {
-        column-gap: clamp(0.3rem, 0.6vw, 0.6rem);
-        padding-inline-start: 0;
     }
 
     html[dir='rtl'] .section-title,
@@ -402,6 +427,86 @@
 
     .technology-card {
         @apply flex h-24 items-center justify-center rounded-2xl border border-slate-200 bg-white px-5 py-4 transition duration-200 sm:h-28;
+    }
+
+    /* Founder section: one calm, layered reveal reinforces the personal note
+       without competing with its long-form message. The animation only starts
+       once the site's existing reveal observer marks the card as visible. */
+    .founder-card-scan {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        opacity: 0;
+        background: linear-gradient(
+            110deg,
+            transparent 0%,
+            transparent 43%,
+            rgb(155 215 255 / 0.03) 47%,
+            rgb(155 215 255 / 0.13) 50%,
+            rgb(155 215 255 / 0.03) 53%,
+            transparent 57%,
+            transparent 100%
+        );
+        transform: translateX(-115%);
+    }
+
+    .founder-card.is-visible .founder-card-scan {
+        animation: founder-card-scan 4.8s cubic-bezier(0.22, 1, 0.36, 1) 650ms both;
+    }
+
+    .founder-card.is-visible .founder-profile {
+        animation: founder-profile-enter 700ms cubic-bezier(0.22, 1, 0.36, 1) 120ms both;
+    }
+
+    .founder-card.is-visible .founder-copy {
+        animation: founder-copy-enter 760ms cubic-bezier(0.22, 1, 0.36, 1) 260ms both;
+    }
+
+    .founder-card.is-visible .founder-closing {
+        animation: founder-closing-enter 680ms cubic-bezier(0.22, 1, 0.36, 1) 600ms both;
+    }
+
+    .founder-card.is-visible .founder-portrait {
+        animation: founder-portrait-float 5.5s ease-in-out 1s infinite;
+    }
+
+    .founder-card.is-visible .founder-portrait-orbit {
+        animation: founder-orbit-pulse 5.5s ease-in-out 1s infinite;
+    }
+
+    .founder-card.is-visible .founder-logo {
+        animation: founder-logo-reveal 650ms cubic-bezier(0.22, 1, 0.36, 1) 500ms both;
+    }
+
+    .founder-signature {
+        position: relative;
+        font-family: 'Allura', cursive;
+        font-size: clamp(2.55rem, 4vw, 4rem);
+        font-weight: 400;
+        line-height: 0.82;
+        letter-spacing: 0.01em;
+        text-shadow: 0 0 1.4rem rgb(78 180 255 / 0.22);
+        transform: rotate(-4deg);
+    }
+
+    .founder-signature::after {
+        position: absolute;
+        inset-inline: 0.1em -0.1em;
+        bottom: -0.17em;
+        height: 1px;
+        content: '';
+        background: linear-gradient(90deg, transparent, currentColor 18%, currentColor 82%, transparent);
+        opacity: 0.55;
+        transform: rotate(-1deg);
+    }
+
+    html[dir='rtl'] .founder-signature {
+        font-family: var(--font-arabic);
+        font-size: clamp(1.65rem, 3vw, 2.3rem);
+        font-weight: 600;
+        line-height: 1.15;
+        letter-spacing: 0;
+        transform: none;
     }
 
     a.technology-card:hover {
@@ -703,44 +808,6 @@
     }
 }
 
-@keyframes server-light {
-    0%,
-    100% {
-        opacity: 0.4;
-        box-shadow:
-            0 0 0 0.25rem color-mix(in srgb, var(--color-signal-400) 6%, transparent),
-            0 0 0.35rem 0 color-mix(in srgb, var(--color-signal-400) 25%, transparent);
-    }
-
-    12% {
-        opacity: 1;
-        box-shadow:
-            0 0 0 0.5rem color-mix(in srgb, var(--color-signal-400) 20%, transparent),
-            0 0 1.1rem 0.15rem color-mix(in srgb, var(--color-signal-400) 60%, transparent);
-    }
-
-    26% {
-        opacity: 0.55;
-        box-shadow:
-            0 0 0 0.3rem color-mix(in srgb, var(--color-signal-400) 8%, transparent),
-            0 0 0.45rem 0 color-mix(in srgb, var(--color-signal-400) 28%, transparent);
-    }
-
-    54% {
-        opacity: 0.95;
-        box-shadow:
-            0 0 0 0.45rem color-mix(in srgb, var(--color-signal-400) 18%, transparent),
-            0 0 0.9rem 0.1rem color-mix(in srgb, var(--color-signal-400) 50%, transparent);
-    }
-
-    72% {
-        opacity: 0.45;
-        box-shadow:
-            0 0 0 0.25rem color-mix(in srgb, var(--color-signal-400) 6%, transparent),
-            0 0 0.35rem 0 color-mix(in srgb, var(--color-signal-400) 22%, transparent);
-    }
-}
-
 @keyframes delivery-badge-float {
     0%,
     100% {
@@ -763,6 +830,95 @@
 
     100% {
         inset-inline-start: 0;
+    }
+}
+
+@keyframes founder-card-scan {
+    0% {
+        opacity: 0;
+        transform: translateX(-115%);
+    }
+
+    18% {
+        opacity: 1;
+    }
+
+    55%,
+    100% {
+        opacity: 0;
+        transform: translateX(115%);
+    }
+}
+
+@keyframes founder-profile-enter {
+    from {
+        opacity: 0;
+        transform: translateX(-1.5rem);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes founder-copy-enter {
+    from {
+        opacity: 0;
+        transform: translateY(1.25rem);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes founder-closing-enter {
+    from {
+        opacity: 0;
+        transform: translateY(0.75rem);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes founder-portrait-float {
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-0.35rem);
+    }
+}
+
+@keyframes founder-orbit-pulse {
+    0%,
+    100% {
+        opacity: 0.35;
+        transform: scale(0.96);
+    }
+
+    50% {
+        opacity: 0.8;
+        transform: scale(1.045);
+    }
+}
+
+@keyframes founder-logo-reveal {
+    from {
+        opacity: 0;
+        transform: translateY(0.5rem);
+    }
+
+    to {
+        opacity: 0.9;
+        transform: translateY(0);
     }
 }
 

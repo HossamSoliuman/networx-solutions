@@ -23,13 +23,12 @@
                 @endphp
                 <h1 class="site-hero-title mt-4">
                     @if ($heroSteps->count() > 1)
-                        <span class="hero-steps">
-                            @foreach ($heroSteps as $index => $term)
-                                <span class="hero-step site-reveal" style="--step: {{ $index }}; animation-delay: {{ 120 + $index * 130 }}ms">
-                                    <span class="hero-step-dot" aria-hidden="true"></span>
-                                    <span class="hero-step-term"><span>{{ $term }}</span><span>.</span></span>
-                                </span>
-                            @endforeach
+                        <span class="hero-typer site-reveal site-reveal-delay-1" data-hero-typer
+                            data-hero-terms="{{ $heroSteps->map(fn (string $term): string => $term.'.')->toJson() }}">
+                            {{-- The tallest/longest term reserves the line box so the typed text never reflows the page. --}}
+                            <span class="hero-typer-sizer" aria-hidden="true">{{ $heroSteps->sortByDesc(fn (string $term): int => mb_strlen($term))->first() }}.</span>
+                            <span class="hero-typer-line" aria-hidden="true"><span data-hero-typer-text>{{ $heroSteps->first() }}.</span><span class="hero-typer-caret"></span></span>
+                            <span class="sr-only">{{ $site['home_title'] }}</span>
                         </span>
                     @else
                         <span class="site-reveal site-reveal-delay-1">{{ $site['home_title'] }}</span>
