@@ -15,7 +15,7 @@
         <div class="contact-page-shade absolute inset-0 -z-10"></div>
 
         <div class="mx-auto grid min-h-full w-full max-w-[90rem] items-center gap-8 px-5 py-8 sm:px-8 lg:h-full lg:grid-cols-[0.8fr_1.2fr] lg:gap-6 lg:px-12 lg:py-3 xl:grid-cols-[0.72fr_1.28fr] xl:gap-8">
-            <div class="min-w-0 max-w-md rounded-[1.5rem] border border-white/15 bg-navy-950/35 p-5 shadow-[0_24px_70px_-42px_rgba(2,15,35,0.75)] backdrop-blur-md sm:p-6 lg:p-4" data-reveal>
+            <div class="min-w-0 max-w-md rounded-[1.5rem] border border-white/15 bg-navy-950/35 p-5 shadow-[0_24px_70px_-42px_rgba(10,22,40,0.75)] backdrop-blur-md sm:p-6 lg:p-4" data-reveal>
                 <h1 class="sr-only">{{ __('public.contact.contact_heading', ['site' => $site['site_name']]) }}</h1>
                 <p class="technical-label text-brand-200">{{ __('public.contact.contact_information') }}</p>
                 <div class="mt-5 min-w-0 divide-y divide-white/15 border-y border-white/15 lg:mt-3">
@@ -60,7 +60,7 @@
                 </div>
             </div>
 
-            <div class="min-w-0 rounded-[1.75rem] bg-white p-5 text-slate-900 shadow-[0_28px_80px_-48px_rgba(5,26,53,0.65)] ring-1 ring-white/30 sm:p-6 lg:p-4 xl:p-5"
+            <div class="min-w-0 rounded-[1.75rem] bg-white p-5 text-slate-900 shadow-[0_28px_80px_-48px_rgba(10,22,40,0.65)] ring-1 ring-white/30 sm:p-6 lg:p-4 xl:p-5"
                 data-reveal>
                 @if (session('contact_success'))
                     <div class="mb-4 flex gap-3 rounded-xl bg-emerald-50 p-3 text-emerald-800 ring-1 ring-emerald-200 lg:mb-3 lg:py-2" role="status">

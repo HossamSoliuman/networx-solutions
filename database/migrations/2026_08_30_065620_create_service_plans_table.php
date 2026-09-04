@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('name_ar')->nullable();
             $table->string('icon')->default('star');
-            $table->string('accent_color', 7)->default('#0045B3');
+            $table->string('accent_color', 7)->default('#0369a1');
             $table->string('badge')->nullable();
             $table->string('badge_ar')->nullable();
             $table->string('capacity')->nullable();

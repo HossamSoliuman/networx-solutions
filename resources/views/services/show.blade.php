@@ -29,7 +29,7 @@
                     <bdi class="hidden truncate text-white sm:inline" aria-current="page">{{ $serviceName }}</bdi>
                 </nav>
 
-                <div class="site-reveal site-reveal-delay-1 mt-7 flex size-14 items-center justify-center rounded-full border-4 border-white bg-brand-600 text-white shadow-[0_14px_40px_rgba(0,44,132,0.45)]">
+                <div class="site-reveal site-reveal-delay-1 mt-7 flex size-14 items-center justify-center rounded-full border-4 border-white bg-brand-600 text-white shadow-[0_14px_40px_rgba(10,22,40,0.45)]">
                     <x-icon :name="$service->icon" class="size-7" />
                 </div>
 
@@ -75,7 +75,7 @@
 
                     <div class="mt-6 grid gap-3 md:grid-cols-2" data-reveal-group>
                         @foreach ($serviceItems as $item)
-                            <article class="group flex min-w-0 gap-4 rounded-2xl border border-blue-100 bg-white p-4 shadow-[0_12px_35px_-30px_rgba(0,39,114,0.7)] transition duration-200 hover:-translate-y-0.5 hover:border-brand-300 hover:shadow-[0_18px_45px_-28px_rgba(0,69,179,0.5)]"
+                            <article class="group flex min-w-0 gap-4 rounded-2xl border border-blue-100 bg-white p-4 shadow-[0_12px_35px_-30px_rgba(10,22,40,0.7)] transition duration-200 hover:-translate-y-0.5 hover:border-brand-300 hover:shadow-[0_18px_45px_-28px_rgba(56,189,248,0.5)]"
                                 data-reveal>
                                 <span class="flex size-11 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-brand-700 ring-1 ring-blue-100 transition-colors group-hover:bg-brand-600 group-hover:text-white">
                                     <x-icon :name="$item['icon']" class="size-5" />
@@ -90,7 +90,7 @@
                 </div>
 
                 <aside class="grid gap-5 xl:sticky xl:top-28" data-reveal>
-                    <div class="overflow-hidden rounded-[1.75rem] bg-navy-950 text-white shadow-[0_24px_60px_-32px_rgba(0,30,91,0.8)]">
+                    <div class="overflow-hidden rounded-[1.75rem] bg-navy-950 text-white shadow-[0_24px_60px_-32px_rgba(10,22,40,0.8)]">
                         <div class="flex items-center gap-4 bg-linear-to-r from-brand-700 to-brand-500 px-6 py-5">
                             <span class="flex size-11 items-center justify-center rounded-full border-2 border-white/80">
                                 <x-icon name="star" class="size-5" />

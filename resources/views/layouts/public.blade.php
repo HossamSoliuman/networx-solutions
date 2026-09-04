@@ -53,7 +53,7 @@
     @if ($site['seo_keywords'])
         <meta name="keywords" content="{{ $site['seo_keywords'] }}">
     @endif
-    <meta name="theme-color" content="#0080fc">
+    <meta name="theme-color" content="#0a1628">
     <link rel="icon" href="{{ asset('favicon.png') }}" type="image/png">
     <link rel="shortcut icon" href="{{ asset('favicon.png') }}" type="image/png">
 
@@ -150,7 +150,7 @@
                     <div
                         class="invisible absolute left-1/2 top-[calc(100%-0.15rem)] w-[43rem] -translate-x-1/2 translate-y-2 pt-5 opacity-0 transition duration-200 group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:visible group-focus-within:translate-y-0 group-focus-within:opacity-100">
                         <div
-                            class="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-[0_28px_70px_-30px_rgba(5,26,53,0.45)]">
+                            class="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-[0_28px_70px_-30px_rgba(10,22,40,0.45)]">
                             <div class="grid grid-cols-2 gap-px bg-slate-200">
                                 @foreach ($navigationServices as $navigationService)
                                     <a href="{{ route('services.show', $navigationService) }}"

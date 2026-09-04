@@ -67,8 +67,8 @@
                             <p class="mt-1 font-display text-lg font-bold text-white">{{ __('public.home.operating_picture') }}</p>
                         </div>
                         <span
-                            class="inline-flex items-center gap-2 rounded-full border border-signal-400/20 bg-signal-400/10 px-3 py-1.5 font-mono text-[0.62rem] font-semibold uppercase tracking-[0.12em] text-signal-200">
-                            <span class="status-pulse size-1.5 rounded-full bg-signal-400"></span>
+                            class="inline-flex items-center gap-2 rounded-full border border-accent-400/25 bg-accent-400/10 px-3 py-1.5 font-mono text-[0.62rem] font-semibold uppercase tracking-[0.12em] text-accent-300">
+                            <span class="status-pulse size-1.5 rounded-full bg-accent-400"></span>
                             {{ __('public.home.connected') }}
                         </span>
                     </div>

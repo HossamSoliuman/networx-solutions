@@ -25,7 +25,7 @@ class ServicePlanFactory extends Factory
             'service_id' => Service::factory(),
             'name' => Str::title(fake()->unique()->words(2, true)),
             'icon' => fake()->randomElement(['star', 'desktop', 'users', 'building', 'server']),
-            'accent_color' => '#0045B3',
+            'accent_color' => '#0369a1',
             'capacity' => 'Up to '.fake()->numberBetween(5, 70).' Devices',
             'price_monthly' => $monthly,
             'price_yearly' => $monthly * 11,

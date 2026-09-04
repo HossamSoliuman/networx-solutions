@@ -45,7 +45,7 @@ class ServicePlan extends Model
 
     protected $attributes = [
         'icon' => 'star',
-        'accent_color' => '#0045B3',
+        'accent_color' => '#0369a1',
         'currency' => 'EGP',
         'is_custom_price' => false,
         'is_featured' => false,

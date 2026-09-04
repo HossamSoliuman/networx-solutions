@@ -51,7 +51,7 @@
                             </table>
                             <p style="margin:24px 0 0;">
                                 <a href="{{ route('admin.plan-requests.show', $planRequest) }}"
-                                    style="display:inline-block;border-radius:8px;background-color:#0045b3;padding:12px 20px;font-size:14px;font-weight:bold;color:#ffffff;text-decoration:none;">
+                                    style="display:inline-block;border-radius:8px;background-color:#0369a1;padding:12px 20px;font-size:14px;font-weight:bold;color:#ffffff;text-decoration:none;">
                                     Open the request
                                 </a>
                             </p>

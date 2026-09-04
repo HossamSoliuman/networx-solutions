@@ -6,7 +6,7 @@
 @endphp
 
 <article
-    class="group relative flex h-full flex-col overflow-hidden rounded-[1.5rem] bg-white ring-1 ring-blue-100 transition duration-300 hover:-translate-y-1 hover:ring-brand-300 hover:shadow-[0_26px_70px_-38px_rgba(0,39,114,0.55)]">
+    class="group relative flex h-full flex-col overflow-hidden rounded-[1.5rem] bg-white ring-1 ring-blue-100 transition duration-300 hover:-translate-y-1 hover:ring-brand-300 hover:shadow-[0_26px_70px_-38px_rgba(10,22,40,0.55)]">
     <div class="relative overflow-hidden bg-navy-950">
         <img src="{{ $service->imageUrl() }}" alt="{{ $serviceName }}"
             class="h-44 w-full object-cover transition duration-700 group-hover:scale-[1.045] sm:h-48"

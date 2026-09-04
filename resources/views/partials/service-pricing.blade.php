@@ -42,7 +42,7 @@
 
         @if ($showBillingToggle)
             <div class="mt-8 flex flex-col items-center gap-4 sm:flex-row sm:justify-center" data-reveal>
-                <div class="inline-flex rounded-full bg-white p-1 shadow-[0_12px_35px_-25px_rgba(0,39,114,0.8)] ring-1 ring-blue-100"
+                <div class="inline-flex rounded-full bg-white p-1 shadow-[0_12px_35px_-25px_rgba(10,22,40,0.8)] ring-1 ring-blue-100"
                     role="group" aria-label="{{ __('public.pricing.billing_period') }}">
                     @foreach (BillingPeriod::cases() as $period)
                         <button type="button" class="plan-billing-option" data-billing-option="{{ $period->value }}"
@@ -72,7 +72,7 @@
                     $savings = $plan->yearlySavingsPercent();
                 @endphp
 
-                <article data-reveal style="--plan-accent: {{ $plan->accent_color ?: '#0045B3' }}"
+                <article data-reveal style="--plan-accent: {{ $plan->accent_color ?: '#0369a1' }}"
                     @class(['plan-card', 'plan-card-featured' => $plan->is_featured])>
                     @if ($badge)
                         <span class="plan-badge"><bdi>{{ $badge }}</bdi></span>

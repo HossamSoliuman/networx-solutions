@@ -177,7 +177,7 @@
             <x-form.label for="accent_color">Accent colour</x-form.label>
             <div class="mt-1.5 flex items-center gap-3">
                 <input id="accent_color" name="accent_color" type="color"
-                    value="{{ old('accent_color', $plan->accent_color ?? '#0045B3') }}"
+                    value="{{ old('accent_color', $plan->accent_color ?? '#0369a1') }}"
                     class="h-11 w-16 cursor-pointer rounded-lg border border-slate-300 bg-white p-1">
                 <span class="text-xs text-slate-400">Colours the icon, price, ticks, and button.</span>
             </div>
