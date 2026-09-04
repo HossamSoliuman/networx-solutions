@@ -429,59 +429,152 @@
         @apply flex h-24 items-center justify-center rounded-2xl border border-slate-200 bg-white px-5 py-4 transition duration-200 sm:h-28;
     }
 
-    /* Founder section: one calm, layered reveal reinforces the personal note
-       without competing with its long-form message. The animation only starts
-       once the site's existing reveal observer marks the card as visible. */
-    .founder-card-scan {
+    /* Founder letter: an editorial split — a bracketed portrait plate beside a
+       ruled column of copy. Every part enters in reading order once the site's
+       existing reveal observer marks the letter as visible. */
+    .founder-frame {
+        position: relative;
+        padding: 0.55rem;
+        border-radius: 1.75rem;
+        background: linear-gradient(
+            160deg,
+            rgb(0 128 252 / 0.35),
+            rgb(7 52 111 / 0.18) 55%,
+            rgb(126 231 135 / 0.22)
+        );
+        box-shadow: 0 35px 90px -50px rgb(0 128 252 / 0.9);
+    }
+
+    .founder-frame::before,
+    .founder-frame::after {
+        position: absolute;
+        z-index: 1;
+        width: 2.15rem;
+        height: 2.15rem;
+        color: var(--color-brand-300);
+        content: '';
+        opacity: 0.8;
+    }
+
+    .founder-frame::before {
+        inset-block-start: -0.4rem;
+        inset-inline-start: -0.4rem;
+        border-block-start: 2px solid;
+        border-inline-start: 2px solid;
+        border-start-start-radius: 0.9rem;
+    }
+
+    .founder-frame::after {
+        inset-block-end: -0.4rem;
+        inset-inline-end: -0.4rem;
+        border-block-end: 2px solid;
+        border-inline-end: 2px solid;
+        border-end-end-radius: 0.9rem;
+    }
+
+    .founder-photo {
+        display: block;
+    }
+
+    .founder-photo-veil {
         position: absolute;
         inset: 0;
         pointer-events: none;
-        opacity: 0;
         background: linear-gradient(
-            110deg,
-            transparent 0%,
-            transparent 43%,
-            rgb(155 215 255 / 0.03) 47%,
-            rgb(155 215 255 / 0.13) 50%,
-            rgb(155 215 255 / 0.03) 53%,
-            transparent 57%,
-            transparent 100%
+            to top,
+            rgb(2 10 26 / 0.94) 0%,
+            rgb(2 10 26 / 0.5) 24%,
+            transparent 52%
         );
-        transform: translateX(-115%);
     }
 
-    .founder-card.is-visible .founder-card-scan {
-        animation: founder-card-scan 4.8s cubic-bezier(0.22, 1, 0.36, 1) 650ms both;
+    .founder-plaque {
+        position: absolute;
+        z-index: 1;
+        inset-block-end: 1.5rem;
+        inset-inline: 1.6rem;
     }
 
-    .founder-card.is-visible .founder-profile {
-        animation: founder-profile-enter 700ms cubic-bezier(0.22, 1, 0.36, 1) 120ms both;
+    /* The copy column hangs off a hairline rail; each paragraph pins a small
+       brand node to it so the letter scans as a sequence, not a wall of text. */
+    .founder-rail {
+        position: relative;
+        padding-inline-start: 1.85rem;
     }
 
-    .founder-card.is-visible .founder-copy {
-        animation: founder-copy-enter 760ms cubic-bezier(0.22, 1, 0.36, 1) 260ms both;
+    .founder-rail::before {
+        position: absolute;
+        inset-block: 0.4rem;
+        inset-inline-start: 0;
+        width: 1px;
+        content: '';
+        background: linear-gradient(
+            180deg,
+            transparent,
+            rgb(255 255 255 / 0.22) 10%,
+            rgb(255 255 255 / 0.22) 90%,
+            transparent
+        );
     }
 
-    .founder-card.is-visible .founder-closing {
-        animation: founder-closing-enter 680ms cubic-bezier(0.22, 1, 0.36, 1) 600ms both;
+    .founder-line {
+        position: relative;
     }
 
-    .founder-card.is-visible .founder-portrait {
-        animation: founder-portrait-float 5.5s ease-in-out 1s infinite;
+    .founder-line::before {
+        position: absolute;
+        inset-block-start: 0.62em;
+        inset-inline-start: calc(-1.85rem - 0.225rem);
+        width: 0.45rem;
+        height: 0.45rem;
+        content: '';
+        background: var(--color-brand-400);
+        border-radius: 1px;
+        box-shadow: 0 0 0 4px rgb(0 128 252 / 0.12);
+        transform: rotate(45deg);
     }
 
-    .founder-card.is-visible .founder-portrait-orbit {
-        animation: founder-orbit-pulse 5.5s ease-in-out 1s infinite;
+    .founder-letter.is-visible .founder-plate {
+        animation: founder-plate-enter 780ms cubic-bezier(0.22, 1, 0.36, 1) 100ms both;
     }
 
-    .founder-card.is-visible .founder-logo {
-        animation: founder-logo-reveal 650ms cubic-bezier(0.22, 1, 0.36, 1) 500ms both;
+    .founder-letter.is-visible .founder-photo {
+        animation: founder-photo-settle 1400ms cubic-bezier(0.22, 1, 0.36, 1) 180ms both;
+    }
+
+    .founder-letter.is-visible .founder-plaque {
+        animation: founder-plaque-enter 620ms cubic-bezier(0.22, 1, 0.36, 1) 560ms both;
+    }
+
+    .founder-letter.is-visible .founder-rail::before {
+        transform-origin: top;
+        animation: founder-rail-draw 950ms cubic-bezier(0.22, 1, 0.36, 1) 260ms both;
+    }
+
+    .founder-letter.is-visible .founder-line {
+        animation: founder-line-enter 620ms cubic-bezier(0.22, 1, 0.36, 1) 380ms both;
+    }
+
+    .founder-letter.is-visible .founder-line:nth-child(2) {
+        animation-delay: 500ms;
+    }
+
+    .founder-letter.is-visible .founder-line:nth-child(3) {
+        animation-delay: 620ms;
+    }
+
+    .founder-letter.is-visible .founder-line:nth-child(4) {
+        animation-delay: 740ms;
+    }
+
+    .founder-letter.is-visible .founder-signoff {
+        animation: founder-signoff-enter 700ms cubic-bezier(0.22, 1, 0.36, 1) 880ms both;
     }
 
     .founder-signature {
         position: relative;
         font-family: 'Allura', cursive;
-        font-size: clamp(2.55rem, 4vw, 4rem);
+        font-size: clamp(1.85rem, 2.6vw, 2.6rem);
         font-weight: 400;
         line-height: 0.82;
         letter-spacing: 0.01em;
@@ -502,7 +595,7 @@
 
     html[dir='rtl'] .founder-signature {
         font-family: var(--font-arabic);
-        font-size: clamp(1.65rem, 3vw, 2.3rem);
+        font-size: clamp(1.25rem, 2.1vw, 1.65rem);
         font-weight: 600;
         line-height: 1.15;
         letter-spacing: 0;
@@ -833,39 +926,32 @@
     }
 }
 
-@keyframes founder-card-scan {
-    0% {
-        opacity: 0;
-        transform: translateX(-115%);
-    }
-
-    18% {
-        opacity: 1;
-    }
-
-    55%,
-    100% {
-        opacity: 0;
-        transform: translateX(115%);
-    }
-}
-
-@keyframes founder-profile-enter {
+@keyframes founder-plate-enter {
     from {
         opacity: 0;
-        transform: translateX(-1.5rem);
+        transform: translateY(1.75rem) scale(0.97);
     }
 
     to {
         opacity: 1;
-        transform: translateX(0);
+        transform: translateY(0) scale(1);
     }
 }
 
-@keyframes founder-copy-enter {
+@keyframes founder-photo-settle {
+    from {
+        transform: scale(1.06);
+    }
+
+    to {
+        transform: scale(1);
+    }
+}
+
+@keyframes founder-plaque-enter {
     from {
         opacity: 0;
-        transform: translateY(1.25rem);
+        transform: translateY(0.85rem);
     }
 
     to {
@@ -874,7 +960,29 @@
     }
 }
 
-@keyframes founder-closing-enter {
+@keyframes founder-rail-draw {
+    from {
+        transform: scaleY(0);
+    }
+
+    to {
+        transform: scaleY(1);
+    }
+}
+
+@keyframes founder-line-enter {
+    from {
+        opacity: 0;
+        transform: translateY(0.9rem);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes founder-signoff-enter {
     from {
         opacity: 0;
         transform: translateY(0.75rem);
@@ -882,42 +990,6 @@
 
     to {
         opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-@keyframes founder-portrait-float {
-    0%,
-    100% {
-        transform: translateY(0);
-    }
-
-    50% {
-        transform: translateY(-0.35rem);
-    }
-}
-
-@keyframes founder-orbit-pulse {
-    0%,
-    100% {
-        opacity: 0.35;
-        transform: scale(0.96);
-    }
-
-    50% {
-        opacity: 0.8;
-        transform: scale(1.045);
-    }
-}
-
-@keyframes founder-logo-reveal {
-    from {
-        opacity: 0;
-        transform: translateY(0.5rem);
-    }
-
-    to {
-        opacity: 0.9;
         transform: translateY(0);
     }
 }
